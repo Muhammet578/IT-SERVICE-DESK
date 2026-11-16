@@ -6,33 +6,86 @@ namespace App\Controller;
 
 use App\Http\Request;
 use App\Http\Response;
-use App\Service\TicketCatalog;
+use App\Repository\MysqliTicketRepository;
+use App\Repository\PdoTicketRepository;
+use App\Repository\TicketRepositoryInterface;
+use InvalidArgumentException;
 
 final class TicketController
 {
-    public function __construct(
-        private readonly TicketCatalog $catalog = new TicketCatalog()
-    ) {
+    private TicketRepositoryInterface $repository;
+    private string $driver;
+
+    public function __construct()
+    {
+        $config = require dirname(__DIR__, 2) . '/config/env.php';
+
+        $this->driver = strtolower($config['DB_DRIVER'] ?? 'pdo');
+
+        if ($this->driver === 'pdo') {
+            $pdo = require dirname(__DIR__, 2) . '/config/database.php';
+
+            $this->repository = new PdoTicketRepository($pdo);
+
+            return;
+        }
+
+        if ($this->driver === 'mysqli') {
+            $mysqli = require dirname(__DIR__, 2) . '/config/mysqli.php';
+
+            $this->repository = new MysqliTicketRepository($mysqli);
+
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            'Неизвестный DB_DRIVER: ' . $this->driver
+        );
     }
 
     public function __invoke(Request $request): Response
     {
+        $tickets = $this->repository->findAll();
+
         $rows = '';
 
-        foreach ($this->catalog->all() as $ticket) {
-            $title = htmlspecialchars($ticket->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $description = htmlspecialchars($ticket->description, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $status = htmlspecialchars($ticket->status, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $priority = htmlspecialchars($ticket->priority, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-            $createdAt = htmlspecialchars($ticket->createdAt->format('d.m.Y H:i'), ENT_QUOTES, 'UTF-8');
+        foreach ($tickets as $ticket) {
+            $id = (int) $ticket['id'];
+
+            $title = htmlspecialchars(
+                (string) $ticket['title'],
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
+
+            $description = htmlspecialchars(
+                (string) $ticket['description'],
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
+
+            $statusId = (int) $ticket['status_id'];
+            $priorityId = (int) $ticket['priority_id'];
+
+            $createdAt = htmlspecialchars(
+                (string) $ticket['created_at'],
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
 
             $rows .= sprintf(
-                '<tr><td>%d</td><td><strong>%s</strong><br><small>%s</small></td><td>%s</td><td>%s</td><td>%s</td></tr>',
-                $ticket->id,
+                '<tr>
+                    <td>%d</td>
+                    <td><strong>%s</strong><br><small>%s</small></td>
+                    <td>%d</td>
+                    <td>%d</td>
+                    <td>%s</td>
+                </tr>',
+                $id,
                 $title,
                 $description,
-                $status,
-                $priority,
+                $statusId,
+                $priorityId,
                 $createdAt
             );
         }
@@ -42,25 +95,31 @@ final class TicketController
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IT-заявки</title>
-    <style>
-        body{font:15px/1.5 Arial,sans-serif;background:#f3f5f8;color:#202733;margin:0;padding:32px}
-        main{max-width:1050px;margin:auto;background:white;padding:28px;border-radius:12px}
-        table{width:100%;border-collapse:collapse;margin-top:20px}
-        th,td{text-align:left;padding:12px;border-bottom:1px solid #e5e8ed;vertical-align:top}
-        th{background:#f7f8fa}small{color:#667085}a{color:#1769aa}
-    </style>
 </head>
-<body><main>
-    <h1>Примеры IT-заявок</h1>
-    <p>Демонстрационные данные. Они не сохраняются в базе данных.</p>
-    <table>
-        <thead><tr><th>№</th><th>Заявка</th><th>Статус</th><th>Приоритет</th><th>Создана</th></tr></thead>
-        <tbody>{$rows}</tbody>
-    </table>
-    <p><a href="/">На главную</a></p>
-</main></body>
+<body>
+
+<h1>IT-заявки</h1>
+
+<p>DB_DRIVER: <strong>{$this->driver}</strong></p>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Заявка</th>
+            <th>Status ID</th>
+            <th>Priority ID</th>
+            <th>Создана</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {$rows}
+    </tbody>
+</table>
+
+</body>
 </html>
 HTML);
     }

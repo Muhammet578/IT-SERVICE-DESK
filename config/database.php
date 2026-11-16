@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-$host = '127.0.0.1';
-$port = 3306;
-$db_name = 'it_service_desk';
-$username = 'root';
-$password = '';
+$config = require __DIR__ . '/env.php';
+
+$host = $config['DB_HOST'] ?? '127.0.0.1';
+$port = (int) ($config['DB_PORT'] ?? 3306);
+$db_name = $config['DB_DATABASE'] ?? '';
+$username = $config['DB_USERNAME'] ?? '';
+$password = $config['DB_PASSWORD'] ?? '';
 
 $dsn = sprintf(
     'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
@@ -15,7 +17,7 @@ $dsn = sprintf(
     $db_name
 );
 
-try{
+try {
     return new PDO(
         $dsn,
         $username,
@@ -26,10 +28,9 @@ try{
             PDO::ATTR_EMULATE_PREPARES => false,
         ]
     );
-   
-}catch (PDOException $exception) {
+} catch (PDOException $exception) {
     throw new RuntimeException(
-        'Ошибка подключения к базе данных',
+        'Ошибка подключения к базе данных через PDO.',
         0,
         $exception
     );

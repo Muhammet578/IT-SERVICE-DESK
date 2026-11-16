@@ -18,7 +18,9 @@ $router = new Router();
 $router->get('/', HomeController::class);
 $router->get('/health', HealthController::class);
 $router->get('/about', AboutController::class);
+
 $router->get('/tickets', TicketController::class);
+$router->get('/tickets/{id}', TicketController::class);
 
 try {
     $response = $router->dispatch($request);

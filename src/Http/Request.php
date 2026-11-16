@@ -8,11 +8,13 @@ final readonly class Request
 {
     /**
      * @param array<string, mixed> $query
+     * @param array<string, string> $params
      */
     public function __construct(
         public string $method,
         public string $path,
-        public array $query = []
+        public array $query = [],
+        public array $params = []
     ) {
     }
 
@@ -39,5 +41,16 @@ final readonly class Request
         }
 
         return (string) $value;
+    }
+
+    public function param(string $key): string
+    {
+        if (!isset($this->params[$key])) {
+            throw new \InvalidArgumentException(
+                sprintf('Параметр маршрута "%s" не найден.', $key)
+            );
+        }
+
+        return $this->params[$key];
     }
 }
