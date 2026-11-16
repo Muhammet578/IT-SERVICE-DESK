@@ -27,9 +27,10 @@ try{
         ]
     );
    
-}catch (PDOException $exception){
+}catch (PDOException $exception) {
     throw new RuntimeException(
         'Ошибка подключения к базе данных',
-        previous: $exception
+        0,
+        $exception
     );
 }
