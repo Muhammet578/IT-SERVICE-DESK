@@ -82,7 +82,13 @@ class MysqliTicketRepository implements TicketRepositoryInterface
     {
         $sql = "
             UPDATE tickets
-            SET title = ?, description = ?
+            SET title = ?, 
+            description = ?,
+            created_by   = ?,
+            assigned_to  = ?,
+            category_id  = ?,
+            priority_id  = ?,
+            status_id  = ?
             WHERE id = ?
         ";
 

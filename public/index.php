@@ -21,6 +21,10 @@ $router->get('/about', AboutController::class);
 
 $router->get('/tickets', TicketController::class);
 $router->get('/tickets/{id}', TicketController::class);
+$router->post('/tickets', TicketController::class);
+$router->put('/tickets/{id}', TicketController::class);
+$router->delete('/tickets/{id}', TicketController::class);
+
 
 try {
     $response = $router->dispatch($request);

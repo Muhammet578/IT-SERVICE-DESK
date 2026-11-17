@@ -71,8 +71,16 @@ class PdoTicketRepository implements TicketRepositoryInterface{
         }
 
         public function update(int $id, array $data): bool{
-            $sql = "UPDATE tickets SET title = :title, 
-            description = :description WHERE id = :id";
+            $sql = "UPDATE tickets
+            SET
+            title = :title, 
+            description = :description,
+            created_by = :created_by,
+            assigned_to = :assigned_to,
+            category_id = :category_id,
+            priority_id = :priority_id,
+            status_id   = :status_id
+            WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 

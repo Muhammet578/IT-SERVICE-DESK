@@ -91,7 +91,8 @@ final class Router
                 $request->method,
                 $request->path,
                 $request->query,
-                $params
+                $params,
+                $request->body
             );
 
             $controllerClass = $route['controller'];

@@ -45,7 +45,81 @@ final class TicketController
 
     public function __invoke(Request $request): Response
     {
-        $tickets = $this->repository->findAll();
+
+        if($request->method === 'DELETE'){
+            $id = (int) $request->param('id');
+
+            $deleted = $this->repository->delete($id);
+
+            if(!$deleted){
+               return Response::json([
+                    'message' => 'Заявка не найдена',
+                    'id' => $id,
+                ], 404);
+            }
+
+            return Response::json([
+                    'message' => 'Заявка удалена',
+                ], 200);
+        }
+
+        if($request->method === 'PUT'){
+            $id = (int) $request->param('id');
+            $data = [
+                'title'         => $request->body['title'],
+                'description'   => $request->body['description'],
+                'created_by'    => (int) $request->body['created_by'],
+                'assigned_to'   => !empty($request->body['assigned_to'])
+                                 ? (int) $request->body['assigned_to']
+                                 : null,
+                'category_id'   => (int) $request->body['category_id'],
+                'priority_id'   => (int) $request->body['priority_id'],
+                'status_id'     => (int) $request->body['status_id']
+            ];
+
+            $this->repository->update($id, $data);
+            return Response::json([
+                'message'   => 'Заявка обновлена',
+                'id'        => $id,
+            ], 200);   
+        }
+
+        if($request->method === 'POST'){
+            $data = [
+                'title'         => $request->body['title'],
+                'description'   => $request->body['description'],
+                'created_by'    => (int) $request->body['created_by'],
+                'assigned_to'   => !empty($request->body['assigned_to'])
+                                 ? (int) $request->body['assigned_to']
+                                 : null,
+                'category_id'   => (int) $request->body['category_id'],
+                'priority_id'   => (int) $request->body['priority_id'],
+                'status_id'     => (int) $request->body['status_id']
+            ];
+            $id = $this->repository->create($data);   
+
+            return Response::json([
+                'message'   => 'Заявка создана',
+                'id'        => $id,
+            ], 201);   
+        }
+        
+
+        if(isset($request->params['id'])){
+            $id = (int) $request->param('id');
+            $ticket = $this->repository->findById($id);
+
+            if($ticket === null){
+                return Response::html(
+                    '<h1>Страница не найдена</h1>',
+                    404
+                );
+            }
+
+            $tickets = [$ticket];
+        }else{
+            $tickets = $this->repository->findAll();
+        }
 
         $rows = '';
 

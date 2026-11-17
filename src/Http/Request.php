@@ -14,7 +14,8 @@ final readonly class Request
         public string $method,
         public string $path,
         public array $query = [],
-        public array $params = []
+        public array $params = [],
+        public array $body = []
     ) {
     }
 
@@ -22,11 +23,21 @@ final readonly class Request
     {
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
         $path = parse_url($uri, PHP_URL_PATH);
+        $body = $_POST;
+
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'PUT'){
+            $rawBody = file_get_contents('php://input');
+
+            parse_str($rawBody, $body);
+            
+        };
 
         return new self(
             strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET'),
             is_string($path) && $path !== '' ? $path : '/',
-            $_GET
+            $_GET,
+            [],
+            $body
         );
     }
 
