@@ -127,3 +127,73 @@ git tag lab-01
 git tag
 git show lab-01
 ```
+## Лабораторная работа №2 — Работа с базой данных
+
+Во второй лабораторной работе реализована интеграция
+IT-SERVICE-DESK с MySQL/MariaDB.
+
+### Реализованный функционал
+
+- Реляционная база данных `it_service_desk`
+- Миграции и сидеры
+- Репозитории PDO и MySQLi
+- Общий интерфейс `TicketRepositoryInterface`
+- CRUD-операции с заявками
+- HTTP-маршруты GET, POST, PUT, DELETE
+- Переключение драйвера через `DB_DRIVER`
+- Подготовленные SQL-запросы
+- Транзакции и тестирование SQL Injection
+
+### HTTP-маршруты
+
+| Метод | Маршрут | Описание |
+|---|---|---|
+| GET | `/tickets` | Список заявок |
+| GET | `/tickets/{id}` | Просмотр заявки |
+| POST | `/tickets` | Создание заявки |
+| PUT | `/tickets/{id}` | Обновление заявки |
+| DELETE | `/tickets/{id}` | Удаление заявки |
+
+### Запуск проекта
+
+Установить зависимости:
+
+```bash
+composer install
+```
+
+Создать файл `.env` на основе `env.example`
+и указать параметры подключения к базе данных.
+
+Выполнить миграции и сидеры:
+
+```bash
+php migrate.php
+php seed.php
+```
+
+Запустить локальный сервер:
+
+```bash
+php -S 127.0.0.1:8000 -t public public/index.php
+```
+
+### Тестирование
+
+```bash
+php test_connection.php
+php test_pdo_repository.php
+php test_sql_injection.php
+vendor/bin/phpunit
+```
+
+Проведённые проверки PDO, MySQLi и SQL Injection
+завершились успешно.
+
+PHPUnit: 7 тестов, 11 утверждений.
+
+### Документация
+
+Подробное описание второй лабораторной работы:
+
+`docs/ai/lab-02.md`

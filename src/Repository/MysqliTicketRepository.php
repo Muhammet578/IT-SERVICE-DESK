@@ -95,9 +95,14 @@ class MysqliTicketRepository implements TicketRepositoryInterface
         $stmt = $this->mysqli->prepare($sql);
 
         $stmt->bind_param(
-            'ssi',
+            'ssiiiiii',
             $data['title'],
             $data['description'],
+            $data['created_by'],
+            $data['assigned_to'],
+            $data['category_id'],
+            $data['priority_id'],
+            $data['status_id'],
             $id
         );
 

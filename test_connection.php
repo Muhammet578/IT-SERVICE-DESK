@@ -46,8 +46,10 @@ try {
     )->fetch_assoc();
 
     check(
-        $user !== null && $category !== null
-        && $priority !== null && $status !== null,
+        $user !== null
+        && $category !== null
+        && $priority !== null
+        && $status !== null,
         'Required reference records exist'
     );
 
@@ -77,7 +79,7 @@ try {
 
     check(
         is_array($tickets)
-        && in_array($id, array_column($tickets, 'id')),
+        && in_array($id, array_map('intval', array_column($tickets, 'id')), true),
         'findAll()'
     );
 
@@ -87,7 +89,7 @@ try {
     );
 
     check(
-        in_array($id, array_column($userTickets, 'id')),
+        in_array($id, array_map('intval', array_column($userTickets, 'id')), true),
         'findByUserId()'
     );
 
@@ -97,7 +99,7 @@ try {
     );
 
     check(
-        in_array($id, array_column($statusTickets, 'id')),
+        in_array($id, array_map('intval', array_column($statusTickets, 'id')), true),
         'findByStatus()'
     );
 
@@ -105,6 +107,11 @@ try {
     $updated = $repository->update($id, [
         'title' => 'MySQLi updated ticket',
         'description' => 'Updated description',
+        'created_by' => (int) $user['id'],
+        'assigned_to' => (int) $user['id'],
+        'category_id' => (int) $category['id'],
+        'priority_id' => (int) $priority['id'],
+        'status_id' => (int) $status['id'],
     ]);
 
     check($updated, 'update()');
@@ -113,7 +120,8 @@ try {
 
     check(
         $ticket !== null
-        && $ticket['title'] === 'MySQLi updated ticket',
+        && $ticket['title'] === 'MySQLi updated ticket'
+        && $ticket['description'] === 'Updated description',
         'update() changes database values'
     );
 
@@ -129,20 +137,19 @@ try {
 
     echo PHP_EOL . "All MySQLi tests passed!" . PHP_EOL;
 
-    $mysqli->rollback();
-
-    echo "Database changes rolled back." . PHP_EOL;
-
 } catch (Throwable $exception) {
-    $mysqli->rollback();
-
     echo PHP_EOL . "TEST ERROR: "
         . $exception->getMessage()
         . PHP_EOL;
 
-    exitCode:
     exit(1);
 
 } finally {
-    $mysqli->close();
+    // Отменяем изменения даже при ошибке тестирования.
+    try {
+        $mysqli->rollback();
+        echo "Database changes rolled back." . PHP_EOL;
+    } finally {
+        $mysqli->close();
+    }
 }
