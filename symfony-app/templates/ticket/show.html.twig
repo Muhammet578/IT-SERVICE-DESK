@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Заявка №{{ ticket.id }} | IT-SERVICE-DESK{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Заявка</h1>
+        <ul>
+            <li>Название: {{ ticket.title }}</li>
+            <li>Статус: {{ ticket.status }}</li>
+        </ul>
+    </main>
+{% endblock %}
