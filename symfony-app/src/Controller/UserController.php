@@ -6,9 +6,24 @@ use App\Service\UserCatalog;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\UserType;
+use App\Model\UserFormData;
+use Symfony\Component\HttpFoundation\Request;
 
 final class UserController extends AbstractController
 {
+
+    #[Route('/users/new', name: 'app_users_new', methods: ['GET', 'POST'])]
+    public function new(Request $request): Response {
+        $userData = new UserFormData();
+        $form = $this->createForm(UserType::class, $userData);
+        $form->handleRequest($request);
+
+        return $this->render('user/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/users', name: 'app_users', methods: ['GET'])]
     public function index(UserCatalog $catalog): Response
     {

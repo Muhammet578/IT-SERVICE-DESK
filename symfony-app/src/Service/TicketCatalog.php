@@ -4,37 +4,49 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Doctrine\DBAL\Connection;
+
 final class TicketCatalog
 {
+    public function __construct(
+        private Connection $connection
+    ) {}
+
     public function findAll(): array
     {
-        $tickets = [
-            [
-                'id' => 1,
-                'title' => 'Не включается компьютер',
-                'status' => 'Новая',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Не работает интернет',
-                'status' => 'В работе',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Ошибка при входе',
-                'status' => 'Закрыто',
-            ]
-        ];
-        return $tickets;
+        return $this->connection->fetchAllAssociative(
+            '
+        SELECT
+            t.id,
+            t.title,
+            t.description,
+            s.name AS status
+        FROM tickets t
+        JOIN statuses s ON t.status_id = s.id
+        ORDER BY t.id ASC
+        '
+        );
     }
 
     public function findById(int $id): ?array
     {
-        foreach ($this->findAll() as $ticket) {
-            if ($ticket['id'] === $id) {
-                return $ticket;
-            }
+        $ticket = $this->connection->fetchAssociative(
+            '
+        SELECT
+            t.id,
+            t.title,
+            t.description,
+            s.name AS status
+        FROM tickets t
+        JOIN statuses s ON t.status_id = s.id
+        WHERE t.id = :id
+        ',
+        ['id' => $id]
+        );
+
+        if($ticket === false){
+            return null;
         }
-        return null;
+        return $ticket;
     }
 }

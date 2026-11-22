@@ -4,37 +4,33 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Doctrine\DBAL\Connection;
+
 final class UserCatalog
 {
+    public function __construct(
+        private Connection $connection
+    ) {
+        
+    }
+
     public function findAll(): array
     {
-        $users = [
-            [
-                'id' => 1,
-                'name' => 'Алексей',
-                'email' => 'alex@example.com',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Володя',
-                'email' => 'alex@example.com',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Митя',
-                'email' => 'alex@example.com',
-            ]
-        ];
-        return $users;
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, name, email FROM users ORDER BY id ASC'
+        );
     }
 
     public function findById(int $id): ?array
     {
-        foreach($this->findAll() as $user){
-            if($user['id'] === $id){
-                return $user;
-            }
+        $user = $this->connection->fetchAssociative(
+            'SELECT id, name, email FROM users WHERE id = :id',
+            ['id' => $id]
+        );
+
+        if($user === false){
+            return null;
         }
-        return null;
+        return $user;
     }
 }

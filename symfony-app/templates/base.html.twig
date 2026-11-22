@@ -3,19 +3,35 @@
     <head>
         <meta charset="UTF-8">
 
-        <title>
-            {% block title %}IT-SERVICE-DESK{% endblock %}
-        </title>
+        <title>{% block title %}IT-SERVICE-DESK{% endblock %}</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         {% block stylesheets %}
+            <link
+                rel="stylesheet"
+                href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}"
+            >
+        {% endblock %}
+
+        {% block javascripts %}
             {{ importmap('app') }}
+
+            <script
+            src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"
+            defer>
+        </script>
         {% endblock %}
     </head>
 
-    <body>
-        {% block body %}
-        {% endblock %}
+    <body class="bg-light">
+
+        {% include 'partials/navbar.html.twig' %}
+
+        <main class="container py-4">
+            {% block body %}
+            {% endblock %}
+        </main>
+
     </body>
 </html>
