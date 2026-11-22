@@ -27,6 +27,9 @@
     <body class="bg-light">
 
         {% include 'partials/navbar.html.twig' %}
+        <div class="container mt-4">
+            {% include 'partials/flash.html.twig' %}
+        </div>
 
         <main class="container py-4">
             {% block body %}

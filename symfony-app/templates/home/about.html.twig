@@ -1,8 +1,98 @@
 {% extends 'base.html.twig' %}
-{% block title %}ABOUT{% endblock %}
+
+{% block title %}О проекте | IT Service Desk{% endblock %}
+
 {% block body %}
-    <main>
-        <h1>{{ project_name }}</h1>
-        <p>Система управления IT-заявками сотрудников организации.</p>
+    <main class="py-4">
+
+        <div class="mb-4">
+            <h1 class="h3 fw-semibold mb-2">О проекте</h1>
+            <p class="text-muted">
+                Информация о системе {{ project_name }}
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h2 class="h5 mb-0">Описание системы</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <p>
+                            <strong>{{ project_name }}</strong> — веб-приложение
+                            для учёта и управления заявками технической
+                            поддержки сотрудников организации.
+                        </p>
+
+                        <p class="mb-0">
+                            Проект разрабатывается для упрощения работы
+                            IT-отдела: хранения информации о заявках,
+                            пользователях и текущих состояниях обращений.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h2 class="h5 mb-0">Возможности системы</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li class="mb-2">
+                                Просмотр пользователей организации.
+                            </li>
+                            <li class="mb-2">
+                                Создание и редактирование пользователей.
+                            </li>
+                            <li class="mb-2">
+                                Поиск и сортировка пользователей.
+                            </li>
+                            <li class="mb-2">
+                                Просмотр заявок технической поддержки.
+                            </li>
+                            <li>
+                                Отображение категорий, статусов и приоритетов заявок.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h2 class="h5 mb-0">Технологии</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-5">Язык</dt>
+                            <dd class="col-7">PHP 8.4</dd>
+
+                            <dt class="col-5">Фреймворк</dt>
+                            <dd class="col-7">Symfony 7.4</dd>
+
+                            <dt class="col-5">Шаблоны</dt>
+                            <dd class="col-7">Twig</dd>
+
+                            <dt class="col-5">Интерфейс</dt>
+                            <dd class="col-7">Bootstrap 5</dd>
+
+                            <dt class="col-5">База данных</dt>
+                            <dd class="col-7">MariaDB</dd>
+
+                            <dt class="col-5">Доступ к БД</dt>
+                            <dd class="col-7">Doctrine DBAL</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </main>
 {% endblock %}

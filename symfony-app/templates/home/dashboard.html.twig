@@ -1,25 +1,126 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Панель управления{% endblock %}
+{% block title %}Панель управления | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main>
-        <h1>{{ project_name }}</h1>
+    <main class="py-4">
 
-        <h2>Панель управления</h2>
+        <div class="mb-4">
+            <h1 class="h3 fw-semibold mb-2">Панель управления</h1>
+            <p class="text-muted mb-0">
+                {{ project_name }} — управление пользователями и заявками.
+            </p>
+        </div>
 
-        <p>
-            Добро пожаловать в систему
-            технической поддержки.
-        </p>
+        <div class="row g-4">
 
-        <h3>Разделы системы</h3>
+            {# Основные разделы #}
+            <div class="col-lg-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h2 class="h5 mb-0">Основные разделы</h2>
+                    </div>
 
-        <ul>
-            <li>Пользователи</li>
-            <li>Заявки</li>
-            <li>Категории заявок</li>
-            <li>Статусы и приоритеты</li>
-        </ul>
+                    <div class="list-group list-group-flush">
+
+                        <a
+                            href="{{ path('app_tickets') }}"
+                            class="list-group-item list-group-item-action p-3"
+                        >
+                            <div class="fw-semibold">Заявки</div>
+                            <small class="text-muted">
+                                Просмотр обращений и их текущих статусов
+                            </small>
+                        </a>
+
+                        <a
+                            href="{{ path('app_users') }}"
+                            class="list-group-item list-group-item-action p-3"
+                        >
+                            <div class="fw-semibold">Пользователи</div>
+                            <small class="text-muted">
+                                Просмотр, поиск и редактирование пользователей
+                            </small>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            {# Быстрые действия #}
+            <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h2 class="h5 mb-0">Быстрые действия</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="text-muted small">
+                            Выберите необходимое действие.
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <a
+                                href="{{ path('app_users_new') }}"
+                                class="btn btn-primary"
+                            >
+                                Добавить пользователя
+                            </a>
+
+                            <a
+                                href="{{ path('app_tickets') }}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Просмотреть заявки
+                            </a>
+
+                            <a
+                                href="{{ path('app_users') }}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Список пользователей
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {# Информация о системе #}
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white py-3">
+                <h2 class="h5 mb-0">Информация о системе</h2>
+            </div>
+
+            <div class="card-body">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-semibold">
+                            Управление пользователями
+                        </h3>
+
+                        <p class="text-muted small mb-0">
+                            Создание и редактирование записей,
+                            поиск по имени и email, сортировка списка.
+                        </p>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-semibold">
+                            Учёт заявок
+                        </h3>
+
+                        <p class="text-muted small mb-0">
+                            Просмотр заявок технической поддержки,
+                            их категорий, статусов и приоритетов.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </main>
 {% endblock %}

@@ -1,19 +1,102 @@
+
 {% extends 'base.html.twig' %}
 
-{% block title %}IT Service Desk{% endblock %}
+{% block title %}Заявки | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main> 
-        <h1>Заявки</h1>
-        
-        <ul>
-            {% for ticket in tickets %}
-                <li>
-                    <a href="{{ path('find_tickets', {id: ticket.id}) }}">
-                        {{ ticket.title }} </a>
-                    {{ ticket.status }} </li>    
-            {% endfor %}
-        </ul>
-        
+    <main class="py-4">
+
+        <div class="mb-4">
+            <h1 class="h3 fw-semibold mb-2">Заявки</h1>
+
+            <p class="text-muted mb-0">
+                Список обращений в техническую поддержку.
+                Всего заявок: {{ tickets|length }}
+            </p>
+        </div>
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-white py-3">
+                <h2 class="h5 mb-0">Все заявки</h2>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>Название заявки</th>
+                                <th>Статус</th>
+                                <th class="text-end pe-4">Действия</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for ticket in tickets %}
+
+                                {% set statusClass = 'text-bg-secondary' %}
+
+                                {% if ticket.status == 'Новая' %}
+                                    {% set statusClass = 'text-bg-primary' %}
+                                {% elseif ticket.status == 'В работе' %}
+                                    {% set statusClass = 'text-bg-warning' %}
+                                {% elseif ticket.status == 'Решена' %}
+                                    {% set statusClass = 'text-bg-success' %}
+                                {% elseif ticket.status == 'Закрыта' %}
+                                    {% set statusClass = 'text-bg-secondary' %}
+                                {% endif %}
+
+                                <tr>
+                                    <td class="ps-4 text-muted">
+                                        #{{ ticket.id }}
+                                    </td>
+
+                                    <td>
+                                        <a
+                                            href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                            class="text-decoration-none fw-semibold"
+                                        >
+                                            {{ ticket.title }}
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge {{ statusClass }}">
+                                            {{ ticket.status }}
+                                        </span>
+                                    </td>
+
+                                    <td class="text-end pe-4">
+                                        <a
+                                            href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                            class="btn btn-sm btn-outline-primary"
+                                        >
+                                            Открыть
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td
+                                        colspan="4"
+                                        class="text-center text-muted py-4"
+                                    >
+                                        Заявки пока отсутствуют.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
     </main>
 {% endblock %}

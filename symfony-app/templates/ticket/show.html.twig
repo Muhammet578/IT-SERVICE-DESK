@@ -1,13 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Заявка №{{ ticket.id }} | IT-SERVICE-DESK{% endblock %}
+{% block title %}Заявка №{{ ticket.id }} | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main>
-        <h1>Заявка</h1>
-        <ul>
-            <li>Название: {{ ticket.title }}</li>
-            <li>Статус: {{ ticket.status }}</li>
-        </ul>
+    <main class="py-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 fw-semibold mb-2">
+                    Заявка #{{ ticket.id }}
+                </h1>
+
+                <p class="text-muted mb-0">
+                    Подробная информация об обращении
+                </p>
+            </div>
+
+            <a
+                href="{{ path('app_tickets') }}"
+                class="btn btn-outline-secondary"
+            >
+                Назад к заявкам
+            </a>
+        </div>
+
+        {% set statusClass = 'text-bg-secondary' %}
+
+        {% if ticket.status == 'Новая' %}
+            {% set statusClass = 'text-bg-primary' %}
+        {% elseif ticket.status == 'В работе' %}
+            {% set statusClass = 'text-bg-warning' %}
+        {% elseif ticket.status == 'Решена' %}
+            {% set statusClass = 'text-bg-success' %}
+        {% endif %}
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-white py-3">
+                <h2 class="h5 mb-0">
+                    {{ ticket.title }}
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+
+                <div class="row py-2">
+                    <div class="col-sm-4 fw-semibold text-muted">
+                        Номер заявки
+                    </div>
+
+                    <div class="col-sm-8">
+                        #{{ ticket.id }}
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row py-2">
+                    <div class="col-sm-4 fw-semibold text-muted">
+                        Название
+                    </div>
+
+                    <div class="col-sm-8">
+                        {{ ticket.title }}
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row py-2">
+                    <div class="col-sm-4 fw-semibold text-muted">
+                        Текущий статус
+                    </div>
+
+                    <div class="col-sm-8">
+                        <span class="badge {{ statusClass }}">
+                            {{ ticket.status }}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white py-3">
+                <a
+                    href="{{ path('app_tickets') }}"
+                    class="btn btn-outline-primary"
+                >
+                    Вернуться к списку
+                </a>
+            </div>
+
+        </div>
+
     </main>
 {% endblock %}

@@ -9,9 +9,21 @@
 
             {{ form_start(form) }}
 
-                {{ form_widget(form) }}
+                {{ form_errors(form) }}
 
-                <button type="submit" class="btn btn-primary mt-3">
+                <div class="mb-3">
+                    {{ form_row(form.name) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.email) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.plainPassword) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">
                     Создать пользователя
                 </button>
 

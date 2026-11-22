@@ -1,15 +1,92 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ path('app_home') }}">
-            IT-SERVICE-DESK
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top">
+    <div class="container py-2">
+
+        {# Логотип проекта #}
+        <a
+            class="navbar-brand d-flex align-items-center gap-2 fw-bold"
+            href="{{ path('app_home') }}"
+        >
+
+            <span
+                class="d-inline-flex align-items-center justify-content-center
+                         bg-primary text-white rounded-3"
+                style="width: 40px; height: 40px;"
+            >
+                IT
+            </span>
+
+            <span class="text-dark">
+                SERVICE<span class="text-primary">DESK</span>
+            </span>
         </a>
 
-        <div class="navbar-nav">
-            <a class="nav-link" href="{{ path('app_home') }}">Главная</a>
-            <a class="nav-link" href="{{ path('app_about') }}">О проекте</a>
-            <a class="nav-link" href="{{ path('app_dashboard') }}">Панель управления</a>
-            <a class="nav-link" href="{{ path('app_tickets') }}">Заявки</a>
-            <a class="nav-link" href="{{ path('app_users') }}">Пользователи</a>
+        {# Кнопка мобильного меню #}
+        <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Открыть меню"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <div class="navbar-nav mx-auto gap-lg-2">
+
+                <a
+                    class="nav-link px-3 {{ currentRoute == 'app_home' ? 'active fw-semibold text-primary' : '' }}"
+                    href="{{ path('app_home') }}"
+                >
+                    Главная
+                </a>
+
+                <a
+                    class="nav-link px-3 {{ currentRoute == 'app_dashboard' ? 'active fw-semibold text-primary' : '' }}"
+                    href="{{ path('app_dashboard') }}"
+                >
+                    Панель управления
+                </a>
+
+                <a
+                    class="nav-link px-3 {{ currentRoute starts with 'app_tickets' ? 'active fw-semibold text-primary' : '' }}"
+                    href="{{ path('app_tickets') }}"
+                >
+                    Заявки
+                </a>
+
+                <a
+                    class="nav-link px-3 {{ currentRoute starts with 'app_users' ? 'active fw-semibold text-primary' : '' }}"
+                    href="{{ path('app_users') }}"
+                >
+                    Пользователи
+                </a>
+
+                <a
+                    class="nav-link px-3 {{ currentRoute == 'app_about' ? 'active fw-semibold text-primary' : '' }}"
+                    href="{{ path('app_about') }}"
+                >
+                    О проекте
+                </a>
+
+            </div>
+
+            {# Быстрое действие #}
+            <div class="d-flex mt-3 mt-lg-0">
+                <a
+                    href="{{ path('app_users_new') }}"
+                    class="btn btn-primary rounded-3 px-3 fw-semibold"
+                >
+                    + Новый пользователь
+                </a>
+            </div>
+
         </div>
     </div>
 </nav>
