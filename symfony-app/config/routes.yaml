@@ -9,3 +9,8 @@
 
 controllers:
     resource: routing.controllers
+
+app_about:
+    path: /about
+    controller: App\Controller\HomeController::about
+    methods: [GET]

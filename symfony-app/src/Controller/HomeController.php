@@ -16,6 +16,13 @@ final class HomeController extends AbstractController
             'project_name' => 'IT_SERVICE_DESK',
         ]);
     }
+    public function about(): Response
+    {
+        return $this->render('home/about.html.twig', [
+            'project_name' => 'IT_SERVICE_DESK',
+        ]);
+    }
+    
 
     #[Route('/dashboard', name: 'app_dashboard', methods: ['GET'])]
     public function dashboard(): Response 
