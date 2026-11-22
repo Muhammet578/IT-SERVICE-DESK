@@ -17,7 +17,7 @@ final class RoutesTest extends WebTestCase
             '/dashboard',
             '/about',
             '/users',
-            '/users/1',
+            '/users/new',
             '/tickets',
             '/system-info',
         ];
@@ -85,7 +85,7 @@ final class RoutesTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/users/999999');
+        $client->request('GET', '/users/999999/edit');
 
         self::assertResponseStatusCodeSame(404);
     }
@@ -94,7 +94,7 @@ final class RoutesTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/users/abc');
+        $client->request('GET', '/users/abc/edit');
 
         self::assertResponseStatusCodeSame(404);
     }

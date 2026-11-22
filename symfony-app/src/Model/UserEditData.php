@@ -10,10 +10,10 @@ final class UserEditData
 {
     #[Assert\NotBlank(message: 'Введите имя пользователя')]
     #[Assert\Length(min: 2, max: 150)]
-    public string $name = '';
+    public ?string $name = '';
 
     #[Assert\NotBlank(message: 'Введите email')]
     #[Assert\Email(message: 'Некорректный email')]
     #[Assert\Length(max: 255)]
-    public string $email = '';
+    public ?string $email = '';
 }

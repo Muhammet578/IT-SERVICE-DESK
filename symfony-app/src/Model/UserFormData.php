@@ -10,15 +10,15 @@ final class UserFormData
 {
     #[Assert\NotBlank(message: 'Введите имя пользователя')]
     #[Assert\Length(min: 2, max: 150)]
-    public string $name = '';
+    public ?string $name = '';
 
     #[Assert\NotBlank(message: 'Введите пароль ')]
     #[Assert\Length(min: 8, max: 255)]
-    public string $plainPassword = '';
+    public ?string $plainPassword = '';
 
     #[Assert\NotBlank(message: 'Введите email')]
     #[Assert\Email(message: 'Некорректный адрес электронной почты')]
     #[Assert\Length(max: 255)]
-    public string $email = '';
+    public ?string $email = '';
 
 }
