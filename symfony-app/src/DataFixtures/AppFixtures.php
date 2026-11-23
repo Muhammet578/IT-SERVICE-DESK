@@ -25,6 +25,7 @@ final class AppFixtures extends Fixture
         $roles = [
             ['admin', 'Администратор системы'],
             ['manager', 'Менеджер IT-отдела'],
+            ['technician', 'Специалист технической поддержки'],
             ['user', 'Обычный пользователь'],
         ];
 
@@ -157,6 +158,8 @@ final class AppFixtures extends Fixture
                 $roleName = 'admin';
             } elseif ($i <= 5) {
                 $roleName = 'manager';
+            } elseif ($i <= 10) {
+                $roleName = 'technician';
             } else {
                 $roleName = 'user';
             }

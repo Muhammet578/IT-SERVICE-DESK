@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -68,7 +70,7 @@ class User
     {
         return $this->id;
     }
-
+    
     
     public function getName(): string
     {
@@ -80,7 +82,11 @@ class User
         $this->name = $name;
     }
 
-    
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
@@ -97,9 +103,18 @@ class User
         return $this->password;
     }
 
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
     public function setPasswordHash(string $passwordHash): void
     {
         $this->password = $passwordHash;
+    }
+    public function eraseCredentials(): void
+    {
+        // Открытый пароль в сущности не хранится.
     }
 
     
@@ -113,6 +128,16 @@ class User
         $this->isActive = $isActive;
     }
 
+    public function getRoles(): array
+    {
+        $roleName = strtoupper($this->role->getName());
+
+        if (!str_starts_with($roleName, 'ROLE_')) {
+            $roleName = 'ROLE_' . $roleName;
+        }
+
+        return [$roleName];
+    }
     
     public function getRole(): Role
     {

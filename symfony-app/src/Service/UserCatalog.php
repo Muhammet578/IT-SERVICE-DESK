@@ -7,14 +7,18 @@ namespace App\Service;
 use App\Model\UserFormData;
 use Doctrine\DBAL\Connection;
 use App\Model\UserEditData;
+use App\Entity\User;
+use App\Entity\Role;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserCatalog
 {
     public function __construct(
-        private Connection $connection
-    ) {
-        
-    }
+        private Connection $connection,
+        private EntityManagerInterface $entityManager,
+        private UserPasswordHasherInterface $passwordHasher
+    ) {}
     public function update(int $id, UserEditData $data) : void 
     {
         $this->connection->update(
@@ -29,29 +33,34 @@ final class UserCatalog
         );
     }
 
-    public function create(UserFormData $data): int {
-        $roleId = $this->connection->fetchOne(
-            'SELECT id FROM roles WHERE name = :name',
-            ['name' => 'user']
-        );
+    public function create(UserFormData $data): int
+    {
+        $role = $this->entityManager
+            ->getRepository(Role::class)
+            ->findOneBy(['name' => 'user']);
 
-        if($roleId === false){
-            throw new \RuntimeException('Роль пользователя не найдена');   
+        if ($role === null) {
+            throw new \RuntimeException('Роль user не найдена');
         }
 
-        $passwordHash = password_hash(
-            $data->plainPassword,
-            PASSWORD_DEFAULT
+        $user = new User();
+
+        $user->setName($data->name);
+        $user->setEmail($data->email);
+        $user->setRole($role);
+        $user->setIsActive(true);
+
+        $passwordHash = $this->passwordHasher->hashPassword(
+            $user,
+            $data->plainPassword
         );
 
-        $this->connection->insert('users', [
-            'role_id' => (int) $roleId,
-            'name' => $data->name,
-            'email' => $data->email,
-            'password' => $passwordHash,
-            'is_active' => 1
-        ]);
-        return (int) $this->connection->lastInsertId();
+        $user->setPasswordHash($passwordHash);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user->getId();
     }
 
     public function findAll(string $search = '', string $sort = 'id'): array
