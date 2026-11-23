@@ -8,6 +8,7 @@ use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -61,5 +62,55 @@ final class UserRepository extends ServiceEntityRepository
             ->setMaxResults(max(1, $limit))
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function paginate(
+        int $page = 1,
+        int $limit = 10,
+        string $search = '',
+        string $sort = 'id'
+    ): array {
+        $page = max(1, $page);
+        $limit = max(1, $limit);
+
+        // Разрешаем сортировку только по этим полям
+        $allowedSort = ['id', 'name', 'email'];
+
+        if (!in_array($sort, $allowedSort, true)) {
+            $sort = 'id';
+        }
+
+        $qb = $this->createQueryBuilder('u');
+
+        // Поиск по имени и email
+        if ($search !== '') {
+            $qb->where(
+                'u.name LIKE :search OR u.email LIKE :search'
+            )->setParameter('search', '%' . $search . '%');
+        }
+
+        // Сортировка
+        $qb->orderBy('u.' . $sort, 'ASC');
+
+        if ($sort !== 'id') {
+            $qb->addOrderBy('u.id', 'ASC');
+        }
+
+        // Пагинация
+        $qb->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        $paginator = new Paginator(
+            $qb->getQuery(),
+            fetchJoinCollection: false
+        );
+
+        return [
+            'users' => iterator_to_array(
+                $paginator->getIterator(),
+                false
+            ),
+            'total' => count($paginator),
+        ];
     }
 }

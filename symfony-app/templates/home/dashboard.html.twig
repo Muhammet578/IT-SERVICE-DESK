@@ -11,7 +11,153 @@
                 {{ project_name }} — управление пользователями и заявками.
             </p>
         </div>
+        <div class="row g-3 mb-4">
 
+            <div class="col-md-6 col-xl-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="text-muted small mb-2">
+                            Пользователи
+                        </div>
+                        <h2 class="h3 fw-bold mb-0">
+                            {{ stats.usersCount }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="text-muted small mb-2">
+                            Всего заявок
+                        </div>
+                        <h2 class="h3 fw-bold mb-0">
+                            {{ stats.ticketsCount }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="text-muted small mb-2">
+                            Незавершённые заявки
+                        </div>
+                        <h2 class="h3 fw-bold text-warning mb-0">
+                            {{ stats.openTicketsCount }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="text-muted small mb-2">
+                            Завершённые заявки
+                        </div>
+                        <h2 class="h3 fw-bold text-success mb-0">
+                            {{ stats.closedTicketsCount }}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {# Средний показатель #}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="text-muted small mb-2">
+                    Среднее количество заявок на пользователя
+                </div>
+
+                <div class="h4 fw-bold mb-0">
+                    {{ stats.averageTicketsPerUser|number_format(2, ',', ' ') }}
+                </div>
+            </div>
+        </div>
+
+        {# Рейтинги #}
+        <div class="row g-4 mb-4">
+
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white">
+                        <h2 class="h5 mb-0">
+                            Топ-5 пользователей
+                        </h2>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Пользователь</th>
+                                    <th class="text-end">Заявки</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in stats.topUsers %}
+                                    <tr>
+                                        <td>{{ user.name }}</td>
+                                        <td class="text-end">
+                                            {{ user.ticketsCount }}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="2">
+                                            Нет данных
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white">
+                        <h2 class="h5 mb-0">
+                            Топ-5 категорий
+                        </h2>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Категория</th>
+                                    <th class="text-end">Заявки</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category in stats.topCategories %}
+                                    <tr>
+                                        <td>{{ category.name }}</td>
+                                        <td class="text-end">
+                                            {{ category.ticketsCount }}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="2">
+                                            Нет данных
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="row g-4">
 
             {# Основные разделы #}

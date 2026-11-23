@@ -9,7 +9,7 @@ use App\Entity\User;
 use App\Entity\Ticket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\Tools\Pagination\Paginator;
 /**
  * @extends ServiceEntityRepository<Ticket>
  */
@@ -54,5 +54,33 @@ final class TicketRepository extends ServiceEntityRepository
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function paginate(int $page = 1, int $limit = 10): array
+    {
+        $page = max(1, $page);
+        $limit = max(1, $limit);
+
+        $query = $this->createQueryBuilder('t')
+            ->leftJoin('t.status', 's')
+            ->addSelect('s')
+            ->orderBy('t.createdAt', 'DESC')
+            ->addOrderBy('t.id', 'DESC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $paginator = new Paginator(
+            $query,
+            fetchJoinCollection: false
+        );
+
+        return [
+            'tickets' => iterator_to_array(
+                $paginator->getIterator(),
+                false
+            ),
+            'total' => count($paginator),
+        ];
     }
 }

@@ -5,6 +5,9 @@
 {% block body %}
     <main> 
         <h1>Пользователи</h1>
+        <p class="text-muted">
+            Найдено пользователей: {{ total }}
+        </p>
         <form method="get" action="{{ path('app_users') }}" class="row g-3 mb-4">
 
             <div class="col-md-6">
@@ -58,6 +61,65 @@
                 </li>
             {% endfor %}
         </ul>
+        {% if totalPages > 1 %}
+            <nav class="mt-4" aria-label="Страницы пользователей">
+                <ul class="pagination justify-content-center">
+
+                    {# Предыдущая страница #}
+                    <li class="page-item {{ page == 1 ? 'disabled' : '' }}">
+                        {% if page > 1 %}
+                            <a
+                                class="page-link"
+                                href="{{ path('app_users', {
+                           page: page - 1,
+                           search: search,
+                           sort: sort
+                       }) }}"
+                            >
+                                Назад
+                            </a>
+                        {% else %}
+                            <span class="page-link">Назад</span>
+                        {% endif %}
+                    </li>
+
+                    {# Номера страниц #}
+                    {% for number in 1..totalPages %}
+                        <li class="page-item {{ page == number ? 'active' : '' }}">
+                            <a
+                                class="page-link"
+                                href="{{ path('app_users', {
+                           page: number,
+                           search: search,
+                           sort: sort
+                       }) }}"
+                            >
+                                {{ number }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {# Следующая страница #}
+                    <li class="page-item {{ page == totalPages ? 'disabled' : '' }}">
+                        {% if page < totalPages %}
+                            <a
+                                class="page-link"
+                                href="{{ path('app_users', {
+                           page: page + 1,
+                           search: search,
+                           sort: sort
+                       }) }}"
+                            >
+                                Вперёд
+                            </a>
+                        {% else %}
+                            <span class="page-link">Вперёд</span>
+                        {% endif %}
+                    </li>
+
+                </ul>
+            </nav>
+        {% endif %}
         
     </main>
 {% endblock %}

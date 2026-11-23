@@ -6,14 +6,37 @@ use App\Service\TicketCatalog;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\TicketRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 final class TicketController extends AbstractController
 {
     #[Route('/tickets', name: 'app_tickets', methods: ['GET'])]
-    public function index(TicketCatalog $catalog): Response
-    {
+    public function index(
+        Request $request,
+        TicketRepository $ticketRepository
+    ): Response {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = 15;
+
+        $result = $ticketRepository->paginate($page, $limit);
+
+        $totalPages = max(
+            1,
+            (int) ceil($result['total'] / $limit)
+        );
+
+        if ($page > $totalPages) {
+            return $this->redirectToRoute('app_tickets', [
+                'page' => $totalPages,
+            ]);
+        }
+
         return $this->render('ticket/index.html.twig', [
-            'tickets' => $catalog->findAll()
+            'tickets' => $result['tickets'],
+            'total' => $result['total'],
+            'page' => $page,
+            'totalPages' => $totalPages,
         ]);
     }
 
