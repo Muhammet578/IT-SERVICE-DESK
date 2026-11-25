@@ -14,6 +14,7 @@
                 <p class="text-muted mb-0">
                     Подробная информация об обращении
                 </p>
+                
             </div>
 
             <a
@@ -89,6 +90,23 @@
                 >
                     Вернуться к списку
                 </a>
+
+                {% if is_granted('EDIT', ticketEntity) %}
+                    <a
+                        href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
+                        class="btn btn-outline-primary"
+                    >
+                        Редактировать заявку
+                    </a>
+                {% endif %}
+                {% if is_granted('CHANGE_STATUS', ticketEntity) %}
+                    <a
+                        href="{{ path('app_tickets_status', {id: ticket.id}) }}"
+                        class="btn btn-outline-warning"
+                    >
+                        Изменить статус
+                    </a>
+                {% endif %}
             </div>
 
         </div>

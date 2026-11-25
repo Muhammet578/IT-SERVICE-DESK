@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Заявки | IT Service Desk{% endblock %}
@@ -7,10 +6,12 @@
     <main class="py-4">
 
         <div class="mb-4">
-            <h1 class="h3 fw-semibold mb-2">Заявки</h1>
+            <h1 class="h3 fw-semibold mb-2">
+                Заявки
+            </h1>
 
             <p class="text-muted mb-0">
-                Список обращений в техническую поддержку.
+                Список доступных вам обращений в техническую поддержку.
                 Всего заявок: {{ total }}
             </p>
         </div>
@@ -18,7 +19,9 @@
         <div class="card shadow-sm">
 
             <div class="card-header bg-white py-3">
-                <h2 class="h5 mb-0">Все заявки</h2>
+                <h2 class="h5 mb-0">
+                    Список заявок
+                </h2>
             </div>
 
             <div class="card-body p-0">
@@ -30,6 +33,7 @@
                             <tr>
                                 <th class="ps-4">ID</th>
                                 <th>Название заявки</th>
+                                <th>Описание</th>
                                 <th>Статус</th>
                                 <th class="text-end pe-4">Действия</th>
                             </tr>
@@ -51,10 +55,13 @@
                                 {% endif %}
 
                                 <tr>
+
+                                    {# ID #}
                                     <td class="ps-4 text-muted">
                                         #{{ ticket.id }}
                                     </td>
 
+                                    {# Название #}
                                     <td>
                                         <a
                                             href="{{ path('find_tickets', {id: ticket.id}) }}"
@@ -64,31 +71,67 @@
                                         </a>
                                     </td>
 
+                                    {# Описание #}
+                                    <td
+                                        class="text-muted"
+                                        style="max-width: 300px;"
+                                    >
+
+                                        {{ ticket.description|slice(0, 100) }}
+
+                                        {% if ticket.description|length > 100 %}
+                                            ...
+                                        {% endif %}
+
+                                    </td>
+
+                                    {# Статус #}
                                     <td>
                                         <span class="badge {{ statusClass }}">
                                             {{ ticket.status.name }}
                                         </span>
                                     </td>
 
+                                    {# Действия #}
                                     <td class="text-end pe-4">
-                                        <a
-                                            href="{{ path('find_tickets', {id: ticket.id}) }}"
-                                            class="btn btn-sm btn-outline-primary"
-                                        >
-                                            Открыть
-                                        </a>
+
+                                        <div class="d-flex justify-content-end gap-2">
+
+                                            <a
+                                                href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                                class="btn btn-sm btn-outline-primary"
+                                            >
+                                                Открыть
+                                            </a>
+
+                                            {% if is_granted('EDIT', ticket) %}
+                                                <a
+                                                    href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
+                                                    class="btn btn-sm btn-outline-secondary"
+                                                >
+                                                    Изменить
+                                                </a>
+                                            {% endif %}
+
+                                        </div>
+
                                     </td>
+
                                 </tr>
 
                             {% else %}
+
                                 <tr>
                                     <td
-                                        colspan="4"
-                                        class="text-center text-muted py-4"
+                                        colspan="5"
+                                        class="text-center text-muted py-5"
                                     >
-                                        Заявки пока отсутствуют.
+                                        <p class="mb-0">
+                                            Доступные заявки пока отсутствуют.
+                                        </p>
                                     </td>
                                 </tr>
+
                             {% endfor %}
                         </tbody>
 
@@ -96,12 +139,19 @@
 
                 </div>
             </div>
+
         </div>
+
+        {# Пагинация #}
         {% if totalPages > 1 %}
+
             <nav class="mt-4" aria-label="Страницы заявок">
+
                 <ul class="pagination justify-content-center">
 
+                    {# Назад #}
                     <li class="page-item {{ page == 1 ? 'disabled' : '' }}">
+
                         {% if page > 1 %}
                             <a
                                 class="page-link"
@@ -112,20 +162,28 @@
                         {% else %}
                             <span class="page-link">Назад</span>
                         {% endif %}
+
                     </li>
 
+                    {# Номера страниц #}
                     {% for number in 1..totalPages %}
+
                         <li class="page-item {{ number == page ? 'active' : '' }}">
+
                             <a
                                 class="page-link"
                                 href="{{ path('app_tickets', {page: number}) }}"
                             >
                                 {{ number }}
                             </a>
+
                         </li>
+
                     {% endfor %}
 
+                    {# Вперёд #}
                     <li class="page-item {{ page == totalPages ? 'disabled' : '' }}">
+
                         {% if page < totalPages %}
                             <a
                                 class="page-link"
@@ -136,10 +194,14 @@
                         {% else %}
                             <span class="page-link">Вперёд</span>
                         {% endif %}
+
                     </li>
 
                 </ul>
+
             </nav>
+
         {% endif %}
+
     </main>
 {% endblock %}

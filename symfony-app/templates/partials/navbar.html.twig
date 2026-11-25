@@ -1,17 +1,22 @@
-{% set currentRoute = app.request.attributes.get('_route') %}
+{% set currentRoute = app.request.attributes.get('_route')|default('') %}
+
+{% set roleLabels = {
+    'admin': 'Администратор',
+    'manager': 'Менеджер',
+    'technician': 'Специалист поддержки',
+    'user': 'Пользователь'
+} %}
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top">
     <div class="container py-2">
 
-        {# Логотип проекта #}
+        {# Логотип #}
         <a
             class="navbar-brand d-flex align-items-center gap-2 fw-bold"
-            href="{{ path('app_home') }}"
+            href="{{ app.user ? path('app_home') : path('app_login') }}"
         >
-
             <span
-                class="d-inline-flex align-items-center justify-content-center
-                         bg-primary text-white rounded-3"
+                class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-3"
                 style="width: 40px; height: 40px;"
             >
                 IT
@@ -22,7 +27,7 @@
             </span>
         </a>
 
-        {# Кнопка мобильного меню #}
+        {# Мобильное меню #}
         <button
             class="navbar-toggler border-0"
             type="button"
@@ -32,60 +37,127 @@
             aria-expanded="false"
             aria-label="Открыть меню"
         >
-
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
 
-            <div class="navbar-nav mx-auto gap-lg-2">
+            {% if app.user %}
 
-                <a
-                    class="nav-link px-3 {{ currentRoute == 'app_home' ? 'active fw-semibold text-primary' : '' }}"
-                    href="{{ path('app_home') }}"
-                >
-                    Главная
-                </a>
+                {# Основная навигация #}
+                <div class="navbar-nav mx-auto gap-lg-2">
 
-                <a
-                    class="nav-link px-3 {{ currentRoute == 'app_dashboard' ? 'active fw-semibold text-primary' : '' }}"
-                    href="{{ path('app_dashboard') }}"
-                >
-                    Панель управления
-                </a>
+                    <a
+                        class="nav-link px-3 {{ currentRoute == 'app_home' ? 'active fw-semibold text-primary' : '' }}"
+                        href="{{ path('app_home') }}"
+                    >
+                        Главная
+                    </a>
 
-                <a
-                    class="nav-link px-3 {{ currentRoute starts with 'app_tickets' ? 'active fw-semibold text-primary' : '' }}"
-                    href="{{ path('app_tickets') }}"
-                >
-                    Заявки
-                </a>
+                    <a
+                        class="nav-link px-3 {{ currentRoute == 'app_dashboard' ? 'active fw-semibold text-primary' : '' }}"
+                        href="{{ path('app_dashboard') }}"
+                    >
+                        Панель управления
+                    </a>
 
-                <a
-                    class="nav-link px-3 {{ currentRoute starts with 'app_users' ? 'active fw-semibold text-primary' : '' }}"
-                    href="{{ path('app_users') }}"
-                >
-                    Пользователи
-                </a>
+                    <a
+                        class="nav-link px-3 {{ currentRoute starts with 'app_tickets' or currentRoute == 'find_tickets' ? 'active fw-semibold text-primary' : '' }}"
+                        href="{{ path('app_tickets') }}"
+                    >
+                        Заявки
+                    </a>
 
-                <a
-                    class="nav-link px-3 {{ currentRoute == 'app_about' ? 'active fw-semibold text-primary' : '' }}"
-                    href="{{ path('app_about') }}"
-                >
-                    О проекте
-                </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a
+                            class="nav-link px-3 {{ currentRoute starts with 'app_users' ? 'active fw-semibold text-primary' : '' }}"
+                            href="{{ path('app_users') }}"
+                        >
+                            Пользователи
+                        </a>
+                    {% endif %}
 
-            </div>
+                    <a
+                        class="nav-link px-3 {{ currentRoute == 'app_about' ? 'active fw-semibold text-primary' : '' }}"
+                        href="{{ path('app_about') }}"
+                    >
+                        О проекте
+                    </a>
 
-            {# Быстрое действие #}
-            <div class="d-flex mt-3 mt-lg-0">
-                <a
-                    href="{{ path('app_users_new') }}"
-                    class="btn btn-primary rounded-3 px-3 fw-semibold"
-                >
-                    + Новый пользователь
-                </a>
-            </div>
+                </div>
+
+                {# Текущий пользователь #}
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+
+                    <div class="text-lg-end">
+                        <span class="badge bg-success mb-1">
+                            Авторизован
+                        </span>
+
+                        <div class="fw-semibold text-dark">
+                            {{ app.user.name }}
+                        </div>
+
+                        <small class="text-muted d-block">
+                            {{ app.user.email }}
+                        </small>
+
+                        <small class="text-primary d-block">
+                            {{ roleLabels[app.user.role.name]|default(app.user.role.name) }}
+                        </small>
+                    </div>
+
+                    {# Создание пользователей для менеджера и администратора #}
+                    {% if is_granted('ROLE_MANAGER') %}
+                        <a
+                            href="{{ path('app_users_new') }}"
+                            class="btn btn-primary btn-sm rounded-3"
+                        >
+                            + Пользователь
+                        </a>
+                    {% endif %}
+
+                    {# Безопасный выход #}
+                    <form
+                        action="{{ path('app_logout') }}"
+                        method="post"
+                        class="m-0"
+                    >
+                        <input
+                            type="hidden"
+                            name="_csrf_token"
+                            value="{{ csrf_token('logout') }}"
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-outline-danger btn-sm rounded-3"
+                        >
+                            Выход
+                        </button>
+                    </form>
+
+                </div>
+
+            {% else %}
+
+                {# Гость #}
+                <div class="ms-lg-auto d-flex align-items-center gap-3 mt-3 mt-lg-0">
+
+                    <span class="badge bg-secondary">
+                        Гость
+                    </span>
+
+                    <a
+                        href="{{ path('app_login') }}"
+                        class="btn btn-primary rounded-3 px-4"
+                    >
+                        Войти
+                    </a>
+
+                </div>
+
+            {% endif %}
 
         </div>
     </div>

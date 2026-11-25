@@ -83,4 +83,54 @@ final class TicketRepository extends ServiceEntityRepository
             'total' => count($paginator),
         ];
     }
+    public function paginateForViewer(
+        User $user,
+        bool $canViewAll,
+        bool $canViewAssigned,
+        int $page = 1,
+        int $limit = 15
+    ): array {
+        $page = max(1, $page);
+        $limit = max(1, $limit);
+
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.status', 's')
+            ->addSelect('s')
+            ->orderBy('t.createdAt', 'DESC')
+            ->addOrderBy('t.id', 'DESC');
+
+        // Менеджер и администратор видят все заявки
+        if (!$canViewAll) {
+
+            if ($canViewAssigned) {
+                // Специалист видит свои и назначенные заявки
+                $qb->andWhere(
+                    't.createdBy = :viewer OR t.assignedTo = :viewer'
+                );
+            } else {
+                // Обычный пользователь видит только свои
+                $qb->andWhere('t.createdBy = :viewer');
+            }
+
+            $qb->setParameter('viewer', $user);
+        }
+
+        $query = $qb
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $paginator = new Paginator(
+            $query,
+            fetchJoinCollection: false
+        );
+
+        return [
+            'tickets' => iterator_to_array(
+                $paginator->getIterator(),
+                false
+            ),
+            'total' => count($paginator),
+        ];
+    }
 }

@@ -25,6 +25,8 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+                enable_csrf: true
+                csrf_token_id: logout
 
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -38,9 +40,11 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/register$, roles: ROLE_MANAGER }
+        - { path: ^/users/new$, roles: ROLE_MANAGER }
         - { path: ^/users(?:/|$), roles: ROLE_ADMIN }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
