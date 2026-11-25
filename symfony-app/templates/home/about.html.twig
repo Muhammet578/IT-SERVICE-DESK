@@ -3,96 +3,422 @@
 {% block title %}О проекте | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main class="py-4">
 
-        <div class="mb-4">
-            <h1 class="h3 fw-semibold mb-2">О проекте</h1>
-            <p class="text-muted">
-                Информация о системе {{ project_name }}
+    <div class="isd-about">
+
+        {# Приветственный блок #}
+        <section class="isd-about-hero rounded-4 mb-5">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+
+                    <span class="isd-about-hero-label">
+                        О НАШЕМ ПРОЕКТЕ
+                    </span>
+
+                    <h1 class="display-5 fw-bold mt-4 mb-3">
+                        IT Service Desk
+                        <span class="isd-about-hero-highlight">
+                            Управление поддержкой в одном месте.
+                        </span>
+                    </h1>
+
+                    <p class="isd-about-hero-description fs-5 mb-4">
+                        Веб-приложение для учёта заявок технической
+                        поддержки, управления сотрудниками
+                        и организации рабочих процессов IT-отдела.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <a
+                            href="{{ path('app_tickets') }}"
+                            class="btn isd-about-hero-primary btn-lg"
+                        >
+                            Перейти к заявкам →
+                        </a>
+
+                        <a
+                            href="{{ path('app_dashboard') }}"
+                            class="btn isd-about-hero-secondary btn-lg"
+                        >
+                            Панель управления
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 d-none d-lg-block">
+
+                    <div class="isd-about-hero-visual">
+                        <div class="isd-about-hero-icon">
+                            🛡️
+                        </div>
+
+                        <div class="isd-about-visual-title">
+                            IT SERVICE DESK
+                        </div>
+
+                        <div class="isd-about-visual-description">
+                            Symfony 7.4 · PHP 8.4
+                        </div>
+
+                        <div class="isd-about-visual-tags">
+                            <span>Security</span>
+                            <span>Doctrine</span>
+                            <span>Twig</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Назначение системы #}
+        <section class="mb-5">
+
+            <span class="isd-about-kicker">
+                НАЗНАЧЕНИЕ
+            </span>
+
+            <h2 class="h3 fw-bold mt-2 mb-4">
+                Для чего создан проект?
+            </h2>
+
+            <div class="card isd-about-panel">
+
+                <div class="card-body p-4 p-md-5">
+
+                    <p class="isd-about-description mb-3">
+                        <strong>{{ project_name }}</strong> —
+                        система технической поддержки сотрудников
+                        организации, построенная на Symfony.
+                    </p>
+
+                    <p class="isd-about-description mb-0">
+                        Приложение объединяет информацию о заявках,
+                        пользователях, категориях, приоритетах и
+                        статусах обращений. Разграничение доступа
+                        позволяет сотрудникам работать только
+                        с разрешёнными им данными и операциями.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Возможности #}
+        <section class="mb-5">
+
+            <span class="isd-about-kicker">
+                ФУНКЦИОНАЛЬНОСТЬ
+            </span>
+
+            <h2 class="h3 fw-bold mt-2 mb-2">
+                Возможности системы
+            </h2>
+
+            <p class="isd-about-description mb-4">
+                Основные инструменты для повседневной работы IT-поддержки.
             </p>
-        </div>
 
-        <div class="row g-4">
+            <div class="row g-4">
 
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white py-3">
-                        <h2 class="h5 mb-0">Описание системы</h2>
+                <div class="col-md-6">
+
+                    <div class="card isd-about-feature h-100">
+                        <div class="card-body p-4">
+
+                            <div class="isd-about-feature-icon">
+                                🎫
+                            </div>
+
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Управление заявками
+                            </h3>
+
+                            <p class="isd-about-description mb-0">
+                                Просмотр обращений, фильтрация по статусу,
+                                редактирование, изменение статуса и
+                                удаление в соответствии с разрешениями.
+                            </p>
+
+                        </div>
                     </div>
 
-                    <div class="card-body">
-                        <p>
-                            <strong>{{ project_name }}</strong> — веб-приложение
-                            для учёта и управления заявками технической
-                            поддержки сотрудников организации.
-                        </p>
-
-                        <p class="mb-0">
-                            Проект разрабатывается для упрощения работы
-                            IT-отдела: хранения информации о заявках,
-                            пользователях и текущих состояниях обращений.
-                        </p>
-                    </div>
                 </div>
 
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h2 class="h5 mb-0">Возможности системы</h2>
+                <div class="col-md-6">
+
+                    <div class="card isd-about-feature h-100">
+                        <div class="card-body p-4">
+
+                            <div class="isd-about-feature-icon">
+                                👥
+                            </div>
+
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Пользователи и роли
+                            </h3>
+
+                            <p class="isd-about-description mb-0">
+                                Управление учётными записями,
+                                поиск и сортировка пользователей,
+                                создание аккаунтов и разделение
+                                доступа по ролям.
+                            </p>
+
+                        </div>
                     </div>
 
-                    <div class="card-body">
-                        <ul class="mb-0">
-                            <li class="mb-2">
-                                Просмотр пользователей организации.
-                            </li>
-                            <li class="mb-2">
-                                Создание и редактирование пользователей.
-                            </li>
-                            <li class="mb-2">
-                                Поиск и сортировка пользователей.
-                            </li>
-                            <li class="mb-2">
-                                Просмотр заявок технической поддержки.
-                            </li>
-                            <li>
-                                Отображение категорий, статусов и приоритетов заявок.
-                            </li>
-                        </ul>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card isd-about-feature h-100">
+                        <div class="card-body p-4">
+
+                            <div class="isd-about-feature-icon">
+                                📊
+                            </div>
+
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Аналитика
+                            </h3>
+
+                            <p class="isd-about-description mb-0">
+                                Статистика обращений, показатели
+                                завершённых и незавершённых заявок,
+                                рейтинги пользователей и категорий,
+                                выбор периода анализа.
+                            </p>
+
+                        </div>
                     </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card isd-about-feature h-100">
+                        <div class="card-body p-4">
+
+                            <div class="isd-about-feature-icon">
+                                🔐
+                            </div>
+
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Безопасность
+                            </h3>
+
+                            <p class="isd-about-description mb-0">
+                                Аутентификация Symfony Security,
+                                проверка прав через TicketVoter,
+                                CSRF-защита форм и блокировка
+                                входа неактивных пользователей.
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Роли пользователей #}
+        <section class="mb-5">
+
+            <span class="isd-about-kicker">
+                КОНТРОЛЬ ДОСТУПА
+            </span>
+
+            <h2 class="h3 fw-bold mt-2 mb-4">
+                Роли в системе
+            </h2>
+
+            <div class="card isd-about-panel">
+                <div class="card-body p-4">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="isd-about-role">
+                                <div class="isd-about-role-dot isd-role-user"></div>
+
+                                <h3 class="h6 fw-bold mb-2">
+                                    Пользователь
+                                </h3>
+
+                                <p class="isd-about-description small mb-0">
+                                    Просмотр собственных заявок
+                                    и личного профиля.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="isd-about-role">
+                                <div class="isd-about-role-dot isd-role-tech"></div>
+
+                                <h3 class="h6 fw-bold mb-2">
+                                    Специалист
+                                </h3>
+
+                                <p class="isd-about-description small mb-0">
+                                    Работа с назначенными
+                                    обращениями и их статусами.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="isd-about-role">
+                                <div class="isd-about-role-dot isd-role-manager"></div>
+
+                                <h3 class="h6 fw-bold mb-2">
+                                    Менеджер
+                                </h3>
+
+                                <p class="isd-about-description small mb-0">
+                                    Управление заявками
+                                    и создание пользователей.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="isd-about-role">
+                                <div class="isd-about-role-dot isd-role-admin"></div>
+
+                                <h3 class="h6 fw-bold mb-2">
+                                    Администратор
+                                </h3>
+
+                                <p class="isd-about-description small mb-0">
+                                    Полное управление
+                                    пользователями и заявками.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h2 class="h5 mb-0">Технологии</h2>
+        </section>
+
+        {# Технологический стек #}
+        <section class="mb-5">
+
+            <span class="isd-about-kicker">
+                ТЕХНОЛОГИИ
+            </span>
+
+            <h2 class="h3 fw-bold mt-2 mb-4">
+                На чём построен проект?
+            </h2>
+
+            <div class="card isd-about-panel">
+                <div class="card-body p-4">
+
+                    <div class="isd-about-tech-grid">
+
+                        <div class="isd-about-tech-item">
+                            <span>Язык программирования</span>
+                            <strong>PHP 8.4</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Фреймворк</span>
+                            <strong>Symfony 7.4</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Шаблонизатор</span>
+                            <strong>Twig</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Интерфейс</span>
+                            <strong>Bootstrap 5</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>База данных</span>
+                            <strong>MariaDB</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Работа с БД</span>
+                            <strong>Doctrine ORM / DBAL</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Безопасность</span>
+                            <strong>Symfony Security</strong>
+                        </div>
+
+                        <div class="isd-about-tech-item">
+                            <span>Контроль версий</span>
+                            <strong>Git / GitHub</strong>
+                        </div>
+
                     </div>
 
-                    <div class="card-body">
-                        <dl class="row mb-0">
-                            <dt class="col-5">Язык</dt>
-                            <dd class="col-7">PHP 8.4</dd>
-
-                            <dt class="col-5">Фреймворк</dt>
-                            <dd class="col-7">Symfony 7.4</dd>
-
-                            <dt class="col-5">Шаблоны</dt>
-                            <dd class="col-7">Twig</dd>
-
-                            <dt class="col-5">Интерфейс</dt>
-                            <dd class="col-7">Bootstrap 5</dd>
-
-                            <dt class="col-5">База данных</dt>
-                            <dd class="col-7">MariaDB</dd>
-
-                            <dt class="col-5">Доступ к БД</dt>
-                            <dd class="col-7">Doctrine DBAL</dd>
-                        </dl>
-                    </div>
                 </div>
             </div>
 
-        </div>
+        </section>
 
-    </main>
+        {# Нижний информационный блок #}
+        <section class="card isd-about-bottom mb-4">
+
+            <div class="card-body p-4 p-md-5">
+
+                <div class="row align-items-center g-4">
+
+                    <div class="col-md-8">
+
+                        <span class="isd-about-kicker">
+                            IT SERVICE DESK
+                        </span>
+
+                        <h2 class="h4 fw-bold mt-2 mb-2">
+                            Всё готово для работы с обращениями
+                        </h2>
+
+                        <p class="isd-about-description mb-0">
+                            Перейдите в панель управления,
+                            чтобы посмотреть статистику,
+                            или откройте доступные заявки.
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4 text-md-end">
+
+                        <a
+                            href="{{ path('app_dashboard') }}"
+                            class="btn isd-about-action px-4 py-2"
+                        >
+                            Открыть Dashboard →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
 {% endblock %}

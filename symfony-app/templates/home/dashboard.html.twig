@@ -3,71 +3,87 @@
 {% block title %}Панель управления | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main class="py-4">
 
-        <div class="mb-4">
-            <h1 class="h3 fw-semibold mb-2">Панель управления</h1>
-            <p class="text-muted mb-0">
-                {{ project_name }} — управление пользователями и заявками.
-            </p>
-        </div>
-        <div class="row g-3 mb-4">
+    <div class="isd-dashboard">
 
-            <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="text-muted small mb-2">
-                            Пользователи
-                        </div>
-                        <h2 class="h3 fw-bold mb-0">
-                            {{ stats.usersCount }}
-                        </h2>
-                    </div>
-                </div>
+        {# Заголовок #}
+        <div class="isd-dashboard-heading d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+
+            <div>
+                <span class="isd-dashboard-kicker">
+                    ОБЗОР СИСТЕМЫ
+                </span>
+
+                <h1 class="h2 fw-bold mt-2 mb-2">
+                    Панель управления
+                </h1>
+
+                <p class="isd-dashboard-description mb-0">
+                    Статистика и основные показатели IT Service Desk.
+                </p>
             </div>
 
-            <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="text-muted small mb-2">
-                            Всего заявок
-                        </div>
-                        <h2 class="h3 fw-bold mb-0">
-                            {{ stats.ticketsCount }}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="text-muted small mb-2">
-                            Незавершённые заявки
-                        </div>
-                        <h2 class="h3 fw-bold text-warning mb-0">
-                            {{ stats.openTicketsCount }}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-body">
-                        <div class="text-muted small mb-2">
-                            Завершённые заявки
-                        </div>
-                        <h2 class="h3 fw-bold text-success mb-0">
-                            {{ stats.closedTicketsCount }}
-                        </h2>
-                    </div>
-                </div>
-            </div>
+            <a
+                href="{{ path('app_tickets') }}"
+                class="btn isd-dashboard-action"
+            >
+                Перейти к заявкам
+                <span aria-hidden="true">→</span>
+            </a>
 
         </div>
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-body">
+
+        {# Приветственный блок #}
+        <section class="isd-dashboard-hero rounded-4 mb-4">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+
+                    <span class="isd-dashboard-hero-label">
+                        IT SERVICE DESK
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        Контролируйте работу поддержки
+                        в одном месте.
+                    </h2>
+
+                    <p class="mb-0">
+                        Отслеживайте заявки, оценивайте нагрузку
+                        и анализируйте основные показатели системы.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <div class="isd-dashboard-period-indicator">
+                        <span class="isd-dashboard-period-caption">
+                            ТЕКУЩИЙ ПЕРИОД
+                        </span>
+
+                        <div class="isd-dashboard-period-value">
+                            {% if selectedPeriod == 'all' %}
+                                Всё время
+                            {% elseif selectedPeriod == '7' %}
+                                7 дней
+                            {% else %}
+                                30 дней
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Выбор периода статистики #}
+        <section class="card isd-dashboard-filter mb-4">
+
+            <div class="card-body p-4">
 
                 <form
                     action="{{ path('app_dashboard') }}"
@@ -76,6 +92,7 @@
                 >
 
                     <div class="col-md-8">
+
                         <label
                             for="dashboard-period"
                             class="form-label fw-semibold"
@@ -108,223 +125,526 @@
                             >
                                 За всё время
                             </option>
+
                         </select>
+
                     </div>
 
                     <div class="col-md-4">
+
                         <button
                             type="submit"
-                            class="btn btn-primary w-100"
+                            class="btn isd-dashboard-action w-100"
                         >
-                            Применить
+                            Применить период
                         </button>
+
                     </div>
 
                 </form>
 
             </div>
-        </div>
 
-        {# Средний показатель #}
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-body">
-                <div class="text-muted small mb-2">
-                    Среднее количество заявок на пользователя
+        </section>
+
+        {# Основные показатели #}
+        <section class="row g-4 mb-4">
+
+            {# Пользователи #}
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card isd-dashboard-stat isd-stat-users h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <span class="isd-dashboard-stat-label">
+                                Пользователи
+                            </span>
+
+                            <span class="isd-dashboard-stat-icon">
+                                👥
+                            </span>
+                        </div>
+
+                        <div class="isd-dashboard-stat-value">
+                            {{ stats.usersCount }}
+                        </div>
+
+                        <div class="isd-dashboard-stat-note">
+                            Всего в системе
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="h4 fw-bold mb-0">
-                    {{ stats.averageTicketsPerUser|number_format(2, ',', ' ') }}
-                </div>
             </div>
-        </div>
+
+            {# Всего заявок за период #}
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card isd-dashboard-stat isd-stat-tickets h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <span class="isd-dashboard-stat-label">
+                                Всего заявок
+                            </span>
+
+                            <span class="isd-dashboard-stat-icon">
+                                🎫
+                            </span>
+                        </div>
+
+                        <div class="isd-dashboard-stat-value">
+                            {{ stats.ticketsCount }}
+                        </div>
+
+                        <div class="isd-dashboard-stat-note">
+                            За выбранный период
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {# Незавершённые заявки #}
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card isd-dashboard-stat isd-stat-open h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <span class="isd-dashboard-stat-label">
+                                Незавершённые
+                            </span>
+
+                            <span class="isd-dashboard-stat-icon">
+                                ⏳
+                            </span>
+                        </div>
+
+                        <div class="isd-dashboard-stat-value">
+                            {{ stats.openTicketsCount }}
+                        </div>
+
+                        <div class="isd-dashboard-stat-note">
+                            За выбранный период
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {# Завершённые заявки #}
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card isd-dashboard-stat isd-stat-closed h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <span class="isd-dashboard-stat-label">
+                                Завершённые
+                            </span>
+
+                            <span class="isd-dashboard-stat-icon">
+                                ✅
+                            </span>
+                        </div>
+
+                        <div class="isd-dashboard-stat-value">
+                            {{ stats.closedTicketsCount }}
+                        </div>
+
+                        <div class="isd-dashboard-stat-note">
+                            За выбранный период
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Средняя нагрузка #}
+        <section class="card isd-dashboard-average mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+
+                    <div>
+                        <span class="isd-dashboard-kicker">
+                            НАГРУЗКА
+                        </span>
+
+                        <h2 class="h5 fw-bold mt-2 mb-1">
+                            Среднее количество заявок на пользователя
+                        </h2>
+
+                        <p class="isd-dashboard-description small mb-0">
+                            Количество заявок за выбранный период,
+                            разделённое на общее число пользователей.
+                        </p>
+                    </div>
+
+                    <div class="isd-dashboard-average-number">
+                        {{ stats.averageTicketsPerUser|number_format(2, ',', ' ') }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
         {# Рейтинги #}
-        <div class="row g-4 mb-4">
+        <section class="mb-4">
 
-            <div class="col-lg-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-white">
-                        <h2 class="h5 mb-0">
-                            Топ-5 пользователей
+            <div class="mb-3">
+                <span class="isd-dashboard-kicker">
+                    АНАЛИТИКА
+                </span>
+
+                <h2 class="h4 fw-bold mt-2 mb-1">
+                    Рейтинги
+                </h2>
+
+                <p class="isd-dashboard-description small mb-0">
+                    Рейтинги рассчитаны по всем заявкам за всё время.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                {# Топ пользователей #}
+                <div class="col-lg-6">
+
+                    <div class="card isd-dashboard-panel h-100">
+
+                        <div class="card-header py-3 px-4">
+
+                            <h3 class="h5 fw-bold mb-0">
+                                👥 Топ-5 пользователей
+                            </h3>
+
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th class="ps-4">Пользователь</th>
+                                        <th class="text-end pe-4">Заявки</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for user in stats.topUsers %}
+
+                                        <tr>
+                                            <td class="ps-4">
+                                                <span class="isd-dashboard-table-rank">
+                                                    {{ loop.index }}
+                                                </span>
+
+                                                {{ user.name }}
+                                            </td>
+
+                                            <td class="text-end pe-4 fw-bold">
+                                                {{ user.ticketsCount }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td
+                                                colspan="2"
+                                                class="text-center py-4"
+                                            >
+                                                Нет данных
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {# Топ категорий #}
+                <div class="col-lg-6">
+
+                    <div class="card isd-dashboard-panel h-100">
+
+                        <div class="card-header py-3 px-4">
+
+                            <h3 class="h5 fw-bold mb-0">
+                                📁 Топ-5 категорий
+                            </h3>
+
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle mb-0">
+
+                                <thead>
+                                    <tr>
+                                        <th class="ps-4">Категория</th>
+                                        <th class="text-end pe-4">Заявки</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for category in stats.topCategories %}
+
+                                        <tr>
+                                            <td class="ps-4">
+                                                <span class="isd-dashboard-table-rank">
+                                                    {{ loop.index }}
+                                                </span>
+
+                                                {{ category.name }}
+                                            </td>
+
+                                            <td class="text-end pe-4 fw-bold">
+                                                {{ category.ticketsCount }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td
+                                                colspan="2"
+                                                class="text-center py-4"
+                                            >
+                                                Нет данных
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Основные разделы и быстрые действия #}
+        <section class="row g-4 mb-4">
+
+            <div class="col-lg-7">
+
+                <div class="card isd-dashboard-panel h-100">
+
+                    <div class="card-header px-4 py-3">
+                        <h2 class="h5 fw-bold mb-0">
+                            Основные разделы
                         </h2>
                     </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Пользователь</th>
-                                    <th class="text-end">Заявки</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for user in stats.topUsers %}
-                                    <tr>
-                                        <td>{{ user.name }}</td>
-                                        <td class="text-end">
-                                            {{ user.ticketsCount }}
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="2">
-                                            Нет данных
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-white">
-                        <h2 class="h5 mb-0">
-                            Топ-5 категорий
-                        </h2>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Категория</th>
-                                    <th class="text-end">Заявки</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for category in stats.topCategories %}
-                                    <tr>
-                                        <td>{{ category.name }}</td>
-                                        <td class="text-end">
-                                            {{ category.ticketsCount }}
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="2">
-                                            Нет данных
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="row g-4">
-
-            {# Основные разделы #}
-            <div class="col-lg-8">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-white py-3">
-                        <h2 class="h5 mb-0">Основные разделы</h2>
-                    </div>
-
-                    <div class="list-group list-group-flush">
+                    <div class="list-group list-group-flush isd-dashboard-links">
 
                         <a
                             href="{{ path('app_tickets') }}"
-                            class="list-group-item list-group-item-action p-3"
+                            class="list-group-item list-group-item-action p-4"
                         >
-                            <div class="fw-semibold">Заявки</div>
-                            <small class="text-muted">
-                                Просмотр обращений и их текущих статусов
+                            <div class="fw-semibold">
+                                🎫 Заявки
+                            </div>
+
+                            <small class="isd-dashboard-description">
+                                Просмотр и управление доступными обращениями
                             </small>
                         </a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+
+                            <a
+                                href="{{ path('app_users') }}"
+                                class="list-group-item list-group-item-action p-4"
+                            >
+                                <div class="fw-semibold">
+                                    👥 Пользователи
+                                </div>
+
+                                <small class="isd-dashboard-description">
+                                    Просмотр и управление учётными записями
+                                </small>
+                            </a>
+
+                        {% elseif is_granted('ROLE_MANAGER') %}
+
+                            <a
+                                href="{{ path('app_users_new') }}"
+                                class="list-group-item list-group-item-action p-4"
+                            >
+                                <div class="fw-semibold">
+                                    👥 Создание пользователя
+                                </div>
+
+                                <small class="isd-dashboard-description">
+                                    Добавление сотрудников в систему
+                                </small>
+                            </a>
+
+                        {% endif %}
 
                         <a
-                            href="{{ path('app_users') }}"
-                            class="list-group-item list-group-item-action p-3"
+                            href="{{ path('app_profile') }}"
+                            class="list-group-item list-group-item-action p-4"
                         >
-                            <div class="fw-semibold">Пользователи</div>
-                            <small class="text-muted">
-                                Просмотр, поиск и редактирование пользователей
+                            <div class="fw-semibold">
+                                👤 Мой профиль
+                            </div>
+
+                            <small class="isd-dashboard-description">
+                                Информация о вашей учётной записи
                             </small>
                         </a>
 
                     </div>
+
                 </div>
+
             </div>
 
-            {# Быстрые действия #}
-            <div class="col-lg-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-white py-3">
-                        <h2 class="h5 mb-0">Быстрые действия</h2>
+            <div class="col-lg-5">
+
+                <div class="card isd-dashboard-panel h-100">
+
+                    <div class="card-header px-4 py-3">
+                        <h2 class="h5 fw-bold mb-0">
+                            Быстрые действия
+                        </h2>
                     </div>
 
-                    <div class="card-body">
-                        <p class="text-muted small">
+                    <div class="card-body p-4">
+
+                        <p class="isd-dashboard-description small mb-4">
                             Выберите необходимое действие.
                         </p>
 
-                        <div class="d-grid gap-2">
-                            <a
-                                href="{{ path('app_users_new') }}"
-                                class="btn btn-primary"
-                            >
-                                Добавить пользователя
-                            </a>
+                        <div class="d-grid gap-3">
 
                             <a
                                 href="{{ path('app_tickets') }}"
-                                class="btn btn-outline-secondary"
+                                class="btn isd-dashboard-action"
                             >
                                 Просмотреть заявки
                             </a>
 
+                            {% if is_granted('ROLE_MANAGER') %}
+                                <a
+                                    href="{{ path('app_users_new') }}"
+                                    class="btn isd-dashboard-outline"
+                                >
+                                    + Добавить пользователя
+                                </a>
+                            {% endif %}
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a
+                                    href="{{ path('app_users') }}"
+                                    class="btn isd-dashboard-outline"
+                                >
+                                    Управление пользователями
+                                </a>
+                            {% endif %}
+
                             <a
-                                href="{{ path('app_users') }}"
-                                class="btn btn-outline-secondary"
+                                href="{{ path('app_profile') }}"
+                                class="btn isd-dashboard-outline"
                             >
-                                Список пользователей
+                                Мой профиль
                             </a>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
 
-        </div>
+        </section>
 
         {# Информация о системе #}
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-white py-3">
-                <h2 class="h5 mb-0">Информация о системе</h2>
+        <section class="card isd-dashboard-panel mb-4">
+
+            <div class="card-header px-4 py-3">
+                <h2 class="h5 fw-bold mb-0">
+                    Информация о системе
+                </h2>
             </div>
 
-            <div class="card-body">
-                <div class="row g-3">
+            <div class="card-body p-4">
+
+                <div class="row g-4">
 
                     <div class="col-md-6">
-                        <h3 class="h6 fw-semibold">
-                            Управление пользователями
+
+                        <h3 class="h6 fw-bold">
+                            🛡️ Безопасность
                         </h3>
 
-                        <p class="text-muted small mb-0">
-                            Создание и редактирование записей,
-                            поиск по имени и email, сортировка списка.
+                        <p class="isd-dashboard-description small mb-0">
+                            Авторизация, роли, TicketVoter,
+                            CSRF-защита и контроль активности пользователей.
                         </p>
+
                     </div>
 
                     <div class="col-md-6">
-                        <h3 class="h6 fw-semibold">
-                            Учёт заявок
+
+                        <h3 class="h6 fw-bold">
+                            ⚙️ Управление заявками
                         </h3>
 
-                        <p class="text-muted small mb-0">
-                            Просмотр заявок технической поддержки,
-                            их категорий, статусов и приоритетов.
+                        <p class="isd-dashboard-description small mb-0">
+                            Учёт обращений, категорий, статусов
+                            и приоритетов технической поддержки.
                         </p>
+
                     </div>
 
                 </div>
-            </div>
-        </div>
 
-    </main>
+            </div>
+
+        </section>
+
+    </div>
+
 {% endblock %}

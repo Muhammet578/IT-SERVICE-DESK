@@ -1,115 +1,237 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Заявка №{{ ticket.id }} | IT Service Desk{% endblock %}
+{% block title %}
+    Заявка №{{ ticket.id }} | IT Service Desk
+{% endblock %}
 
 {% block body %}
-    <main class="py-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    {# Определяем цвет текущего статуса #}
+    {% set statusClass = 'isd-ticket-status-default' %}
+
+    {% if ticket.status == 'Новая' %}
+        {% set statusClass = 'isd-ticket-status-new' %}
+    {% elseif ticket.status == 'В работе' %}
+        {% set statusClass = 'isd-ticket-status-progress' %}
+    {% elseif ticket.status == 'Решена' %}
+        {% set statusClass = 'isd-ticket-status-resolved' %}
+    {% elseif ticket.status == 'Закрыта' %}
+        {% set statusClass = 'isd-ticket-status-closed' %}
+    {% endif %}
+
+    <div class="isd-tickets isd-ticket-detail">
+
+        {# Заголовок страницы #}
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+
             <div>
-                <h1 class="h3 fw-semibold mb-2">
+                <span class="isd-tickets-kicker">
+                    ТЕХНИЧЕСКАЯ ПОДДЕРЖКА
+                </span>
+
+                <h1 class="h2 fw-bold mt-2 mb-2">
                     Заявка #{{ ticket.id }}
                 </h1>
 
-                <p class="text-muted mb-0">
-                    Подробная информация об обращении
+                <p class="isd-tickets-description mb-0">
+                    Подробная информация об обращении.
                 </p>
-                
             </div>
 
             <a
                 href="{{ path('app_tickets') }}"
-                class="btn btn-outline-secondary"
+                class="btn isd-tickets-secondary"
             >
-                Назад к заявкам
+                ← Назад к заявкам
             </a>
+
         </div>
 
-        {% set statusClass = 'text-bg-secondary' %}
+        {# Верхний информационный блок #}
+        <section class="isd-tickets-hero rounded-4 mb-4">
 
-        {% if ticket.status == 'Новая' %}
-            {% set statusClass = 'text-bg-primary' %}
-        {% elseif ticket.status == 'В работе' %}
-            {% set statusClass = 'text-bg-warning' %}
-        {% elseif ticket.status == 'Решена' %}
-            {% set statusClass = 'text-bg-success' %}
-        {% endif %}
+            <div class="row align-items-center g-4">
 
-        <div class="card shadow-sm">
+                <div class="col-lg-8">
 
-            <div class="card-header bg-white py-3">
-                <h2 class="h5 mb-0">
-                    {{ ticket.title }}
+                    <span class="isd-tickets-hero-label">
+                        IT SERVICE DESK · ОБРАЩЕНИЕ #{{ ticket.id }}
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        {{ ticket.title }}
+                    </h2>
+
+                    <p class="mb-0">
+                        Информация о заявке и её текущем состоянии
+                        в системе технической поддержки.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <div class="isd-ticket-detail-hero-info">
+
+                        <span class="isd-ticket-detail-hero-caption">
+                            ТЕКУЩИЙ СТАТУС
+                        </span>
+
+                        <div class="mt-3">
+
+                            <span class="isd-ticket-status {{ statusClass }}">
+
+                                <span
+                                    class="isd-ticket-status-dot"
+                                    aria-hidden="true"
+                                ></span>
+
+                                {{ ticket.status }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Карточка заявки #}
+        <section class="card isd-ticket-detail-card mb-4">
+
+            <div class="card-header p-4">
+
+                <h2 class="h5 fw-bold mb-1">
+                    Информация о заявке
                 </h2>
+
+                <p class="isd-tickets-description small mb-0">
+                    Основные данные обращения.
+                </p>
+
             </div>
 
             <div class="card-body p-4">
 
-                <div class="row py-2">
-                    <div class="col-sm-4 fw-semibold text-muted">
-                        Номер заявки
+                <dl class="isd-ticket-detail-grid mb-0">
+
+                    {# Номер заявки #}
+                    <div class="isd-ticket-detail-field">
+
+                        <dt class="isd-ticket-detail-label">
+                            Номер заявки
+                        </dt>
+
+                        <dd class="isd-ticket-detail-value">
+                            #{{ ticket.id }}
+                        </dd>
+
                     </div>
 
-                    <div class="col-sm-8">
-                        #{{ ticket.id }}
-                    </div>
-                </div>
+                    {# Название заявки #}
+                    <div class="isd-ticket-detail-field">
 
-                <hr>
+                        <dt class="isd-ticket-detail-label">
+                            Название
+                        </dt>
 
-                <div class="row py-2">
-                    <div class="col-sm-4 fw-semibold text-muted">
-                        Название
-                    </div>
+                        <dd class="isd-ticket-detail-value">
+                            {{ ticket.title }}
+                        </dd>
 
-                    <div class="col-sm-8">
-                        {{ ticket.title }}
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row py-2">
-                    <div class="col-sm-4 fw-semibold text-muted">
-                        Текущий статус
                     </div>
 
-                    <div class="col-sm-8">
-                        <span class="badge {{ statusClass }}">
-                            {{ ticket.status }}
-                        </span>
+                    {# Статус #}
+                    <div class="isd-ticket-detail-field">
+
+                        <dt class="isd-ticket-detail-label">
+                            Текущий статус
+                        </dt>
+
+                        <dd class="mb-0">
+
+                            <span class="isd-ticket-status {{ statusClass }}">
+
+                                <span
+                                    class="isd-ticket-status-dot"
+                                    aria-hidden="true"
+                                ></span>
+
+                                {{ ticket.status }}
+
+                            </span>
+
+                        </dd>
+
                     </div>
+
+                </dl>
+
+                {# Описание, если контроллер передаёт это поле #}
+                {% if ticket.description is defined and ticket.description is not empty %}
+
+                    <div class="isd-ticket-detail-description mt-4">
+
+                        <h3 class="h6 fw-bold mb-3">
+                            Описание проблемы
+                        </h3>
+
+                        <p class="mb-0">
+                            {{ ticket.description }}
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {# Доступные действия #}
+            <div class="card-footer isd-ticket-detail-footer p-4">
+
+                <div class="d-flex flex-wrap gap-3">
+
+                    <a
+                        href="{{ path('app_tickets') }}"
+                        class="btn isd-tickets-secondary"
+                    >
+                        ← К списку заявок
+                    </a>
+
+                    {# Редактирование через TicketVoter #}
+                    {% if is_granted('EDIT', ticketEntity) %}
+
+                        <a
+                            href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
+                            class="btn isd-tickets-primary"
+                        >
+                            ✏️ Редактировать
+                        </a>
+
+                    {% endif %}
+
+                    {# Изменение статуса через TicketVoter #}
+                    {% if is_granted('CHANGE_STATUS', ticketEntity) %}
+
+                        <a
+                            href="{{ path('app_tickets_status', {id: ticket.id}) }}"
+                            class="btn isd-ticket-detail-status-button"
+                        >
+                            Изменить статус →
+                        </a>
+
+                    {% endif %}
+
                 </div>
 
             </div>
 
-            <div class="card-footer bg-white py-3">
-                <a
-                    href="{{ path('app_tickets') }}"
-                    class="btn btn-outline-primary"
-                >
-                    Вернуться к списку
-                </a>
+        </section>
 
-                {% if is_granted('EDIT', ticketEntity) %}
-                    <a
-                        href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
-                        class="btn btn-outline-primary"
-                    >
-                        Редактировать заявку
-                    </a>
-                {% endif %}
-                {% if is_granted('CHANGE_STATUS', ticketEntity) %}
-                    <a
-                        href="{{ path('app_tickets_status', {id: ticket.id}) }}"
-                        class="btn btn-outline-warning"
-                    >
-                        Изменить статус
-                    </a>
-                {% endif %}
-            </div>
+    </div>
 
-        </div>
-
-    </main>
 {% endblock %}

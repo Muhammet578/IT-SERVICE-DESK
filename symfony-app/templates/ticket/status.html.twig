@@ -1,50 +1,197 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Изменение статуса | IT Service Desk{% endblock %}
+{% block title %}
+    Изменение статуса | IT Service Desk
+{% endblock %}
 
 {% block body %}
-    <div class="container py-4">
 
-        <h1 class="h3 fw-semibold mb-4">
-            Изменение статуса заявки #{{ ticket.id }}
-        </h1>
+    {# Определяем оформление текущего статуса #}
+    {% set statusClass = 'isd-ticket-status-default' %}
 
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
+    {% if ticket.status.name == 'Новая' %}
+        {% set statusClass = 'isd-ticket-status-new' %}
+    {% elseif ticket.status.name == 'В работе' %}
+        {% set statusClass = 'isd-ticket-status-progress' %}
+    {% elseif ticket.status.name == 'Решена' %}
+        {% set statusClass = 'isd-ticket-status-resolved' %}
+    {% elseif ticket.status.name == 'Закрыта' %}
+        {% set statusClass = 'isd-ticket-status-closed' %}
+    {% endif %}
 
-                <h5 class="mb-3">
-                    {{ ticket.title }}
-                </h5>
+    <div class="isd-tickets isd-register isd-ticket-status-page">
 
-                <p class="text-muted">
-                    Текущий статус:
-                    <strong>{{ ticket.status.name }}</strong>
+        {# Заголовок страницы #}
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+            <div>
+                <span class="isd-tickets-kicker">
+                    УПРАВЛЕНИЕ ЗАЯВКАМИ
+                </span>
+
+                <h1 class="h2 fw-bold mt-2 mb-2">
+                    Изменение статуса заявки #{{ ticket.id }}
+                </h1>
+
+                <p class="isd-tickets-description mb-0">
+                    Обновление текущего состояния обращения.
                 </p>
+            </div>
 
-                {{ form_start(form) }}
+            <a
+                href="{{ path('find_tickets', {id: ticket.id}) }}"
+                class="btn isd-tickets-secondary"
+            >
+                ← Назад к заявке
+            </a>
 
-                    <div class="mb-3">
-                        {{ form_row(form.status) }}
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+
+            {# Левая часть: информация о заявке #}
+            <div class="col-lg-5">
+
+                <section class="isd-register-hero rounded-4 h-100">
+
+                    <div class="isd-register-hero-icon" aria-hidden="true">
+                        🔄
                     </div>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        Сохранить статус
-                    </button>
+                    <span class="isd-register-hero-label">
+                        IT SERVICE DESK
+                    </span>
 
-                    <a
-                        href="{{ path('find_tickets', {id: ticket.id}) }}"
-                        class="btn btn-outline-secondary"
-                    >
-                        Отмена
-                    </a>
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        Управление
+                        <span class="isd-register-highlight">
+                            статусом обращения.
+                        </span>
+                    </h2>
 
-                {{ form_end(form) }}
+                    <p class="isd-register-hero-description">
+                        Обновите статус заявки, чтобы отразить
+                        текущее состояние работы над обращением.
+                    </p>
+
+                    <div class="isd-register-hero-divider"></div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">#</span>
+                        Номер заявки: {{ ticket.id }}
+                    </div>
+
+                    <div class="isd-ticket-status-current mt-4">
+
+                        <div class="isd-register-hero-label mb-3">
+                            ТЕКУЩИЙ СТАТУС
+                        </div>
+
+                        <span class="isd-ticket-status {{ statusClass }}">
+
+                            <span
+                                class="isd-ticket-status-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            {{ ticket.status.name }}
+
+                        </span>
+
+                    </div>
+
+                </section>
 
             </div>
+
+            {# Правая часть: форма изменения статуса #}
+            <div class="col-lg-7">
+
+                <section class="card isd-register-card h-100">
+
+                    <div class="card-header p-4">
+
+                        <span class="isd-register-form-label">
+                            ИЗМЕНЕНИЕ СОСТОЯНИЯ
+                        </span>
+
+                        <h2 class="h4 fw-bold mt-2 mb-2">
+                            {{ ticket.title }}
+                        </h2>
+
+                        <p class="isd-tickets-description small mb-0">
+                            Выберите новый статус и сохраните изменения.
+                        </p>
+
+                    </div>
+
+                    <div class="card-body p-4 p-md-5">
+
+                        {{ form_start(form, {
+                        attr: {
+                            class: 'isd-register-form'
+                        }
+                    }) }}
+
+                        {{ form_errors(form) }}
+
+                        {# Поле выбора статуса #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_row(form.status, {
+                                label: 'Новый статус заявки',
+                                label_attr: {
+                                    class: 'form-label fw-semibold'
+                                },
+                                attr: {
+                                    class: 'form-select isd-ticket-status-select'
+                                }
+                            }) }}
+
+                        </div>
+
+                        {# Информационная подсказка #}
+                        <div class="isd-register-note mb-4">
+
+                            <span aria-hidden="true">ℹ️</span>
+
+                            <span>
+                                После сохранения новый статус
+                                будет отображаться в списке заявок,
+                                карточке обращения и статистике.
+                            </span>
+
+                        </div>
+
+                        {# Действия #}
+                        <div class="d-flex flex-wrap gap-3">
+
+                            <button
+                                type="submit"
+                                class="btn isd-register-submit"
+                            >
+                                ✓ Сохранить статус
+                            </button>
+
+                            <a
+                                href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                class="btn isd-register-back"
+                            >
+                                Отмена
+                            </a>
+
+                        </div>
+
+                        {{ form_end(form) }}
+
+                    </div>
+
+                </section>
+
+            </div>
+
         </div>
 
     </div>
+
 {% endblock %}

@@ -44,7 +44,7 @@
             {% if app.user %}
 
                 {# Основная навигация #}
-                <div class="navbar-nav mx-auto gap-lg-2">
+                <div class="navbar-nav mx-auto gap-lg-1">
 
                     <a
                         class="nav-link px-3 gta-link {{ currentRoute == 'app_home' ? 'active fw-semibold' : '' }}"
@@ -76,12 +76,76 @@
                         </a>
                     {% endif %}
 
-                    <a
-                        class="nav-link px-3 gta-link {{ currentRoute == 'app_profile' ? 'active fw-semibold' : '' }}"
-                        href="{{ path('app_profile') }}"
-                    >
-                        Мой профиль
-                    </a>
+                    {# Мой профиль с выпадающей карточкой #}
+                    <div class="nav-item dropdown profile-dropdown">
+
+                        <div class="d-flex align-items-center">
+
+                            <a
+                                class="nav-link px-3 gta-link {{ currentRoute == 'app_profile' ? 'active fw-semibold' : '' }}"
+                                href="{{ path('app_profile') }}"
+                            >
+                                Мой профиль
+                            </a>
+
+                            <button
+                                type="button"
+                                class="profile-dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                aria-label="Показать данные профиля"
+                            >
+                                ▾
+                            </button>
+
+                        </div>
+
+                        {# Карточка пользователя #}
+                        <div
+                            class="dropdown-menu dropdown-menu-end profile-dropdown-menu p-3"
+                        >
+
+                            <div class="mb-3">
+                                <span class="gta-auth-badge">
+                                    Авторизован
+                                </span>
+                            </div>
+
+                            <div class="profile-dropdown-label">
+                                Пользователь
+                            </div>
+
+                            <div class="profile-dropdown-name">
+                                {{ app.user.name }}
+                            </div>
+
+                            <div class="profile-dropdown-label mt-3">
+                                Электронная почта
+                            </div>
+
+                            <div class="profile-dropdown-email">
+                                {{ app.user.email }}
+                            </div>
+
+                            <div class="profile-dropdown-label mt-3">
+                                Роль в системе
+                            </div>
+
+                            <div class="profile-dropdown-role">
+                                {{ roleLabels[app.user.role.name]|default(app.user.role.name) }}
+                            </div>
+
+                            <hr class="profile-dropdown-divider">
+
+                            <a
+                                href="{{ path('app_profile') }}"
+                                class="btn btn-gta-primary btn-sm w-100 rounded-3"
+                            >
+                                Открыть профиль
+                            </a>
+
+                        </div>
+                    </div>
 
                     <a
                         class="nav-link px-3 gta-link {{ currentRoute == 'app_about' ? 'active fw-semibold' : '' }}"
@@ -92,27 +156,20 @@
 
                 </div>
 
-                {# Правая часть #}
-                <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-3 mt-3 mt-lg-0">
+                {# Правая часть: тема и действия #}
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mt-lg-0">
 
-                    <div class="gta-user-box text-start text-lg-end">
-                        <span class="gta-auth-badge d-inline-block mb-1">
-                            Авторизован
-                        </span>
+                    {# Переключатель темы #}
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        id="theme-toggle"
+                        aria-label="Переключить тему оформления"
+                    >
+                        ☀️ Classic
+                    </button>
 
-                        <div class="gta-user-name">
-                            {{ app.user.name }}
-                        </div>
-
-                        <small class="gta-user-email d-block">
-                            {{ app.user.email }}
-                        </small>
-
-                        <small class="gta-user-role d-block">
-                            {{ roleLabels[app.user.role.name]|default(app.user.role.name) }}
-                        </small>
-                    </div>
-
+                    {# Создание пользователя #}
                     {% if is_granted('ROLE_MANAGER') %}
                         <a
                             href="{{ path('app_users_new') }}"
@@ -122,6 +179,7 @@
                         </a>
                     {% endif %}
 
+                    {# Безопасный выход #}
                     <form
                         action="{{ path('app_logout') }}"
                         method="post"
@@ -145,11 +203,17 @@
 
             {% else %}
 
-                {# Гость #}
-                <div class="ms-lg-auto d-flex align-items-center gap-3 mt-3 mt-lg-0">
-                    <span class="badge bg-secondary">
-                        Гость
-                    </span>
+                {# Меню для гостя #}
+                <div class="ms-lg-auto d-flex flex-wrap align-items-center gap-3 mt-3 mt-lg-0">
+
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        id="theme-toggle"
+                        aria-label="Переключить тему оформления"
+                    >
+                        ☀️ Classic
+                    </button>
 
                     <a
                         href="{{ path('app_login') }}"
@@ -157,6 +221,7 @@
                     >
                         Войти
                     </a>
+
                 </div>
 
             {% endif %}

@@ -3,58 +3,163 @@
 {% block title %}Мой профиль | IT Service Desk{% endblock %}
 
 {% block body %}
-    <div class="container py-4">
 
-        <h1 class="h3 fw-semibold mb-4">Мой профиль</h1>
+    {% set roleLabels = {
+    'admin': 'Администратор',
+    'manager': 'Менеджер',
+    'technician': 'Специалист поддержки',
+    'user': 'Пользователь'
+} %}
 
-        <div class="card shadow-sm border-0 rounded-4">
+    <div class="isd-profile">
+
+        {# Заголовок #}
+        <div class="mb-4">
+            <span class="isd-profile-kicker">
+                ЛИЧНЫЙ КАБИНЕТ
+            </span>
+
+            <h1 class="h2 fw-bold mt-2 mb-2">
+                Мой профиль
+            </h1>
+
+            <p class="isd-profile-description mb-0">
+                Информация о вашей учётной записи в IT Service Desk.
+            </p>
+        </div>
+
+        {# Шапка профиля #}
+        <section class="isd-profile-hero rounded-4 mb-4">
+
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+
+                <div class="isd-profile-avatar" aria-hidden="true">
+                    {{ user.name|slice(0, 1)|upper }}
+                </div>
+
+                <div class="flex-grow-1">
+
+                    <span class="isd-profile-hero-label">
+                        УЧЁТНАЯ ЗАПИСЬ
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-2 mb-2">
+                        {{ user.name }}
+                    </h2>
+
+                    <p class="isd-profile-hero-email mb-3">
+                        {{ user.email }}
+                    </p>
+
+                    <span class="isd-profile-hero-role">
+                        {{ roleLabels[user.role.name]|default(user.role.name) }}
+                    </span>
+
+                </div>
+
+                <div>
+                    {% if user.active %}
+                        <span class="isd-profile-status isd-profile-status--active">
+                            <span class="isd-profile-status-dot"></span>
+                            Аккаунт активен
+                        </span>
+                    {% else %}
+                        <span class="isd-profile-status isd-profile-status--blocked">
+                            <span class="isd-profile-status-dot"></span>
+                            Аккаунт заблокирован
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Данные пользователя #}
+        <section class="card isd-profile-card mb-4">
+
+            <div class="card-header p-4">
+                <h2 class="h5 fw-bold mb-1">
+                    Информация об аккаунте
+                </h2>
+
+                <p class="isd-profile-description small mb-0">
+                    Основные данные вашей учётной записи.
+                </p>
+            </div>
+
             <div class="card-body p-4">
 
-                <h2 class="h5 mb-4">Информация об аккаунте</h2>
+                <dl class="isd-profile-grid mb-0">
 
-                <dl class="row mb-0">
-                    <dt class="col-sm-4">Имя</dt>
-                    <dd class="col-sm-8">{{ user.name }}</dd>
+                    <div class="isd-profile-field">
+                        <dt>Полное имя</dt>
+                        <dd>{{ user.name }}</dd>
+                    </div>
 
-                    <dt class="col-sm-4">Email</dt>
-                    <dd class="col-sm-8">{{ user.email }}</dd>
+                    <div class="isd-profile-field">
+                        <dt>Электронная почта</dt>
+                        <dd class="isd-profile-email">
+                            {{ user.email }}
+                        </dd>
+                    </div>
 
-                    <dt class="col-sm-4">Роль</dt>
-                    <dd class="col-sm-8">
-                        {% set roleLabels = {
-                        'admin': 'Администратор',
-                        'manager': 'Менеджер',
-                        'technician': 'Специалист поддержки',
-                        'user': 'Пользователь'
-                    } %}
+                    <div class="isd-profile-field">
+                        <dt>Роль в системе</dt>
+                        <dd>
+                            <span class="isd-profile-role">
+                                {{ roleLabels[user.role.name]|default(user.role.name) }}
+                            </span>
+                        </dd>
+                    </div>
 
-                        {{ roleLabels[user.role.name]|default(user.role.name) }}
-                    </dd>
+                    <div class="isd-profile-field">
+                        <dt>Дата регистрации</dt>
+                        <dd>
+                            {{ user.createdAt|date('d.m.Y H:i') }}
+                        </dd>
+                    </div>
 
-                    <dt class="col-sm-4">Дата регистрации</dt>
-                    <dd class="col-sm-8">
-                        {{ user.createdAt|date('d.m.Y H:i') }}
-                    </dd>
+                    <div class="isd-profile-field">
+                        <dt>Статус аккаунта</dt>
+                        <dd>
+                            {% if user.active %}
+                                <span class="isd-profile-account-active">
+                                    ● Активен
+                                </span>
+                            {% else %}
+                                <span class="isd-profile-account-blocked">
+                                    ● Заблокирован
+                                </span>
+                            {% endif %}
+                        </dd>
+                    </div>
 
-                    <dt class="col-sm-4">Статус аккаунта</dt>
-                    <dd class="col-sm-8">
-                        {% if user.active %}
-                            <span class="badge bg-success">Активен</span>
-                        {% else %}
-                            <span class="badge bg-danger">Заблокирован</span>
-                        {% endif %}
-                    </dd>
                 </dl>
 
             </div>
+
+        </section>
+
+        {# Навигация #}
+        <div class="d-flex flex-wrap gap-3">
+
+            <a
+                href="{{ path('app_home') }}"
+                class="btn isd-profile-button"
+            >
+                ← Вернуться на главную
+            </a>
+
+            <a
+                href="{{ path('app_tickets') }}"
+                class="btn isd-profile-button-outline"
+            >
+                Мои заявки →
+            </a>
+
         </div>
 
-        <a
-            href="{{ path('app_home') }}"
-            class="btn btn-outline-primary mt-4"
-        >
-            Вернуться на главную
-        </a>
-
     </div>
+
 {% endblock %}

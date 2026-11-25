@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 540" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#171632"/>
+      <stop offset="38%" stop-color="#51316f"/>
+      <stop offset="72%" stop-color="#e76b94"/>
+      <stop offset="100%" stop-color="#ffab76"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0" stop-color="#ffe9a4"/>
+      <stop offset="65%" stop-color="#ffb271"/>
+      <stop offset="100%" stop-color="#f77791"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0" stop-color="#783b7c"/>
+      <stop offset="100%" stop-color="#1b1836"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#ffb2a5" stop-opacity=".65"/>
+      <stop offset="100%" stop-color="#ffb2a5" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="sun-disc"><circle cx="1100" cy="253" r="135"/></clipPath>
+  </defs>
+
+  <rect width="1440" height="540" fill="url(#sky)"/>
+  <ellipse cx="1100" cy="258" rx="355" ry="295" fill="url(#halo)"/>
+  <circle cx="1100" cy="253" r="135" fill="url(#sun)"/>
+  <g clip-path="url(#sun-disc)" fill="#e46b93" opacity=".5">
+    <rect x="960" y="303" width="280" height="6"/>
+    <rect x="960" y="322" width="280" height="9"/>
+    <rect x="960" y="345" width="280" height="12"/>
+    <rect x="960" y="372" width="280" height="16"/>
+  </g>
+
+  <!-- Distant city skyline -->
+  <path d="M660 405V379h26v-30h25v-18h23v74h19v-92h38v92h27v-57h20v-22h22v79h27v-37h23v-49h28v86h32v-66h19v-32h24v98h31v-25h27v-48h28v73h23v-28h20v28h23v-61h26v61h24v-33h29v33h35v-52h30v52h23v-31h33v31h25v-43h30v43h25v-22h35v22h26v135H660Z" fill="#34224b" opacity=".65"/>
+  <g fill="#ffc7a5" opacity=".45">
+    <rect x="768" y="342" width="3" height="6"/><rect x="783" y="342" width="3" height="6"/>
+    <rect x="889" y="368" width="3" height="6"/><rect x="903" y="368" width="3" height="6"/>
+    <rect x="1182" y="369" width="3" height="6"/><rect x="1196" y="369" width="3" height="6"/>
+    <rect x="1344" y="357" width="3" height="6"/><rect x="1359" y="357" width="3" height="6"/>
+  </g>
+
+  <rect x="0" y="404" width="1440" height="136" fill="url(#water)"/>
+  <g stroke="#f9a7b2" opacity=".28" stroke-linecap="round">
+    <path d="M770 422h380M940 436h360M800 451h290M1100 464h310M670 477h390" stroke-width="3"/>
+    <path d="M1040 412h240M890 440h150M1190 485h210" stroke-width="2"/>
+  </g>
+  <path d="M0 505Q260 484 475 514T930 506T1440 498V540H0Z" fill="#16172e" opacity=".76"/>
+
+  <!-- Smaller palm -->
+  <g fill="#17162c" stroke="#17162c" stroke-linecap="round">
+    <path d="M870 284Q865 381 920 515" fill="none" stroke-width="14"/>
+    <path d="M870 285Q814 231 749 249Q821 243 868 300Z" stroke="none"/>
+    <path d="M870 286Q806 269 771 309Q827 278 867 299Z" stroke="none"/>
+    <path d="M870 285Q860 218 812 192Q850 232 866 299Z" stroke="none"/>
+    <path d="M870 284Q923 225 992 243Q915 238 872 300Z" stroke="none"/>
+    <path d="M870 285Q939 274 966 322Q917 291 872 299Z" stroke="none"/>
+    <path d="M870 284Q878 227 919 201Q889 244 872 298Z" stroke="none"/>
+  </g>
+
+  <!-- Large foreground palm -->
+  <g fill="#101529" stroke="#101529" stroke-linecap="round">
+    <path d="M1260 186C1228 284 1250 380 1328 554" fill="none" stroke-width="24"/>
+    <path d="M1258 180C1189 105 1117 106 1051 127Q1167 116 1254 198Z" stroke="none"/>
+    <path d="M1259 183C1168 145 1086 174 1030 223Q1136 181 1254 200Z" stroke="none"/>
+    <path d="M1259 188C1177 192 1134 247 1110 304Q1175 239 1259 202Z" stroke="none"/>
+    <path d="M1258 180C1292 91 1370 75 1443 101Q1338 111 1262 200Z" stroke="none"/>
+    <path d="M1259 182C1332 147 1406 171 1460 211Q1358 178 1261 200Z" stroke="none"/>
+    <path d="M1260 185C1330 197 1384 250 1409 309Q1344 243 1259 202Z" stroke="none"/>
+    <path d="M1258 181C1235 106 1256 48 1309 19Q1270 92 1262 197Z" stroke="none"/>
+    <path d="M1258 181C1202 142 1170 71 1166 34Q1202 96 1262 196Z" stroke="none"/>
+  </g>
+</svg>

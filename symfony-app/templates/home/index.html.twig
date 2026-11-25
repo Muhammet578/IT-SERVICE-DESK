@@ -3,229 +3,300 @@
 {% block title %}Главная | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main class="py-4">
+
+    <div class="isd-home">
 
         {# Приветственный блок #}
-        <section
-            class="rounded-4 p-4 p-md-5 mb-4 text-white shadow-sm"
-            style="background: linear-gradient(125deg, #0d6efd, #173c85);"
-        >
+        <section class="isd-home-hero rounded-4 mb-5">
+
             <div class="row align-items-center g-4">
 
                 <div class="col-lg-8">
 
-                    <span class="badge bg-white text-primary mb-3 px-3 py-2">
-                        Система технической поддержки
+                    <span class="isd-home-eyebrow">
+                        ● СИСТЕМА ТЕХНИЧЕСКОЙ ПОДДЕРЖКИ
                     </span>
 
-                    <h1 class="display-5 fw-bold mb-3">
-                        {{ project_name }}
+                    <h1 class="display-5 fw-bold mt-4 mb-3">
+                        Поддержка сотрудников.
+                        <span class="isd-home-hero-highlight">
+                            Управление без хаоса.
+                        </span>
                     </h1>
 
-                    <p class="fs-5 text-white mb-4" style="opacity: 0.9;">
-                        Единое пространство для управления
-                        заявками, пользователями и рабочими
-                        процессами IT-поддержки.
+                    <p class="isd-home-hero-description fs-5 mb-4">
+                        IT Service Desk — единое пространство
+                        для управления заявками, сотрудниками
+                        и рабочими процессами технической поддержки.
                     </p>
 
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap gap-3">
 
-                        {# Заявки доступны всем авторизованным пользователям #}
                         <a
                             href="{{ path('app_tickets') }}"
-                            class="btn btn-light btn-lg fw-semibold"
+                            class="btn isd-home-hero-primary btn-lg"
                         >
                             Перейти к заявкам
+                            <span aria-hidden="true">→</span>
                         </a>
 
-                        {# Список пользователей — администратору #}
                         {% if is_granted('ROLE_ADMIN') %}
                             <a
                                 href="{{ path('app_users') }}"
-                                class="btn btn-outline-light btn-lg"
+                                class="btn isd-home-hero-secondary btn-lg"
                             >
                                 Пользователи
                             </a>
-                        {% endif %}
-
-                        {# Создание пользователей — менеджеру и администратору #}
-                        {% if is_granted('ROLE_MANAGER') %}
+                        {% elseif is_granted('ROLE_MANAGER') %}
                             <a
                                 href="{{ path('app_users_new') }}"
-                                class="btn btn-outline-light btn-lg"
+                                class="btn isd-home-hero-secondary btn-lg"
                             >
                                 + Новый пользователь
+                            </a>
+                        {% else %}
+                            <a
+                                href="{{ path('app_profile') }}"
+                                class="btn isd-home-hero-secondary btn-lg"
+                            >
+                                Мой профиль
                             </a>
                         {% endif %}
 
                     </div>
+
                 </div>
 
-                <div class="col-lg-4 text-center d-none d-lg-block">
-                    <div class="display-1" aria-hidden="true">
-                        🖥️
+                {# Декоративный блок #}
+                <div class="col-lg-4 d-none d-lg-block">
+
+                    <div class="isd-home-hero-visual">
+
+                        <div class="isd-home-visual-icon">
+                            IT
+                        </div>
+
+                        <div class="isd-home-visual-title">
+                            SERVICE DESK
+                        </div>
+
+                        <div class="isd-home-visual-subtitle">
+                            Управление IT-поддержкой
+                        </div>
+
+                        <div class="isd-home-visual-tags">
+                            <span>Заявки</span>
+                            <span>Статусы</span>
+                            <span>Приоритеты</span>
+                        </div>
+
                     </div>
-                    <p class="mt-3 mb-0 text-white-50">
-                        IT Service Management
-                    </p>
+
                 </div>
 
             </div>
+
         </section>
 
         {# Возможности системы #}
-        <section class="mb-4">
+        <section class="mb-5">
 
-            <div class="mb-4">
-                <h2 class="h3 fw-bold mb-2">
-                    Возможности системы
-                </h2>
+            <div class="isd-home-section-heading mb-4">
 
-                <p class="text-muted">
-                    Основные инструменты для организации
-                    технической поддержки.
-                </p>
+                <div>
+                    <span class="isd-home-section-kicker">
+                        ВОЗМОЖНОСТИ
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-2 mb-2">
+                        Всё необходимое для работы
+                    </h2>
+
+                    <p class="isd-home-section-description mb-0">
+                        Основные инструменты управления технической поддержкой.
+                    </p>
+                </div>
+
             </div>
 
             <div class="row g-4">
 
-                {# Заявки #}
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-4">
-                        <div class="card-body p-4">
+                {# Карточка заявок #}
+                <div class="col-md-6 col-xl-4">
 
-                            <div class="fs-1 mb-3" aria-hidden="true">
+                    <div class="card isd-home-feature h-100">
+
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <div class="isd-home-feature-icon isd-home-icon-ticket">
                                 🎫
                             </div>
 
-                            <h3 class="h5 fw-bold">
+                            <h3 class="h5 fw-bold mt-4 mb-3">
                                 Управление заявками
                             </h3>
 
-                            <p class="text-muted">
-                                Просмотр обращений сотрудников,
-                                категорий, приоритетов и статусов
-                                заявок технической поддержки.
+                            <p class="isd-home-feature-description mb-4">
+                                Отслеживайте обращения,
+                                просматривайте категории,
+                                приоритеты и текущие статусы заявок.
                             </p>
 
                             <a
                                 href="{{ path('app_tickets') }}"
-                                class="btn btn-outline-primary btn-sm"
+                                class="isd-home-feature-link mt-auto"
                             >
-                                Перейти к заявкам
+                                Открыть заявки
+                                <span aria-hidden="true">→</span>
                             </a>
 
                         </div>
+
                     </div>
+
                 </div>
 
-                {# Пользователи #}
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-4">
-                        <div class="card-body p-4">
+                {# Карточка пользователей #}
+                <div class="col-md-6 col-xl-4">
 
-                            <div class="fs-1 mb-3" aria-hidden="true">
+                    <div class="card isd-home-feature h-100">
+
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <div class="isd-home-feature-icon isd-home-icon-users">
                                 👥
                             </div>
 
-                            <h3 class="h5 fw-bold">
-                                Пользователи
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Пользователи и роли
                             </h3>
 
-                            <p class="text-muted">
+                            <p class="isd-home-feature-description mb-4">
                                 Управление учётными записями,
-                                ролями и доступом сотрудников
-                                к системе.
+                                ролями и разрешениями сотрудников
+                                в соответствии с правами доступа.
                             </p>
 
                             {% if is_granted('ROLE_ADMIN') %}
+
                                 <a
                                     href="{{ path('app_users') }}"
-                                    class="btn btn-outline-primary btn-sm"
+                                    class="isd-home-feature-link mt-auto"
                                 >
                                     Список пользователей
+                                    <span aria-hidden="true">→</span>
                                 </a>
 
                             {% elseif is_granted('ROLE_MANAGER') %}
+
                                 <a
                                     href="{{ path('app_users_new') }}"
-                                    class="btn btn-outline-primary btn-sm"
+                                    class="isd-home-feature-link mt-auto"
                                 >
-                                    Добавить пользователя
+                                    Создать пользователя
+                                    <span aria-hidden="true">→</span>
                                 </a>
 
                             {% else %}
+
                                 <a
                                     href="{{ path('app_profile') }}"
-                                    class="btn btn-outline-primary btn-sm"
+                                    class="isd-home-feature-link mt-auto"
                                 >
                                     Мой профиль
+                                    <span aria-hidden="true">→</span>
                                 </a>
+
                             {% endif %}
 
                         </div>
+
                     </div>
+
                 </div>
 
-                {# Безопасность #}
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-4">
-                        <div class="card-body p-4">
+                {# Карточка безопасности #}
+                <div class="col-md-6 col-xl-4">
 
-                            <div class="fs-1 mb-3" aria-hidden="true">
+                    <div class="card isd-home-feature h-100">
+
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <div class="isd-home-feature-icon isd-home-icon-security">
                                 🛡️
                             </div>
 
-                            <h3 class="h5 fw-bold">
-                                Надёжная архитектура
+                            <h3 class="h5 fw-bold mt-4 mb-3">
+                                Безопасность
                             </h3>
 
-                            <p class="text-muted mb-0">
-                                Symfony, Twig, Doctrine ORM,
-                                валидация форм, разграничение
-                                доступа и защита данных.
+                            <p class="isd-home-feature-description mb-4">
+                                Авторизация через Symfony Security,
+                                проверка ролей, TicketVoter,
+                                CSRF-защита и контроль активности аккаунтов.
                             </p>
 
+                            <a
+                                href="{{ path('app_about') }}"
+                                class="isd-home-feature-link mt-auto"
+                            >
+                                О проекте
+                                <span aria-hidden="true">→</span>
+                            </a>
+
                         </div>
+
                     </div>
+
                 </div>
 
             </div>
+
         </section>
 
-        {# Нижний информационный блок #}
-        <section class="card border-0 shadow-sm rounded-4">
-            <div class="card-body p-4">
+        {# Нижний блок быстрого перехода #}
+        <section class="card isd-home-bottom mb-4">
 
-                <div class="row align-items-center g-3">
+            <div class="card-body p-4 p-md-5">
+
+                <div class="row align-items-center g-4">
 
                     <div class="col-md-8">
 
-                        <h2 class="h5 fw-bold mb-2">
-                            Начните работу с системой
+                        <span class="isd-home-section-kicker">
+                            БЫСТРЫЙ ДОСТУП
+                        </span>
+
+                        <h2 class="h4 fw-bold mt-2 mb-2">
+                            Готовы приступить к работе?
                         </h2>
 
-                        <p class="text-muted mb-0">
-                            Откройте список доступных вам заявок,
-                            просмотрите их статусы и приступайте
-                            к работе с обращениями.
+                        <p class="isd-home-section-description mb-0">
+                            Перейдите к доступным вам заявкам,
+                            проверьте их статусы и продолжите
+                            работу с обращениями.
                         </p>
 
                     </div>
 
                     <div class="col-md-4 text-md-end">
+
                         <a
                             href="{{ path('app_tickets') }}"
-                            class="btn btn-primary px-4"
+                            class="btn isd-home-bottom-button px-4 py-2"
                         >
                             Начать работу
+                            <span aria-hidden="true">→</span>
                         </a>
+
                     </div>
 
                 </div>
 
             </div>
+
         </section>
 
-    </main>
+    </div>
+
 {% endblock %}

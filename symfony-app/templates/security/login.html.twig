@@ -1,32 +1,197 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Вход в систему | IT Service Desk{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+    <div class="isd-register isd-login">
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+        <div class="row justify-content-center align-items-stretch g-4">
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
+            {# Левая часть — информация о системе #}
+            <div class="col-lg-5">
+
+                <section class="isd-register-hero isd-login-hero rounded-4 h-100">
+
+                    <div class="isd-register-hero-icon" aria-hidden="true">
+                        🔐
+                    </div>
+
+                    <span class="isd-register-hero-label">
+                        IT SERVICE DESK
+                    </span>
+
+                    <h1 class="display-6 fw-bold mt-4 mb-3">
+                        Добро пожаловать
+                        <span class="isd-register-highlight">
+                            в систему поддержки.
+                        </span>
+                    </h1>
+
+                    <p class="isd-register-hero-description">
+                        Войдите в свою учётную запись, чтобы
+                        работать с заявками, отслеживать
+                        обращения и пользоваться доступными
+                        инструментами IT Service Desk.
+                    </p>
+
+                    <div class="isd-register-hero-divider"></div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Управление заявками
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Просмотр статистики
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Разграничение доступа по ролям
+                    </div>
+
+                    <div class="isd-login-hero-footer mt-4">
+                        Symfony Security · IT Service Management
+                    </div>
+
+                </section>
+
             </div>
-        #}
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+            {# Правая часть — форма входа #}
+            <div class="col-lg-6">
+
+                <section class="card isd-register-card isd-login-card h-100">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <div class="isd-login-lock mb-4" aria-hidden="true">
+                            🔑
+                        </div>
+
+                        <span class="isd-register-form-label">
+                            АВТОРИЗАЦИЯ
+                        </span>
+
+                        <h2 class="h3 fw-bold mt-2 mb-2">
+                            Вход в аккаунт
+                        </h2>
+
+                        <p class="isd-register-description mb-4">
+                            Введите email и пароль для доступа
+                            к системе.
+                        </p>
+
+                        {# Ошибка авторизации #}
+                        {% if error %}
+                            <div class="alert alert-danger isd-login-alert" role="alert">
+                                <strong>Не удалось войти.</strong>
+
+                                <div class="mt-1">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {# Форма Symfony Security #}
+                        <form
+                            method="post"
+                            action="{{ path('app_login') }}"
+                            class="isd-register-form"
+                        >
+
+                            {# Email #}
+                            <div class="isd-register-field mb-4">
+
+                                <label
+                                    for="username"
+                                    class="form-label fw-semibold"
+                                >
+                                    Электронная почта
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="username"
+                                    name="_username"
+                                    value="{{ last_username }}"
+                                    class="form-control isd-register-input"
+                                    placeholder="employee@example.com"
+                                    autocomplete="email"
+                                    required
+                                    autofocus
+                                >
+
+                            </div>
+
+                            {# Пароль #}
+                            <div class="isd-register-field mb-4">
+
+                                <label
+                                    for="password"
+                                    class="form-label fw-semibold"
+                                >
+                                    Пароль
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="_password"
+                                    class="form-control isd-register-input"
+                                    placeholder="Введите пароль"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                            </div>
+
+                            {# CSRF-защита Symfony #}
+                            <input
+                                type="hidden"
+                                name="_csrf_token"
+                                data-controller="csrf-protection"
+                                value="{{ csrf_token('authenticate') }}"
+                            >
+
+                            {# Подсказка #}
+                            <div class="isd-register-note mb-4">
+                                <span aria-hidden="true">🛡️</span>
+
+                                <span>
+                                    Для входа используйте учётную
+                                    запись, созданную администратором
+                                    или менеджером системы.
+                                </span>
+                            </div>
+
+                            {# Кнопка входа #}
+                            <button
+                                type="submit"
+                                class="btn isd-register-submit isd-login-submit w-100"
+                            >
+                                Войти в систему
+                                <span aria-hidden="true">→</span>
+                            </button>
+
+                        </form>
+
+                        <div class="isd-login-bottom mt-4 pt-4 text-center">
+                            <span class="isd-register-description small">
+                                Доступ предоставляется авторизованным сотрудникам.
+                            </span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
 {% endblock %}

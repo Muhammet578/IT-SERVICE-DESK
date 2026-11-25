@@ -1,25 +1,222 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}Регистрация пользователя | IT Service Desk{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="mb-4">Регистрация пользователя</h2>
 
-                {{ form_start(form) }}
+    <div class="isd-register">
 
-                    {{ form_row(form.name) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.plainPassword) }}
+        {# Заголовок страницы #}
+        <div class="mb-4">
+            <span class="isd-register-kicker">
+                УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ
+            </span>
 
-                    <button type="submit" class="btn btn-primary mt-3">
-                        Зарегистрироваться
-                    </button>
+            <h1 class="h2 fw-bold mt-2 mb-2">
+                Регистрация пользователя
+            </h1>
 
-                {{ form_end(form) }}
-            </div>
+            <p class="isd-register-description mb-0">
+                Создание новой учётной записи сотрудника
+                в системе IT Service Desk.
+            </p>
         </div>
+
+        <div class="row g-4 align-items-stretch">
+
+            {# Информационный блок #}
+            <div class="col-lg-5">
+
+                <section class="isd-register-hero rounded-4 h-100">
+
+                    <div class="isd-register-hero-icon" aria-hidden="true">
+                        👤
+                    </div>
+
+                    <span class="isd-register-hero-label">
+                        IT SERVICE DESK
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        Новый сотрудник.
+                        <span class="isd-register-highlight">
+                            Новые возможности.
+                        </span>
+                    </h2>
+
+                    <p class="isd-register-hero-description">
+                        Создайте учётную запись, чтобы сотрудник
+                        мог работать с заявками технической
+                        поддержки в соответствии со своими правами.
+                    </p>
+
+                    <div class="isd-register-hero-divider"></div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Учёт пользователей
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Разграничение доступа по ролям
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Защищённая авторизация
+                    </div>
+
+                </section>
+
+            </div>
+
+            {# Форма регистрации #}
+            <div class="col-lg-7">
+
+                <section class="card isd-register-card h-100">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <div class="mb-4">
+
+                            <span class="isd-register-form-label">
+                                НОВАЯ УЧЁТНАЯ ЗАПИСЬ
+                            </span>
+
+                            <h2 class="h4 fw-bold mt-2 mb-2">
+                                Данные пользователя
+                            </h2>
+
+                            <p class="isd-register-description mb-0">
+                                Заполните поля для регистрации сотрудника.
+                            </p>
+
+                        </div>
+
+                        {{ form_start(form, {
+                        'attr': {
+                            'class': 'isd-register-form'
+                        }
+                    }) }}
+
+                        {# Общие ошибки формы #}
+                        {{ form_errors(form) }}
+
+                        {# Имя #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_label(
+                                form.name,
+                                'Имя пользователя',
+                                {
+                                    'label_attr': {
+                                        'class': 'form-label fw-semibold'
+                                    }
+                                }
+                            ) }}
+
+                            {{ form_widget(form.name, {
+                                'attr': {
+                                    'class': 'form-control isd-register-input',
+                                    'placeholder': 'Введите имя сотрудника',
+                                    'autocomplete': 'name'
+                                }
+                            }) }}
+
+                            {{ form_errors(form.name) }}
+
+                        </div>
+
+                        {# Email #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_label(
+                                form.email,
+                                'Электронная почта',
+                                {
+                                    'label_attr': {
+                                        'class': 'form-label fw-semibold'
+                                    }
+                                }
+                            ) }}
+
+                            {{ form_widget(form.email, {
+                                'attr': {
+                                    'class': 'form-control isd-register-input',
+                                    'placeholder': 'employee@example.com',
+                                    'autocomplete': 'email'
+                                }
+                            }) }}
+
+                            {{ form_errors(form.email) }}
+
+                        </div>
+
+                        {# Пароль #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_label(
+                                form.plainPassword,
+                                'Пароль',
+                                {
+                                    'label_attr': {
+                                        'class': 'form-label fw-semibold'
+                                    }
+                                }
+                            ) }}
+
+                            {{ form_widget(form.plainPassword, {
+                                'attr': {
+                                    'class': 'form-control isd-register-input',
+                                    'placeholder': 'Введите пароль',
+                                    'autocomplete': 'new-password'
+                                }
+                            }) }}
+
+                            {{ form_errors(form.plainPassword) }}
+
+                        </div>
+
+                        <div class="isd-register-note mb-4">
+                            <span aria-hidden="true">🔒</span>
+
+                            <span>
+                                Используйте надёжный пароль
+                                для защиты учётной записи.
+                            </span>
+                        </div>
+
+                        {# Кнопки #}
+                        <div class="d-flex flex-wrap gap-3">
+
+                            <button
+                                type="submit"
+                                class="btn isd-register-submit"
+                            >
+                                Создать пользователя
+                                <span aria-hidden="true">→</span>
+                            </button>
+
+                            <a
+                                href="{{ path('app_dashboard') }}"
+                                class="btn isd-register-back"
+                            >
+                                Отмена
+                            </a>
+
+                        </div>
+
+                        {{ form_end(form) }}
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
     </div>
+
 {% endblock %}

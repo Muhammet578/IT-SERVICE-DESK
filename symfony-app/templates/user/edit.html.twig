@@ -1,38 +1,225 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Редактирование пользователя{% endblock %}
+{% block title %}
+    Редактирование пользователя | IT Service Desk
+{% endblock %}
 
 {% block body %}
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h1 class="h3 mb-4">
-                Редактирование пользователя #{{ user.id }}
-            </h1>
 
-            {{ form_start(form) }}
+    <div class="isd-register">
 
-                {{ form_errors(form) }}
+        {# Заголовок страницы #}
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 
-                <div class="mb-3">
-                    {{ form_row(form.name) }}
-                </div>
+            <div>
+                <span class="isd-register-kicker">
+                    УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ
+                </span>
 
-                <div class="mb-3">
-                    {{ form_row(form.email) }}
-                </div>
+                <h1 class="h2 fw-bold mt-2 mb-2">
+                    Редактирование пользователя
+                </h1>
 
-                <button type="submit" class="btn btn-primary">
-                    Сохранить изменения
-                </button>
+                <p class="isd-register-description mb-0">
+                    Изменение данных учётной записи
+                    пользователя #{{ user.id }}.
+                </p>
+            </div>
 
-                <a
-                    href="{{ path('app_users') }}"
-                    class="btn btn-secondary"
-                >
-                    Отмена
-                </a>
+            <a
+                href="{{ path('app_users') }}"
+                class="btn isd-register-back"
+            >
+                ← К списку пользователей
+            </a>
 
-            {{ form_end(form) }}
         </div>
+
+        <div class="row g-4 align-items-stretch">
+
+            {# Информационный блок #}
+            <div class="col-lg-5">
+
+                <section class="isd-register-hero rounded-4 h-100">
+
+                    <div
+                        class="isd-register-hero-icon"
+                        aria-hidden="true"
+                    >
+                        ✏️
+                    </div>
+
+                    <span class="isd-register-hero-label">
+                        IT SERVICE DESK
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        Управление
+                        <span class="isd-register-highlight">
+                            учётной записью.
+                        </span>
+                    </h2>
+
+                    <p class="isd-register-hero-description">
+                        Обновите имя или электронную почту
+                        сотрудника. После сохранения новые
+                        данные будут использоваться в системе.
+                    </p>
+
+                    <div class="isd-register-hero-divider"></div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">#</span>
+                        ID пользователя: {{ user.id }}
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Изменение имени сотрудника
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Обновление электронной почты
+                    </div>
+
+                    <div class="isd-register-info-item">
+                        <span aria-hidden="true">✓</span>
+                        Проверка введённых данных
+                    </div>
+
+                </section>
+
+            </div>
+
+            {# Форма редактирования #}
+            <div class="col-lg-7">
+
+                <section class="card isd-register-card h-100">
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <div class="mb-4">
+
+                            <span class="isd-register-form-label">
+                                РЕДАКТИРОВАНИЕ
+                            </span>
+
+                            <h2 class="h4 fw-bold mt-2 mb-2">
+                                Данные сотрудника
+                            </h2>
+
+                            <p class="isd-register-description mb-0">
+                                Измените необходимые поля
+                                и сохраните результат.
+                            </p>
+
+                        </div>
+
+                        {{ form_start(form, {
+                        'attr': {
+                            'class': 'isd-register-form'
+                        }
+                    }) }}
+
+                        {# Общие ошибки формы #}
+                        {{ form_errors(form) }}
+
+                        {# Имя #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_label(
+                                form.name,
+                                'Имя пользователя',
+                                {
+                                    'label_attr': {
+                                        'class': 'form-label fw-semibold'
+                                    }
+                                }
+                            ) }}
+
+                            {{ form_widget(form.name, {
+                                'attr': {
+                                    'class': 'form-control isd-register-input',
+                                    'placeholder': 'Введите имя сотрудника',
+                                    'autocomplete': 'name'
+                                }
+                            }) }}
+
+                            {{ form_errors(form.name) }}
+
+                        </div>
+
+                        {# Email #}
+                        <div class="isd-register-field mb-4">
+
+                            {{ form_label(
+                                form.email,
+                                'Электронная почта',
+                                {
+                                    'label_attr': {
+                                        'class': 'form-label fw-semibold'
+                                    }
+                                }
+                            ) }}
+
+                            {{ form_widget(form.email, {
+                                'attr': {
+                                    'class': 'form-control isd-register-input',
+                                    'placeholder': 'employee@example.com',
+                                    'autocomplete': 'email'
+                                }
+                            }) }}
+
+                            {{ form_errors(form.email) }}
+
+                        </div>
+
+                        {# Информационная подсказка #}
+                        <div class="isd-register-note mb-4">
+
+                            <span aria-hidden="true">ℹ️</span>
+
+                            <span>
+                                На этой странице можно изменить
+                                имя и электронную почту.
+
+                                Пароль и роль пользователя
+                                здесь не изменяются.
+                            </span>
+
+                        </div>
+
+                        {# Кнопки #}
+                        <div class="d-flex flex-wrap gap-3">
+
+                            <button
+                                type="submit"
+                                class="btn isd-register-submit"
+                            >
+                                Сохранить изменения
+                                <span aria-hidden="true">✓</span>
+                            </button>
+
+                            <a
+                                href="{{ path('app_users') }}"
+                                class="btn isd-register-back"
+                            >
+                                Отмена
+                            </a>
+
+                        </div>
+
+                        {{ form_end(form) }}
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
     </div>
+
 {% endblock %}

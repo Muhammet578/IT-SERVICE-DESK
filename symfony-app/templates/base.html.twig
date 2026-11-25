@@ -1,13 +1,39 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="classic">
     <head>
         <meta charset="UTF-8">
 
-        <title>{% block title %}IT-SERVICE-DESK{% endblock %}</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block title %}IT-SERVICE-DESK{% endblock %}
+        </title>
+
+        {# Восстанавливаем тему до отображения страницы #}
+        <script>
+            (() => {
+                let theme = "classic";
+
+                try {
+                    const savedTheme = localStorage.getItem("itdesk-theme");
+
+                    if (savedTheme === "classic" || savedTheme === "vice-city") {
+                        theme = savedTheme;
+                    }
+                } catch (error) {
+                    // Если localStorage недоступен,
+                    // используем светлую тему.
+                }
+
+                document.documentElement.dataset.theme = theme;
+            })();
+        </script>
 
         {% block stylesheets %}
+            {# Bootstrap 5 #}
             <link
                 rel="stylesheet"
                 href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}"
@@ -15,22 +41,34 @@
         {% endblock %}
 
         {% block javascripts %}
+            {# Symfony AssetMapper #}
             {{ importmap('app') }}
 
+            {# Bootstrap JavaScript #}
             <script
             src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"
-            defer>
-        </script>
+            defer
+        ></script>
+
+            {# Переключатель Classic / Vice City #}
+            <script
+            src="{{ asset('js/theme.js') }}"
+            defer
+        ></script>
         {% endblock %}
     </head>
 
-    <body class="bg-light">
+    <body>
 
+        {# Навигационная панель #}
         {% include 'partials/navbar.html.twig' %}
+
+        {# Уведомления #}
         <div class="container mt-4">
             {% include 'partials/flash.html.twig' %}
         </div>
 
+        {# Основное содержимое #}
         <main class="container py-4">
             {% block body %}
             {% endblock %}

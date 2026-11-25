@@ -1,263 +1,2862 @@
-/* body {
-    background-color: skyblue;
-} */
- /* ===== GTA 6 inspired navbar ===== */
+/* ================================================================
+   IT SERVICE DESK — unified stylesheet
+   Themes: Classic (default) / Vice City
+   Loaded through assets/app.js: import './styles/app.css';
+   ================================================================ */
 
- :root {
-     --gta-bg: #151729;
-     --gta-bg-soft: #1d2036;
-     --gta-pink: #ff4fd8;
-     --gta-purple: #8f4dff;
-     --gta-blue: #4da6ff;
-     --gta-orange: #ff9a3d;
-     --gta-text: #ffffff;
-     --gta-muted: #c9c9d4;
-     --gta-border: rgba(255, 255, 255, 0.08);
-     --gta-glow: 0 0 12px rgba(255, 79, 216, 0.35);
-     --gta-gradient: linear-gradient(135deg, #ff4fd8 0%, #8f4dff 45%, #4da6ff 75%, #ff9a3d 100%);
- }
+/* 1. THEME TOKENS ================================================= */
+:root,
+html[data-theme="classic"] {
+    color-scheme: light;
+    --ui-bg: #f3f6fc;
+    --ui-text: #25334b;
+    --ui-surface: #ffffff;
+    --ui-border: #e0e6f0;
+    --ui-muted: #68778c;
+    --ui-accent: #416fd9;
+    --ui-accent-hover: #315cc0;
+    --ui-accent-text: #ffffff;
+    --ui-hover: #edf2fb;
+    --ui-shadow: 0 8px 25px rgba(35, 53, 91, .07);
+    --ui-hero: linear-gradient(125deg, #416fd9, #204587);
+    --ui-nav-bg: #ffffff;
+    --ui-nav-text: #4a5870;
+    --ui-nav-active: #416fd9;
+    --ui-nav-hover: #edf2fb;
+    --ui-brand-text: #25334b;
+    --ui-brand-gradient: linear-gradient(135deg, #416fd9, #749af0);
+    --ui-focus-ring: rgba(65, 111, 217, .2);
+    --ui-transition: .45s ease;
+}
 
- .navbar-gta6 {
-     background:
-         linear-gradient(rgba(21, 23, 41, 0.92), rgba(21, 23, 41, 0.92)),
-         linear-gradient(135deg, #2b2141 0%, #1a1d33 50%, #2a1938 100%);
-     border-bottom: 1px solid var(--gta-border);
-     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
-     backdrop-filter: blur(8px);
- }
+html[data-theme="vice-city"] {
+    color-scheme: dark;
+    --ui-bg: #171527;
+    --ui-text: #f8f0ff;
+    --ui-surface: #29243c;
+    --ui-border: #514164;
+    --ui-muted: #c3b5d3;
+    --ui-accent: #ff69bb;
+    --ui-accent-hover: #f04da9;
+    --ui-accent-text: #24152b;
+    --ui-hover: #39304e;
+    --ui-shadow: 0 10px 35px rgba(0, 0, 0, .28);
+    --ui-hero: linear-gradient(125deg, #9c3eda, #e64e9e 52%, #f4906e);
+    --ui-nav-bg: rgba(22, 19, 39, .96);
+    --ui-nav-text: #ece0f4;
+    --ui-nav-active: #ffffff;
+    --ui-nav-hover: rgba(255, 105, 187, .12);
+    --ui-brand-text: #ffffff;
+    --ui-brand-gradient: linear-gradient(135deg, #ff4fd8 0%, #8f4dff 45%, #4da6ff 75%, #ff9a3d 100%);
+    --ui-focus-ring: rgba(255, 105, 187, .25);
+}
 
- .gta-brand-badge {
-     width: 44px;
-     height: 44px;
-     border-radius: 14px;
-     background: var(--gta-gradient);
-     color: #fff;
-     font-weight: 800;
-     font-size: 1.1rem;
-     box-shadow: 0 0 14px rgba(255, 79, 216, 0.35);
-     border: 1px solid rgba(255, 255, 255, 0.14);
- }
+/* 2. GLOBAL LAYOUT ================================================= */
+html {
+    min-height: 100%;
+}
 
- .gta-brand-text {
-     font-weight: 800;
-     letter-spacing: 0.5px;
-     color: #fff;
- }
+body {
+    min-height: 100vh;
+    background: var(--ui-bg) !important;
+    color: var(--ui-text);
+}
 
- .gta-brand-text .brand-accent {
-     background: var(--gta-gradient);
-     -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-     background-clip: text;
-     color: transparent;
- }
+html[data-theme="vice-city"] body {
+    background:
+        radial-gradient(ellipse at 85% 10%, rgba(252, 88, 166, .22), transparent 40%),
+        radial-gradient(ellipse at 10% 55%, rgba(121, 67, 218, .24), transparent 45%),
+        linear-gradient(145deg, #121423, #241833 65%, #382139) !important;
+    background-attachment: fixed !important;
+}
 
- .gta-link {
-     color: rgba(255, 255, 255, 0.82) !important;
-     border-radius: 12px;
-     transition: all 0.2s ease;
-     position: relative;
- }
+main h1,
+main h2,
+main h3 {
+    color: var(--ui-text);
+}
 
- .gta-link:hover {
-     color: #fff !important;
-     background: rgba(255, 255, 255, 0.05);
- }
+main .text-muted {
+    color: var(--ui-muted) !important;
+}
 
- .gta-link.active {
-     color: #fff !important;
-     background: rgba(255, 255, 255, 0.06);
-     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
- }
+/* Cards and form controls have a consistent theme in every section. */
+html[data-theme] main .card {
+    background: var(--ui-surface) !important;
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border) !important;
+    border-radius: 16px;
+    box-shadow: var(--ui-shadow);
+}
 
- .gta-link.active::after {
-     content: "";
-     position: absolute;
-     left: 12px;
-     right: 12px;
-     bottom: 4px;
-     height: 3px;
-     border-radius: 999px;
-     background: var(--gta-gradient);
- }
+html[data-theme] main .card-header {
+    background: var(--ui-surface) !important;
+    color: var(--ui-text);
+    border-bottom: 1px solid var(--ui-border);
+}
 
- .gta-user-box {
-     background: rgba(255, 255, 255, 0.04);
-     border: 1px solid var(--gta-border);
-     border-radius: 16px;
-     padding: 0.55rem 0.9rem;
-     box-shadow: var(--gta-glow);
- }
+main .card:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .13);
+}
 
- .gta-user-name {
-     color: #fff;
-     font-weight: 700;
- }
+html[data-theme="vice-city"] main .card:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .26), 0 0 25px rgba(255, 79, 216, .12);
+}
 
- .gta-user-email {
-     color: var(--gta-muted);
-     font-size: 0.85rem;
- }
+html[data-theme] main .table {
+    --bs-table-bg: var(--ui-surface);
+    --bs-table-color: var(--ui-text);
+    --bs-table-border-color: var(--ui-border);
+    --bs-table-hover-bg: var(--ui-hover);
+    --bs-table-hover-color: var(--ui-text);
+}
 
- .gta-user-role {
-     background: var(--gta-gradient);
-     -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-     background-clip: text;
-     color: transparent;
-     font-size: 0.85rem;
-     font-weight: 700;
- }
+html[data-theme] main .table-light {
+    --bs-table-bg: var(--ui-hover);
+    --bs-table-color: var(--ui-text);
+    --bs-table-border-color: var(--ui-border);
+}
 
- .gta-auth-badge {
-     background: linear-gradient(135deg, #1fd68b, #26b36b);
-     color: #fff;
-     border-radius: 999px;
-     padding: 0.22rem 0.65rem;
-     font-size: 0.75rem;
-     font-weight: 700;
- }
+html[data-theme] main .form-control,
+html[data-theme] main .form-select {
+    background-color: var(--ui-surface);
+    color: var(--ui-text);
+    border-color: var(--ui-border);
+}
 
- .btn-gta-primary {
-     background: var(--gta-gradient);
-     border: none;
-     color: #fff;
-     box-shadow: 0 0 14px rgba(143, 77, 255, 0.25);
- }
+html[data-theme] main .form-control:focus,
+html[data-theme] main .form-select:focus {
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 3px var(--ui-focus-ring);
+}
 
- .btn-gta-primary:hover {
-     color: #fff;
-     filter: brightness(1.06);
- }
+html[data-theme] main .form-control::placeholder {
+    color: var(--ui-muted);
+}
 
- .btn-gta-outline {
-     border: 1px solid rgba(255, 255, 255, 0.18);
-     color: #fff;
-     background: rgba(255, 255, 255, 0.04);
- }
+html[data-theme] main .page-link {
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    border-color: var(--ui-border);
+    border-radius: 8px;
+    margin: 0 3px;
+}
 
- .btn-gta-outline:hover {
-     color: #fff;
-     background: rgba(255, 255, 255, 0.09);
- }
+html[data-theme] main .page-link:hover {
+    background: var(--ui-hover);
+}
 
- .btn-gta-danger {
-     border: 1px solid rgba(255, 79, 216, 0.45);
-     color: #fff;
-     background: rgba(255, 79, 216, 0.08);
- }
+html[data-theme] main .page-item.active .page-link {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: var(--ui-accent-text);
+}
 
- .btn-gta-danger:hover {
-     color: #fff;
-     background: rgba(255, 79, 216, 0.16);
-     box-shadow: 0 0 10px rgba(255, 79, 216, 0.25);
- }
+.isd-hero {
+    background: var(--ui-hero) !important;
+    color: #ffffff;
+}
 
- .navbar-gta6 .navbar-toggler {
-     border: 1px solid rgba(255, 255, 255, 0.1);
-     border-radius: 12px;
-     background: rgba(255, 255, 255, 0.04);
- }
+main .isd-hero h1,
+main .isd-hero h2,
+main .isd-hero h3 {
+    color: #ffffff !important;
+}
 
- .navbar-gta6 .navbar-toggler:focus {
-     box-shadow: 0 0 0 0.2rem rgba(255, 79, 216, 0.2);
- }
+/* 3. NAVBAR ======================================================== */
+.navbar-gta6 {
+    background: var(--ui-nav-bg) !important;
+    border-bottom: 1px solid var(--ui-border);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, .06);
+    backdrop-filter: blur(8px);
+}
 
- /* =====================================
-   GTA VI / VICE CITY BACKGROUND
-===================================== */
+html[data-theme="vice-city"] .navbar-gta6 {
+    border-bottom-color: rgba(255, 105, 187, .24);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .28);
+}
 
- html {
-     min-height: 100%;
- }
+.gta-brand-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--ui-brand-gradient);
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 800;
+    border: 1px solid rgba(255, 255, 255, .14);
+}
 
- body {
-     min-height: 100vh;
+html[data-theme="vice-city"] .gta-brand-badge {
+    box-shadow: 0 0 14px rgba(255, 79, 216, .35);
+}
 
-     background:
-         radial-gradient(ellipse at 85% 12%,
-             rgba(255, 100, 165, 0.27),
-             transparent 38%),
+.gta-brand-text {
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--ui-brand-text);
+}
 
-         radial-gradient(ellipse at 12% 45%,
-             rgba(139, 76, 255, 0.28),
-             transparent 48%),
+.gta-brand-text .brand-accent {
+    background: var(--ui-brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
 
-         radial-gradient(ellipse at 65% 95%,
-             rgba(255, 145, 95, 0.17),
-             transparent 40%),
+.gta-link {
+    position: relative;
+    color: var(--ui-nav-text) !important;
+    border-radius: 12px;
+}
 
-         linear-gradient(145deg,
-             #111321 0%,
-             #19172d 40%,
-             #241a3b 75%,
-             #321c39 100%) !important;
+.gta-link:hover,
+.gta-link.active {
+    background: var(--ui-nav-hover);
+    color: var(--ui-nav-active) !important;
+}
 
-     background-attachment: fixed !important;
-     color: #f5f1ff;
- }
+.gta-link.active::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--ui-brand-gradient);
+}
 
- /* Заголовки на тёмном фоне */
+.gta-auth-badge {
+    display: inline-block;
+    padding: .22rem .65rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #1bba7c, #168657);
+    color: #ffffff;
+    font-size: .75rem;
+    font-weight: 700;
+}
 
- main h1,
- main>.mb-4 h1 {
-     color: #ffffff;
-     font-weight: 700;
- }
+.navbar-gta6 .navbar-toggler {
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    background: var(--ui-hover);
+}
 
- /* Подписи над карточками */
+.navbar-gta6 .navbar-toggler:focus {
+    box-shadow: 0 0 0 .2rem var(--ui-focus-ring);
+}
 
- main>.mb-4 .text-muted {
-     color: #dccce7 !important;
- }
+html[data-theme="vice-city"] .navbar-toggler-icon {
+    filter: invert(1);
+}
 
- /* Карточки остаются светлыми и читаемыми */
+/* Header buttons */
+.btn-gta-primary {
+    background: var(--ui-accent);
+    border: 1px solid transparent;
+    color: var(--ui-accent-text);
+    font-weight: 600;
+}
 
- main .card {
-     background: rgba(255, 255, 255, 0.97);
-     color: #212529;
+html[data-theme="vice-city"] .btn-gta-primary {
+    background: var(--ui-brand-gradient);
+    color: #26172a;
+    box-shadow: 0 0 14px rgba(143, 77, 255, .25);
+}
 
-     border: 1px solid rgba(255, 255, 255, 0.35);
+.btn-gta-primary:hover {
+    background: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+}
 
-     border-radius: 16px;
+html[data-theme="vice-city"] .btn-gta-primary:hover {
+    background: var(--ui-brand-gradient);
+    color: #26172a;
+    filter: brightness(1.06);
+}
 
-     box-shadow:
-         0 8px 32px rgba(0, 0, 0, 0.22),
-         0 0 22px rgba(180, 80, 255, 0.08);
- }
+.btn-gta-outline {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
 
- /* Плавное свечение карточек при наведении */
+.btn-gta-outline:hover {
+    background: var(--ui-hover);
+    color: var(--ui-text);
+}
 
- main .card:hover {
-     box-shadow:
-         0 12px 35px rgba(0, 0, 0, 0.26),
-         0 0 25px rgba(255, 79, 216, 0.12);
+html[data-theme="classic"] .btn-gta-danger {
+    background: #fff5f5;
+    border: 1px solid #dc3545;
+    color: #b42332;
+    box-shadow: none;
+    font-weight: 600;
+}
 
-     transition: box-shadow 0.25s ease;
- }
+html[data-theme="classic"] .btn-gta-danger:hover,
+html[data-theme="classic"] .btn-gta-danger:focus-visible {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, .2);
+}
 
- /* Номера страниц */
+html[data-theme="vice-city"] .btn-gta-danger {
+    background: rgba(255, 79, 216, .12);
+    border: 1px solid rgba(255, 79, 216, .65);
+    color: #ffffff;
+    font-weight: 600;
+}
 
- .pagination .page-link {
-     border-radius: 8px;
-     margin: 0 3px;
- }
+html[data-theme="vice-city"] .btn-gta-danger:hover,
+html[data-theme="vice-city"] .btn-gta-danger:focus-visible {
+    background: #d83b9e;
+    border-color: #d83b9e;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 79, 216, .35);
+}
 
- .pagination .page-item.active .page-link {
-     background: linear-gradient(135deg,
-             #ff4fd8,
-             #8f4dff);
-     border-color: transparent;
- }
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 118px;
+    padding: .5rem .85rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
 
- /* Улучшенная адаптация */
+.theme-toggle:hover {
+    background: var(--ui-hover);
+    color: var(--ui-text);
+    border-color: var(--ui-accent);
+}
 
- @media (max-width: 768px) {
-     main .card {
-         border-radius: 12px;
-     }
+.theme-toggle:focus-visible {
+    outline: 3px solid var(--ui-accent);
+    outline-offset: 3px;
+}
 
-     body {
-         background-attachment: scroll !important;
-     }
- }
+/* 4. PROFILE DROPDOWN ============================================== */
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-dropdown-toggle {
+    padding: .4rem .3rem;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ui-text);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.profile-dropdown-toggle:hover {
+    color: var(--ui-accent);
+}
+
+.profile-dropdown-toggle:focus-visible {
+    outline: 2px solid var(--ui-accent);
+    outline-offset: 2px;
+}
+
+.profile-dropdown-menu {
+    min-width: 270px;
+    max-width: min(320px, calc(100vw - 2rem));
+    margin-top: 0;
+    padding: 1rem;
+    z-index: 1050;
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    border: 1px solid var(--ui-border);
+    border-radius: 16px;
+    box-shadow: var(--ui-shadow);
+}
+
+.profile-dropdown-label {
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--ui-muted);
+}
+
+.profile-dropdown-name {
+    margin-top: 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ui-text);
+    overflow-wrap: anywhere;
+}
+
+.profile-dropdown-email {
+    margin-top: 4px;
+    font-size: .85rem;
+    color: var(--ui-text);
+    overflow-wrap: anywhere;
+}
+
+.profile-dropdown-role {
+    margin-top: 4px;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--ui-accent);
+}
+
+.profile-dropdown-divider {
+    margin: 1rem 0;
+    border-color: var(--ui-border);
+    opacity: 1;
+}
+
+@media (min-width: 992px) and (hover: hover) {
+    .profile-dropdown:hover>.profile-dropdown-menu {
+        display: block;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .profile-dropdown-menu {
+        position: static !important;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* 5. HOME PAGE ===================================================== */
+.isd-home {
+    color: var(--ui-text);
+}
+
+.isd-home-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 3.5rem;
+    background: var(--ui-hero) !important;
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+.isd-home-hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 400px;
+    height: 400px;
+    right: -150px;
+    top: -170px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .13);
+    filter: blur(30px);
+    pointer-events: none;
+}
+
+main .isd-home-hero h1,
+main .isd-home-hero h2,
+main .isd-home-hero h3 {
+    color: #ffffff !important;
+}
+
+.isd-home-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: .5rem .9rem;
+    border: 1px solid rgba(255, 255, 255, .28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    color: #ffffff;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+}
+
+.isd-home-hero-highlight {
+    display: block;
+    color: #d8e8ff;
+}
+
+html[data-theme="vice-city"] .isd-home-hero-highlight {
+    color: #ffe6b6;
+}
+
+.isd-home-hero-description {
+    max-width: 650px;
+    color: rgba(255, 255, 255, .88);
+    line-height: 1.7;
+}
+
+.isd-home-hero-primary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .75rem;
+    border: 1px solid #ffffff;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #25437d;
+    font-weight: 700;
+}
+
+.isd-home-hero-primary:hover {
+    border-color: #ffffff;
+    background: #ffffff;
+    color: #25437d;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .14);
+}
+
+html[data-theme="vice-city"] .isd-home-hero-primary,
+html[data-theme="vice-city"] .isd-home-hero-primary:hover {
+    color: #702764;
+}
+
+.isd-home-hero-secondary {
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .08);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.isd-home-hero-secondary:hover {
+    background: rgba(255, 255, 255, .2);
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.isd-home-hero-visual {
+    padding: 2rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .24);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .12);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .13);
+    backdrop-filter: blur(12px);
+    text-align: center;
+}
+
+.isd-home-visual-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 82px;
+    height: 82px;
+    margin: 0 auto 1.4rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .95);
+    color: #416fd9;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -.08em;
+}
+
+html[data-theme="vice-city"] .isd-home-visual-icon {
+    background: linear-gradient(135deg, #ff82c6, #e99bfa, #ffbd8c);
+    color: #28172b;
+}
+
+.isd-home-visual-title {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: .05em;
+}
+
+.isd-home-visual-subtitle {
+    margin-top: .3rem;
+    color: rgba(255, 255, 255, .82);
+    font-size: .85rem;
+}
+
+.isd-home-visual-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: 1.5rem;
+}
+
+.isd-home-visual-tags span {
+    padding: .35rem .65rem;
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .12);
+    color: #ffffff;
+    font-size: .75rem;
+}
+
+.isd-home-section-kicker {
+    color: var(--ui-accent);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+}
+
+.isd-home-section-description,
+.isd-home-feature-description {
+    color: var(--ui-muted);
+    line-height: 1.7;
+}
+
+.isd-home .isd-home-feature:hover {
+    transform: translateY(-5px);
+    border-color: var(--ui-accent) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .12);
+}
+
+.isd-home-feature-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    font-size: 1.9rem;
+}
+
+.isd-home-icon-ticket {
+    background: rgba(74, 126, 236, .14);
+}
+
+.isd-home-icon-users {
+    background: rgba(175, 96, 230, .14);
+}
+
+.isd-home-icon-security {
+    background: rgba(47, 176, 133, .14);
+}
+
+.isd-home-feature-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    width: fit-content;
+    color: var(--ui-accent);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.isd-home-feature-link:hover {
+    color: var(--ui-accent);
+    text-decoration: underline;
+}
+
+html[data-theme="classic"] .isd-home-feature-link,
+html[data-theme="classic"] .isd-home-feature-link:hover {
+    color: #315ebd;
+}
+
+.isd-home .isd-home-bottom {
+    overflow: hidden;
+}
+
+.isd-home-bottom-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    border: 1px solid var(--ui-accent);
+    border-radius: 12px;
+    background: var(--ui-accent);
+    color: var(--ui-accent-text);
+    font-weight: 700;
+}
+
+.isd-home-bottom-button:hover {
+    background: var(--ui-accent-hover);
+    border-color: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+}
+
+html[data-theme="vice-city"] .isd-home-hero {
+    box-shadow: 0 15px 45px rgba(0, 0, 0, .28), 0 0 30px rgba(235, 85, 179, .12);
+}
+
+/* 6. DASHBOARD ===================================================== */
+.isd-dashboard {
+    color: var(--ui-text);
+}
+
+.isd-dashboard-kicker {
+    color: var(--ui-accent);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.isd-dashboard-description {
+    color: var(--ui-muted);
+    line-height: 1.65;
+}
+
+.isd-dashboard-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+    background: var(--ui-hero);
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+.isd-dashboard-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -70px;
+    top: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    filter: blur(25px);
+    pointer-events: none;
+}
+
+main .isd-dashboard-hero h2 {
+    color: #ffffff !important;
+}
+
+.isd-dashboard-hero p {
+    color: rgba(255, 255, 255, .88);
+    line-height: 1.65;
+}
+
+.isd-dashboard-hero-label {
+    display: inline-flex;
+    padding: .4rem .8rem;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .1);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+}
+
+.isd-dashboard-period-indicator {
+    display: inline-block;
+    min-width: 160px;
+    padding: 1rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .14);
+    text-align: center;
+    backdrop-filter: blur(8px);
+}
+
+.isd-dashboard-period-caption {
+    display: block;
+    color: rgba(255, 255, 255, .8);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .09em;
+}
+
+.isd-dashboard-period-value {
+    margin-top: .4rem;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.isd-dashboard-action,
+.isd-about-action {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .65rem;
+    padding: .65rem 1.2rem;
+    border: 1px solid var(--ui-accent);
+    border-radius: 12px;
+    background: var(--ui-accent);
+    color: var(--ui-accent-text);
+    font-weight: 700;
+}
+
+.isd-dashboard-action:hover,
+.isd-about-action:hover {
+    background: var(--ui-accent-hover);
+    border-color: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+}
+
+.isd-dashboard-outline {
+    padding: .65rem 1.2rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    font-weight: 600;
+}
+
+.isd-dashboard-outline:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+.isd-dashboard .isd-dashboard-stat {
+    position: relative;
+    overflow: hidden;
+}
+
+.isd-dashboard .isd-dashboard-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .15);
+}
+
+.isd-dashboard-stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 4px;
+    background: var(--stat-accent);
+}
+
+.isd-stat-users {
+    --stat-accent: #7776e9;
+}
+
+.isd-stat-tickets {
+    --stat-accent: #4796ec;
+}
+
+.isd-stat-open {
+    --stat-accent: #e4a649;
+}
+
+.isd-stat-closed {
+    --stat-accent: #37b989;
+}
+
+.isd-dashboard-stat-label {
+    color: var(--ui-muted);
+    font-size: .85rem;
+    font-weight: 600;
+}
+
+.isd-dashboard-stat-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--ui-hover);
+    font-size: 1.35rem;
+}
+
+.isd-dashboard-stat-value {
+    color: var(--ui-text);
+    font-size: clamp(2rem, 3vw, 2.65rem);
+    font-weight: 800;
+    letter-spacing: -.035em;
+    line-height: 1.1;
+}
+
+.isd-dashboard-stat-note {
+    margin-top: .55rem;
+    color: var(--ui-muted);
+    font-size: .78rem;
+}
+
+.isd-dashboard-average-number {
+    padding: .85rem 1.3rem;
+    border-radius: 14px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: 2rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.isd-dashboard .isd-dashboard-panel {
+    overflow: hidden;
+}
+
+.isd-dashboard .isd-dashboard-panel .table th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-muted);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.isd-dashboard .isd-dashboard-panel .table td {
+    padding-top: .9rem;
+    padding-bottom: .9rem;
+    color: var(--ui-text);
+}
+
+.isd-dashboard-table-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    margin-right: .65rem;
+    border-radius: 8px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: .75rem;
+    font-weight: 800;
+}
+
+.isd-dashboard .isd-dashboard-links .list-group-item {
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    border-color: var(--ui-border);
+}
+
+.isd-dashboard .isd-dashboard-links .list-group-item:hover {
+    background: var(--ui-hover);
+    color: var(--ui-text);
+}
+
+html[data-theme="vice-city"] .isd-dashboard-hero {
+    box-shadow: 0 14px 40px rgba(0, 0, 0, .3), 0 0 30px rgba(255, 105, 187, .11);
+}
+
+html[data-theme="vice-city"] .isd-dashboard-stat-icon {
+    background: rgba(255, 255, 255, .07);
+}
+
+/* 7. ABOUT PAGE ==================================================== */
+.isd-about {
+    color: var(--ui-text);
+}
+
+.isd-about-kicker {
+    color: var(--ui-accent);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+}
+
+.isd-about-description {
+    color: var(--ui-muted);
+    line-height: 1.75;
+}
+
+.isd-about-description strong {
+    color: var(--ui-text);
+}
+
+.isd-about-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding: 3.5rem;
+    background: var(--ui-hero);
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+.isd-about-hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 400px;
+    height: 400px;
+    right: -150px;
+    top: -180px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .14);
+    filter: blur(35px);
+    pointer-events: none;
+}
+
+main .isd-about-hero h1,
+main .isd-about-hero h2 {
+    color: #ffffff !important;
+}
+
+.isd-about-hero-highlight {
+    display: block;
+    color: #dceaff;
+}
+
+html[data-theme="vice-city"] .isd-about-hero-highlight {
+    color: #ffe2b5;
+}
+
+.isd-about-hero-label {
+    display: inline-flex;
+    padding: .5rem .9rem;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.isd-about-hero-description {
+    max-width: 650px;
+    color: rgba(255, 255, 255, .9);
+    line-height: 1.7;
+}
+
+.isd-about-hero-primary,
+.isd-about-hero-secondary {
+    padding: .75rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.isd-about-hero-primary {
+    border: 1px solid #ffffff;
+    background: #ffffff;
+    color: #25437d;
+}
+
+.isd-about-hero-primary:hover {
+    background: #f0f4ff;
+    color: #25437d;
+}
+
+html[data-theme="vice-city"] .isd-about-hero-primary,
+html[data-theme="vice-city"] .isd-about-hero-primary:hover {
+    color: #702764;
+}
+
+.isd-about-hero-secondary {
+    border: 1px solid rgba(255, 255, 255, .6);
+    background: rgba(255, 255, 255, .08);
+    color: #ffffff;
+}
+
+.isd-about-hero-secondary:hover {
+    background: rgba(255, 255, 255, .2);
+    color: #ffffff;
+}
+
+.isd-about-hero-visual {
+    padding: 2rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, .12);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, .12);
+    backdrop-filter: blur(12px);
+    text-align: center;
+}
+
+.isd-about-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.4rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, .18);
+    font-size: 2.4rem;
+}
+
+.isd-about-visual-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+}
+
+.isd-about-visual-description {
+    margin-top: .5rem;
+    color: rgba(255, 255, 255, .8);
+    font-size: .85rem;
+}
+
+.isd-about-visual-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 1.5rem;
+}
+
+.isd-about-visual-tags span {
+    padding: .35rem .65rem;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .1);
+    font-size: .75rem;
+}
+
+.isd-about .isd-about-feature:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, .12);
+}
+
+.isd-about-feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--ui-hover);
+    font-size: 2rem;
+}
+
+.isd-about-role {
+    height: 100%;
+    padding: 1.3rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: var(--ui-hover);
+}
+
+.isd-about-role-dot {
+    width: 10px;
+    height: 10px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+}
+
+.isd-role-user {
+    background: #4d95ed;
+}
+
+.isd-role-tech {
+    background: #36b99d;
+}
+
+.isd-role-manager {
+    background: #efb45f;
+}
+
+.isd-role-admin {
+    background: #e66da5;
+}
+
+.isd-about-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.isd-about-tech-item {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 1.2rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: var(--ui-hover);
+}
+
+.isd-about-tech-item span {
+    color: var(--ui-muted);
+    font-size: .8rem;
+}
+
+.isd-about-tech-item strong {
+    color: var(--ui-text);
+    font-size: 1rem;
+}
+
+html[data-theme="vice-city"] .isd-about-hero {
+    box-shadow: 0 15px 45px rgba(0, 0, 0, .3), 0 0 30px rgba(255, 105, 187, .12);
+}
+
+/* 8. SMOOTH THEME TRANSITIONS ====================================== */
+/* View Transitions can animate gradient changes between full-page snapshots. */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 550ms;
+    animation-timing-function: ease-in-out;
+}
+
+body,
+.navbar-gta6,
+.gta-link,
+.gta-brand-badge,
+.gta-brand-text,
+.theme-toggle,
+.profile-dropdown-menu,
+.btn-gta-primary,
+.btn-gta-danger,
+main .card,
+main .card-header,
+main .table,
+main .form-control,
+main .form-select,
+main .page-link,
+.isd-home-feature,
+.isd-home-hero,
+.isd-home-bottom,
+.isd-dashboard-stat,
+.isd-dashboard-hero,
+.isd-about-feature,
+.isd-about-hero {
+    transition:
+        background-color var(--ui-transition),
+        color var(--ui-transition),
+        border-color var(--ui-transition),
+        box-shadow var(--ui-transition),
+        transform .25s ease;
+}
+
+/* 9. RESPONSIVE / ACCESSIBILITY ==================================== */
+@media (max-width: 991.98px) {
+    .isd-home-hero {
+        padding: 2.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    html[data-theme="vice-city"] body {
+        background-attachment: scroll !important;
+    }
+
+    main .card {
+        border-radius: 12px;
+    }
+
+    .isd-dashboard-hero {
+        padding: 1.75rem;
+    }
+
+    .isd-dashboard-period-indicator {
+        width: 100%;
+    }
+
+    .isd-dashboard-average-number {
+        width: 100%;
+        text-align: center;
+    }
+
+    .isd-about-hero {
+        padding: 2rem;
+    }
+
+    .isd-about-tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-toggle {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .isd-home-hero {
+        padding: 1.75rem;
+    }
+
+    .isd-home-hero h1 {
+        font-size: 2rem;
+    }
+
+    .isd-home-hero-primary,
+    .isd-home-hero-secondary {
+        width: 100%;
+    }
+
+    .isd-home-feature-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .isd-about-hero {
+        padding: 1.5rem;
+    }
+
+    .isd-about-hero h1 {
+        font-size: 2rem;
+    }
+
+    .isd-about-hero-primary,
+    .isd-about-hero-secondary,
+    .isd-about-action {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: .01ms;
+    }
+
+    body,
+    .navbar-gta6,
+    .gta-link,
+    .gta-brand-badge,
+    .gta-brand-text,
+    .theme-toggle,
+    .profile-dropdown-menu,
+    .btn-gta-primary,
+    .btn-gta-danger,
+    main .card,
+    main .card-header,
+    main .table,
+    main .form-control,
+    main .form-select,
+    main .page-link,
+    .isd-home-feature,
+    .isd-home-hero,
+    .isd-home-bottom,
+    .isd-dashboard-stat,
+    .isd-dashboard-hero,
+    .isd-about-feature,
+    .isd-about-hero {
+        transition: none !important;
+    }
+}
+
+/* ===========================================
+   IT SERVICE DESK — PROFILE
+   CLASSIC / VICE CITY
+=========================================== */
+
+.isd-profile {
+    color: var(--ui-text);
+}
+
+.isd-profile-kicker {
+    color: var(--ui-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-profile-description {
+    color: var(--ui-muted);
+    line-height: 1.65;
+}
+
+/* Шапка профиля */
+
+.isd-profile-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+    background: var(--ui-hero);
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+.isd-profile-hero::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: -140px;
+    right: -90px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    filter: blur(25px);
+    pointer-events: none;
+}
+
+main .isd-profile-hero h2 {
+    color: #ffffff !important;
+    overflow-wrap: anywhere;
+}
+
+/* Аватар с первой буквой имени */
+
+.isd-profile-avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+
+    width: 96px;
+    height: 96px;
+
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 26px;
+
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+
+    color: #ffffff;
+    font-size: 2.7rem;
+    font-weight: 800;
+}
+
+.isd-profile-hero-label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-profile-hero-email {
+    color: rgba(255, 255, 255, 0.88);
+    overflow-wrap: anywhere;
+}
+
+.isd-profile-hero-role {
+    display: inline-flex;
+    padding: 0.4rem 0.8rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* Статус */
+
+.isd-profile-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.isd-profile-status--active {
+    border: 1px solid rgba(157, 255, 208, 0.5);
+    background: rgba(16, 128, 88, 0.35);
+}
+
+.isd-profile-status--blocked {
+    border: 1px solid rgba(255, 190, 190, 0.6);
+    background: rgba(150, 30, 50, 0.5);
+}
+
+.isd-profile-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+/* Карточка информации */
+
+.isd-profile-card {
+    overflow: hidden;
+}
+
+.isd-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.isd-profile-field {
+    min-width: 0;
+    padding: 1.25rem;
+
+    background: var(--ui-hover);
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+
+    transition:
+        background-color 0.45s ease,
+        border-color 0.45s ease;
+}
+
+.isd-profile-field dt {
+    margin-bottom: 0.7rem;
+    color: var(--ui-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.isd-profile-field dd {
+    margin-bottom: 0;
+    color: var(--ui-text);
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.isd-profile-role {
+    color: var(--ui-accent);
+}
+
+.isd-profile-account-active {
+    color: #16825c;
+}
+
+.isd-profile-account-blocked {
+    color: #c43e51;
+}
+
+html[data-theme="vice-city"] .isd-profile-account-active {
+    color: #70e5b2;
+}
+
+html[data-theme="vice-city"] .isd-profile-account-blocked {
+    color: #ff9dab;
+}
+
+/* Кнопки */
+
+.isd-profile-button,
+.isd-profile-button-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+
+    padding: 0.7rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.isd-profile-button {
+    background: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+    color: var(--ui-accent-text);
+}
+
+.isd-profile-button:hover {
+    background: var(--ui-accent-hover);
+    border-color: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+}
+
+.isd-profile-button-outline {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+.isd-profile-button-outline:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+/* Vice City */
+
+html[data-theme="vice-city"] .isd-profile-hero {
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.3),
+        0 0 28px rgba(255, 105, 187, 0.12);
+}
+
+/* Адаптация */
+
+@media (max-width: 767.98px) {
+    .isd-profile-hero {
+        padding: 1.75rem;
+    }
+
+    .isd-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .isd-profile-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 20px;
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    .isd-profile-button,
+    .isd-profile-button-outline {
+        width: 100%;
+    }
+}
+
+/* ===========================================
+   IT SERVICE DESK — REGISTRATION
+   CLASSIC / VICE CITY
+=========================================== */
+
+.isd-register {
+    color: var(--ui-text);
+}
+
+.isd-register-kicker,
+.isd-register-form-label {
+    color: var(--ui-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-register-description {
+    color: var(--ui-muted);
+    line-height: 1.7;
+}
+
+/* Информационный блок */
+
+.isd-register-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 2.5rem;
+
+    background: var(--ui-hero);
+    color: #ffffff;
+
+    box-shadow: var(--ui-shadow);
+    isolation: isolate;
+}
+
+.isd-register-hero::before {
+    content: "";
+    position: absolute;
+
+    width: 270px;
+    height: 270px;
+
+    right: -100px;
+    top: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.12);
+    filter: blur(30px);
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+main .isd-register-hero h2 {
+    color: #ffffff !important;
+}
+
+.isd-register-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 76px;
+    height: 76px;
+
+    margin-bottom: 2rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.15);
+
+    font-size: 2.2rem;
+}
+
+.isd-register-hero-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-register-highlight {
+    display: block;
+    color: #dceaff;
+}
+
+.isd-register-hero-description {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+}
+
+.isd-register-hero-divider {
+    height: 1px;
+    margin: 2rem 0;
+
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.isd-register-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+
+    margin-bottom: 1rem;
+
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+.isd-register-info-item>span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.16);
+
+    font-weight: 800;
+}
+
+/* Карточка формы */
+
+.isd-register-card {
+    overflow: hidden;
+}
+
+.isd-register-field .form-label {
+    display: block;
+    margin-bottom: 0.6rem;
+
+    color: var(--ui-text);
+    font-size: 0.9rem;
+}
+
+/* Поля ввода */
+
+.isd-register .isd-register-input {
+    width: 100%;
+    min-height: 50px;
+
+    padding: 0.8rem 1rem;
+
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+
+    background: var(--ui-surface);
+    color: var(--ui-text);
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.isd-register .isd-register-input::placeholder {
+    color: var(--ui-muted);
+    opacity: 0.85;
+}
+
+.isd-register .isd-register-input:focus {
+    background: var(--ui-surface);
+    color: var(--ui-text);
+    border-color: var(--ui-accent);
+
+    box-shadow:
+        0 0 0 3px rgba(135, 105, 225, 0.15);
+
+    outline: none;
+}
+
+/* Подсказка безопасности */
+
+.isd-register-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    padding: 1rem;
+
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+
+    background: var(--ui-hover);
+    color: var(--ui-muted);
+
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* Ошибки валидации */
+
+.isd-register-form .invalid-feedback,
+.isd-register-form .form-error-message,
+.isd-register-form ul {
+    margin-top: 0.5rem;
+    color: #dc3545;
+    font-size: 0.85rem;
+}
+
+.isd-register-form ul {
+    padding-left: 1.25rem;
+}
+
+/* Кнопки */
+
+.isd-register-submit,
+.isd-register-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+
+    min-height: 46px;
+    padding: 0.7rem 1.25rem;
+
+    border-radius: 12px;
+    font-weight: 700;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.isd-register-submit {
+    background: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+    color: #ffffff;
+}
+
+.isd-register-submit:hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #ffffff;
+
+    filter: brightness(0.94);
+    transform: translateY(-2px);
+}
+
+.isd-register-back {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+.isd-register-back:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+/* ===========================================
+   THEME DETAILS
+=========================================== */
+
+/* Classic */
+
+html[data-theme="classic"] .isd-register-highlight {
+    color: #dceaff;
+}
+
+/* Vice City */
+
+html[data-theme="vice-city"] .isd-register-hero {
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(255, 105, 187, 0.12);
+}
+
+html[data-theme="vice-city"] .isd-register-highlight {
+    color: #ffe0b1;
+}
+
+html[data-theme="vice-city"] .isd-register-submit,
+html[data-theme="vice-city"] .isd-register-submit:hover {
+    color: #201426;
+}
+
+html[data-theme="vice-city"] .isd-register-form .invalid-feedback,
+html[data-theme="vice-city"] .isd-register-form .form-error-message,
+html[data-theme="vice-city"] .isd-register-form ul {
+    color: #ff9dad;
+}
+
+/* ===========================================
+   MOBILE
+=========================================== */
+
+@media (max-width: 991.98px) {
+    .isd-register-hero {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .isd-register-hero {
+        padding: 1.5rem;
+    }
+
+    .isd-register-submit,
+    .isd-register-back {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .isd-register-submit,
+    .isd-register-back,
+    .isd-register-input {
+        transition: none;
+    }
+}
+
+/* ===========================================
+   USERS LIST — CLASSIC / VICE CITY
+=========================================== */
+
+.isd-users {
+    color: var(--ui-text);
+}
+
+.isd-users-kicker {
+    color: var(--ui-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-users-description {
+    color: var(--ui-muted);
+    line-height: 1.65;
+}
+
+/* Кнопки */
+
+.isd-users-primary,
+.isd-users-secondary,
+.isd-users-edit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 11px;
+    font-weight: 700;
+}
+
+.isd-users-primary {
+    padding: 0.65rem 1.1rem;
+    background: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+    color: #ffffff;
+}
+
+.isd-users-primary:hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #ffffff;
+    filter: brightness(0.92);
+}
+
+.isd-users-secondary {
+    padding: 0.65rem 1rem;
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+.isd-users-secondary:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+/* Верхний блок */
+
+.isd-users-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+    background: var(--ui-hero);
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+main .isd-users-hero h2 {
+    color: #ffffff !important;
+}
+
+.isd-users-hero p {
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.isd-users-hero-label {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-users-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 150px;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.isd-users-counter span,
+.isd-users-counter small {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.73rem;
+}
+
+.isd-users-counter strong {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/* Панели */
+
+.isd-users .isd-users-panel {
+    overflow: hidden;
+}
+
+.isd-users-count-badge {
+    padding: 0.4rem 0.75rem;
+    border-radius: 9px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+/* Таблица */
+
+.isd-users-table {
+    min-width: 650px;
+}
+
+.isd-users-table th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.isd-users-table td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-text);
+}
+
+.isd-users-id {
+    color: var(--ui-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.isd-users-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.isd-users-name {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.isd-users-email {
+    color: var(--ui-muted) !important;
+    overflow-wrap: anywhere;
+}
+
+.isd-users-edit {
+    padding: 0.5rem 0.9rem;
+    background: var(--ui-hover);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-accent);
+}
+
+.isd-users-edit:hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #ffffff;
+}
+
+/* Пустой список */
+
+.isd-users-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.isd-users-empty-icon {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+/* Пагинация */
+
+.isd-users-pagination .page-link {
+    min-width: 40px;
+    text-align: center;
+    border-radius: 9px;
+}
+
+/* Vice City */
+
+html[data-theme="vice-city"] .isd-users-primary,
+html[data-theme="vice-city"] .isd-users-primary:hover {
+    color: #201426;
+}
+
+html[data-theme="vice-city"] .isd-users-edit:hover {
+    color: #201426;
+}
+
+/* Адаптация */
+
+@media (max-width: 767.98px) {
+    .isd-users-hero {
+        padding: 1.75rem;
+    }
+
+    .isd-users-counter {
+        width: 100%;
+    }
+}
+
+/* ===========================================
+   TICKETS LIST — CLASSIC / VICE CITY
+=========================================== */
+
+.isd-tickets {
+    color: var(--ui-text);
+}
+
+.isd-tickets-kicker {
+    color: var(--ui-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.isd-tickets-description {
+    color: var(--ui-muted);
+    line-height: 1.65;
+}
+
+/* Верхний блок */
+
+.isd-tickets-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 2.5rem;
+    background: var(--ui-hero);
+    color: #ffffff;
+    box-shadow: var(--ui-shadow);
+}
+
+main .isd-tickets-hero h2 {
+    color: #ffffff !important;
+}
+
+.isd-tickets-hero p {
+    max-width: 650px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+}
+
+.isd-tickets-hero-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.isd-tickets-hero-highlight {
+    display: block;
+    color: #dceaff;
+}
+
+html[data-theme="vice-city"] .isd-tickets-hero-highlight {
+    color: #ffe0b1;
+}
+
+/* Счётчик */
+
+.isd-tickets-counter {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 170px;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(8px);
+}
+
+.isd-tickets-counter span {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.isd-tickets-counter strong {
+    color: #ffffff;
+    font-size: 2.7rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.isd-tickets-counter small {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Карточки */
+
+.isd-tickets .isd-tickets-panel {
+    overflow: hidden;
+}
+
+.isd-tickets-count-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 9px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+/* Кнопки */
+
+.isd-tickets-primary,
+.isd-tickets-secondary,
+.isd-tickets-open,
+.isd-tickets-edit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 11px;
+    font-weight: 700;
+}
+
+.isd-tickets-primary {
+    padding: 0.65rem 1.1rem;
+    background: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+    color: #ffffff;
+}
+
+.isd-tickets-primary:hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #ffffff;
+    filter: brightness(0.92);
+}
+
+.isd-tickets-secondary {
+    padding: 0.65rem 1rem;
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+.isd-tickets-secondary:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+.isd-tickets-open {
+    padding: 0.5rem 0.85rem;
+    background: var(--ui-hover);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-accent);
+}
+
+.isd-tickets-open:hover {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: #ffffff;
+}
+
+.isd-tickets-edit {
+    padding: 0.5rem 0.85rem;
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+.isd-tickets-edit:hover {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+/* Таблица */
+
+.isd-tickets-table {
+    min-width: 790px;
+}
+
+.isd-tickets-table th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.isd-tickets-table td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-text);
+}
+
+.isd-tickets-id {
+    color: var(--ui-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.isd-tickets-title {
+    display: inline-block;
+    max-width: 240px;
+    color: var(--ui-accent);
+    font-weight: 700;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.isd-tickets-title:hover {
+    color: var(--ui-accent);
+    text-decoration: underline;
+}
+
+.isd-tickets-text {
+    max-width: 300px;
+    color: var(--ui-muted);
+    font-size: 0.87rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Статусы */
+
+.isd-ticket-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.isd-ticket-status-dot {
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.isd-ticket-status-new {
+    background: #e8f0ff;
+    border-color: #c5d9ff;
+    color: #2454ae;
+}
+
+.isd-ticket-status-progress {
+    background: #fff1d4;
+    border-color: #f5d48f;
+    color: #86550e;
+}
+
+.isd-ticket-status-resolved {
+    background: #dff7eb;
+    border-color: #b1e5c8;
+    color: #176846;
+}
+
+.isd-ticket-status-closed,
+.isd-ticket-status-default {
+    background: #edf0f5;
+    border-color: #dce2e9;
+    color: #4d596b;
+}
+
+/* Цвета статусов для Vice City */
+
+html[data-theme="vice-city"] .isd-ticket-status-new {
+    background: #263c66;
+    border-color: #4165a4;
+    color: #b5d2ff;
+}
+
+html[data-theme="vice-city"] .isd-ticket-status-progress {
+    background: #553e25;
+    border-color: #846338;
+    color: #ffe0a2;
+}
+
+html[data-theme="vice-city"] .isd-ticket-status-resolved {
+    background: #1e4c3c;
+    border-color: #36785b;
+    color: #a6f1cb;
+}
+
+html[data-theme="vice-city"] .isd-ticket-status-closed,
+html[data-theme="vice-city"] .isd-ticket-status-default {
+    background: #39354b;
+    border-color: #59526e;
+    color: #d4ccdf;
+}
+
+/* Акцентные кнопки Vice City */
+
+html[data-theme="vice-city"] .isd-tickets-primary,
+html[data-theme="vice-city"] .isd-tickets-primary:hover,
+html[data-theme="vice-city"] .isd-tickets-open:hover {
+    color: #201426;
+}
+
+/* Пустой список */
+
+.isd-tickets-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.isd-tickets-empty-icon {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+/* Пагинация */
+
+.isd-tickets-pagination .page-link {
+    min-width: 42px;
+    border-radius: 9px;
+    text-align: center;
+}
+
+/* Адаптивность */
+
+@media (max-width: 767.98px) {
+    .isd-tickets-hero {
+        padding: 1.75rem;
+    }
+
+    .isd-tickets-counter {
+        width: 100%;
+    }
+
+    .isd-tickets-hero-highlight {
+        display: inline;
+    }
+}
+
+/* ===========================================
+   TICKET DETAILS — CLASSIC / VICE CITY
+=========================================== */
+
+/* Информационный блок со статусом */
+
+.isd-ticket-detail-hero-info {
+    display: inline-block;
+    min-width: 180px;
+    padding: 1.3rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+.isd-ticket-detail-hero-caption {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+}
+
+/* Карточка информации */
+
+.isd-ticket-detail-card {
+    overflow: hidden;
+}
+
+.isd-ticket-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.isd-ticket-detail-field {
+    min-width: 0;
+    padding: 1.3rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: var(--ui-hover);
+}
+
+.isd-ticket-detail-label {
+    margin-bottom: 0.8rem;
+    color: var(--ui-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.isd-ticket-detail-value {
+    margin-bottom: 0;
+    color: var(--ui-text);
+    font-size: 1rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* Описание проблемы */
+
+.isd-ticket-detail-description {
+    padding: 1.5rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: var(--ui-hover);
+}
+
+.isd-ticket-detail-description h3 {
+    color: var(--ui-text);
+}
+
+.isd-ticket-detail-description p {
+    color: var(--ui-muted);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* Нижняя панель */
+
+.isd-ticket-detail-footer {
+    background: var(--ui-surface) !important;
+    border-top: 1px solid var(--ui-border);
+}
+
+/* Кнопка изменения статуса */
+
+.isd-ticket-detail-status-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 0.65rem 1.1rem;
+    border: 1px solid #d89a3a;
+    border-radius: 11px;
+
+    background: #fff4de;
+    color: #86550e;
+
+    font-weight: 700;
+}
+
+.isd-ticket-detail-status-button:hover {
+    background: #d89a3a;
+    border-color: #d89a3a;
+    color: #251804;
+}
+
+/* Vice City */
+
+html[data-theme="vice-city"] .isd-ticket-detail-status-button {
+    background: #503a27;
+    border-color: #a57945;
+    color: #ffe0a2;
+}
+
+html[data-theme="vice-city"] .isd-ticket-detail-status-button:hover {
+    background: #e0a65c;
+    border-color: #e0a65c;
+    color: #211428;
+}
+
+/* Мобильная версия */
+
+@media (max-width: 767.98px) {
+
+    .isd-ticket-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .isd-ticket-detail-hero-info {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 575.98px) {
+
+    .isd-ticket-detail-footer .btn {
+        width: 100%;
+    }
+
+}
+
+/* ===========================================
+   TICKET EDIT — CLASSIC / VICE CITY
+=========================================== */
+
+.isd-ticket-edit .isd-register-card,
+.isd-ticket-edit .isd-tickets-panel {
+    overflow: hidden;
+}
+
+.isd-ticket-edit .isd-register-input {
+    width: 100%;
+}
+
+.isd-ticket-edit textarea.isd-register-input {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.isd-ticket-edit .isd-ticket-status {
+    font-size: 0.88rem;
+    padding: 0.6rem 0.9rem;
+}
+
+/* Блок удаления */
+
+html[data-theme] main .isd-ticket-edit-danger {
+    border: 1px solid rgba(220, 53, 69, 0.35) !important;
+}
+
+.isd-ticket-edit-danger .card-header h2 {
+    color: #c43e51;
+}
+
+html[data-theme="vice-city"] .isd-ticket-edit-danger .card-header h2 {
+    color: #ff9dad;
+}
+
+/* Плавные изменения цветов */
+
+.isd-ticket-edit .card,
+.isd-ticket-edit .form-control {
+    transition:
+        background-color 0.4s ease,
+        color 0.4s ease,
+        border-color 0.4s ease;
+}
+
+/* Телефоны */
+
+@media (max-width: 575.98px) {
+
+    .isd-ticket-edit .isd-register-submit,
+    .isd-ticket-edit .isd-register-back {
+        width: 100%;
+    }
+}
+
+/* ===========================================
+   TICKET STATUS PAGE — CLASSIC / VICE CITY
+=========================================== */
+
+.isd-ticket-status-page .isd-register-card {
+    overflow: hidden;
+}
+
+.isd-ticket-status-current {
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.isd-ticket-status-page .isd-ticket-status {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+}
+
+.isd-ticket-status-page .isd-ticket-status-select {
+    min-height: 50px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    background-color: var(--ui-surface);
+    color: var(--ui-text);
+}
+
+.isd-ticket-status-page .isd-ticket-status-select:focus {
+    border-color: var(--ui-accent);
+    box-shadow: 0 0 0 3px rgba(135, 105, 225, 0.15);
+}
+
+@media (max-width: 575.98px) {
+
+    .isd-ticket-status-page .isd-register-submit,
+    .isd-ticket-status-page .isd-register-back {
+        width: 100%;
+    }
+}
+
+/* ===========================================
+   LOGIN PAGE — CLASSIC / VICE CITY
+=========================================== */
+
+.isd-login {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+.isd-login-hero,
+.isd-login-card {
+    min-height: 540px;
+}
+
+main .isd-login-hero h1 {
+    color: #ffffff !important;
+    line-height: 1.2;
+}
+
+.isd-login-hero-footer {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+/* Значок входа */
+
+.isd-login-lock {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 18px;
+    border: 1px solid var(--ui-border);
+
+    background: var(--ui-hover);
+    font-size: 1.8rem;
+}
+
+/* Кнопка входа */
+
+.isd-login-submit {
+    min-height: 52px;
+    font-size: 1rem;
+}
+
+/* Нижняя подпись */
+
+.isd-login-bottom {
+    border-top: 1px solid var(--ui-border);
+}
+
+/* Ошибки авторизации */
+
+.isd-login-alert {
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+/* Classic */
+
+html[data-theme="classic"] .isd-login-card {
+    box-shadow: 0 15px 45px rgba(35, 53, 91, 0.08);
+}
+
+/* Vice City */
+
+html[data-theme="vice-city"] .isd-login-card {
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.25),
+        0 0 25px rgba(255, 105, 187, 0.07);
+}
+
+html[data-theme="vice-city"] .isd-login-lock {
+    border-color: rgba(255, 105, 187, 0.25);
+}
+
+/* Адаптивность */
+
+@media (max-width: 991.98px) {
+    .isd-login {
+        padding-top: 0;
+    }
+
+    .isd-login-hero,
+    .isd-login-card {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .isd-login {
+        padding-bottom: 1rem;
+    }
+}
+
+/* =========================================
+   VICE CITY — MIAMI SUNSET
+   Только для тёмной темы
+========================================= */
+
+html[data-theme="vice-city"] .isd-home-hero {
+    background:
+        linear-gradient(90deg,
+            rgba(18, 13, 39, 0.96) 0%,
+            rgba(34, 18, 57, 0.86) 45%,
+            rgba(35, 16, 54, 0.24) 100%),
+        url('/images/vice-city-sunset.svg') right center / cover no-repeat !important;
+}
+
+/* Вместо обычной карточки справа показываем закат */
+html[data-theme="vice-city"] .isd-home-hero-visual {
+    visibility: hidden;
+}
+
+/* Убираем старое декоративное свечение,
+   чтобы оно не перекрывало иллюстрацию */
+html[data-theme="vice-city"] .isd-home-hero::before {
+    background: transparent;
+    filter: none;
+}
+
+/* На телефонах затемняем фон для читаемости текста */
+@media (max-width: 767.98px) {
+    html[data-theme="vice-city"] .isd-home-hero {
+        background:
+            linear-gradient(90deg,
+                rgba(18, 13, 39, 0.95),
+                rgba(34, 18, 57, 0.79)),
+            url('/images/vice-city-sunset.svg') 72% center / cover no-repeat !important;
+    }
+}

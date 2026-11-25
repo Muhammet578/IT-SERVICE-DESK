@@ -3,23 +3,90 @@
 {% block title %}Заявки | IT Service Desk{% endblock %}
 
 {% block body %}
-    <main class="py-4">
 
-        {# Заголовок страницы #}
+    <div class="isd-tickets">
+
+        {# Заголовок #}
         <div class="mb-4">
-            <h1 class="h3 fw-semibold mb-2">
+
+            <span class="isd-tickets-kicker">
+                ТЕХНИЧЕСКАЯ ПОДДЕРЖКА
+            </span>
+
+            <h1 class="h2 fw-bold mt-2 mb-2">
                 Заявки
             </h1>
 
-            <p class="text-muted mb-0">
-                Список доступных вам обращений в техническую поддержку.
-                Найдено заявок: {{ total }}
+            <p class="isd-tickets-description mb-0">
+                Просмотр и управление доступными вам обращениями.
             </p>
+
         </div>
 
-        {# Фильтрация заявок по статусу #}
-        <div class="card shadow-sm border-0 mb-4">
-            <div class="card-body">
+        {# Приветственный блок #}
+        <section class="isd-tickets-hero rounded-4 mb-4">
+
+            <div class="row align-items-center g-4">
+
+                <div class="col-md-8">
+
+                    <span class="isd-tickets-hero-label">
+                        IT SERVICE DESK
+                    </span>
+
+                    <h2 class="h3 fw-bold mt-3 mb-3">
+                        Все обращения
+                        <span class="isd-tickets-hero-highlight">
+                            под контролем.
+                        </span>
+                    </h2>
+
+                    <p class="mb-0">
+                        Просматривайте обращения сотрудников,
+                        отслеживайте их статусы и работайте
+                        с доступными вам заявками.
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-md-end">
+
+                    <div class="isd-tickets-counter">
+
+                        <span>НАЙДЕНО ЗАЯВОК</span>
+
+                        <strong>{{ total }}</strong>
+
+                        <small>
+                            {% if selectedStatusId is null %}
+                                Все статусы
+                            {% else %}
+                                С учётом фильтра
+                            {% endif %}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {# Фильтрация #}
+        <section class="card isd-tickets-panel mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="mb-3">
+                    <h2 class="h5 fw-bold mb-1">
+                        Фильтрация заявок
+                    </h2>
+
+                    <p class="isd-tickets-description small mb-0">
+                        Выберите статус для поиска обращений.
+                    </p>
+                </div>
 
                 <form
                     action="{{ path('app_tickets') }}"
@@ -27,12 +94,13 @@
                     class="row g-3 align-items-end"
                 >
 
-                    <div class="col-md-8">
+                    <div class="col-lg-7">
+
                         <label
                             for="ticket-status-filter"
                             class="form-label fw-semibold"
                         >
-                            Фильтр по статусу
+                            Статус заявки
                         </label>
 
                         <select
@@ -40,6 +108,7 @@
                             name="status"
                             class="form-select"
                         >
+
                             <option
                                 value="all"
                                 {{ selectedStatusId is null ? 'selected' : '' }}
@@ -48,186 +117,232 @@
                             </option>
 
                             {% for status in statuses %}
+
                                 <option
                                     value="{{ status.id }}"
                                     {{ selectedStatusId == status.id ? 'selected' : '' }}
                                 >
                                     {{ status.name }}
                                 </option>
+
                             {% endfor %}
+
                         </select>
+
                     </div>
 
-                    <div class="col-md-4">
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100"
-                        >
-                            Применить фильтр
-                        </button>
+                    <div class="col-lg-5">
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn isd-tickets-primary flex-grow-1"
+                            >
+                                Применить фильтр
+                            </button>
+
+                            <a
+                                href="{{ path('app_tickets', {status: 'all'}) }}"
+                                class="btn isd-tickets-secondary"
+                                title="Сбросить фильтр"
+                                aria-label="Сбросить фильтр"
+                            >
+                                ↺
+                            </a>
+
+                        </div>
+
                     </div>
 
                 </form>
 
             </div>
-        </div>
+
+        </section>
 
         {# Таблица заявок #}
-        <div class="card shadow-sm">
+        <section class="card isd-tickets-panel mb-4">
 
-            <div class="card-header bg-white py-3">
-                <h2 class="h5 mb-0">
-                    Список заявок
-                </h2>
+            <div class="card-header p-4">
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+                    <h2 class="h5 fw-bold mb-0">
+                        Список заявок
+                    </h2>
+
+                    <span class="isd-tickets-count-badge">
+                        {{ total }}
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="card-body p-0">
-                <div class="table-responsive">
+            <div class="table-responsive">
 
-                    <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover isd-tickets-table align-middle mb-0">
 
-                        <thead class="table-light">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="ps-4">ID</th>
+                            <th scope="col">Заявка</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col" class="text-end pe-4">
+                                Действия
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for ticket in tickets %}
+
+                            {# Оформление статуса #}
+                            {% set statusClass = 'isd-ticket-status-default' %}
+
+                            {% if ticket.status.name == 'Новая' %}
+                                {% set statusClass = 'isd-ticket-status-new' %}
+                            {% elseif ticket.status.name == 'В работе' %}
+                                {% set statusClass = 'isd-ticket-status-progress' %}
+                            {% elseif ticket.status.name == 'Решена' %}
+                                {% set statusClass = 'isd-ticket-status-resolved' %}
+                            {% elseif ticket.status.name == 'Закрыта' %}
+                                {% set statusClass = 'isd-ticket-status-closed' %}
+                            {% endif %}
+
                             <tr>
-                                <th class="ps-4">ID</th>
-                                <th>Название заявки</th>
-                                <th>Описание</th>
-                                <th>Статус</th>
-                                <th class="text-end pe-4">
-                                    Действия
-                                </th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            {% for ticket in tickets %}
-
-                                {# Цвет статуса #}
-                                {% set statusClass = 'text-bg-secondary' %}
-
-                                {% if ticket.status.name == 'Новая' %}
-                                    {% set statusClass = 'text-bg-primary' %}
-                                {% elseif ticket.status.name == 'В работе' %}
-                                    {% set statusClass = 'text-bg-warning' %}
-                                {% elseif ticket.status.name == 'Решена' %}
-                                    {% set statusClass = 'text-bg-success' %}
-                                {% elseif ticket.status.name == 'Закрыта' %}
-                                    {% set statusClass = 'text-bg-secondary' %}
-                                {% endif %}
-
-                                <tr>
-
-                                    {# ID #}
-                                    <td class="ps-4 text-muted">
+                                {# ID #}
+                                <td class="ps-4">
+                                    <span class="isd-tickets-id">
                                         #{{ ticket.id }}
-                                    </td>
+                                    </span>
+                                </td>
 
-                                    {# Название заявки #}
-                                    <td>
-                                        <a
-                                            href="{{ path('find_tickets', {
-                                            id: ticket.id
-                                        }) }}"
-                                            class="text-decoration-none fw-semibold"
-                                        >
-                                            {{ ticket.title }}
-                                        </a>
-                                    </td>
+                                {# Название #}
+                                <td>
 
-                                    {# Описание #}
-                                    <td
-                                        class="text-muted"
-                                        style="max-width: 300px;"
+                                    <a
+                                        href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                        class="isd-tickets-title"
                                     >
+                                        {{ ticket.title }}
+                                    </a>
+
+                                </td>
+
+                                {# Описание #}
+                                <td>
+
+                                    <div class="isd-tickets-text">
+
                                         {{ ticket.description|slice(0, 100) }}
 
                                         {% if ticket.description|length > 100 %}
-                                            ...
+                                            …
                                         {% endif %}
-                                    </td>
 
-                                    {# Статус #}
-                                    <td>
-                                        <span class="badge {{ statusClass }}">
-                                            {{ ticket.status.name }}
-                                        </span>
-                                    </td>
+                                    </div>
 
-                                    {# Действия #}
-                                    <td class="text-end pe-4">
+                                </td>
 
-                                        <div class="d-flex justify-content-end gap-2">
+                                {# Статус #}
+                                <td>
 
-                                            {# Просмотр заявки #}
+                                    <span class="isd-ticket-status {{ statusClass }}">
+                                        <span
+                                            class="isd-ticket-status-dot"
+                                            aria-hidden="true"
+                                        ></span>
+
+                                        {{ ticket.status.name }}
+                                    </span>
+
+                                </td>
+
+                                {# Действия #}
+                                <td class="text-end pe-4">
+
+                                    <div class="d-flex justify-content-end flex-wrap gap-2">
+
+                                        <a
+                                            href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                            class="btn btn-sm isd-tickets-open"
+                                        >
+                                            Открыть
+                                        </a>
+
+                                        {% if is_granted('EDIT', ticket) %}
+
                                             <a
-                                                href="{{ path('find_tickets', {
-                                                id: ticket.id
-                                            }) }}"
-                                                class="btn btn-sm btn-outline-primary"
+                                                href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
+                                                class="btn btn-sm isd-tickets-edit"
                                             >
-                                                Открыть
+                                                Изменить
                                             </a>
 
-                                            {# Редактирование через TicketVoter #}
-                                            {% if is_granted('EDIT', ticket) %}
-                                                <a
-                                                    href="{{ path('app_tickets_edit', {
-                                                    id: ticket.id
-                                                }) }}"
-                                                    class="btn btn-sm btn-outline-secondary"
-                                                >
-                                                    Изменить
-                                                </a>
-                                            {% endif %}
+                                        {% endif %}
 
-                                        </div>
+                                    </div>
 
-                                    </td>
+                                </td>
 
-                                </tr>
+                            </tr>
 
-                            {% else %}
+                        {% else %}
 
-                                {# Нет заявок по выбранному фильтру #}
-                                <tr>
-                                    <td
-                                        colspan="5"
-                                        class="text-center text-muted py-5"
-                                    >
-                                        <div class="mb-3 fs-1">
+                            {# Нет результатов #}
+                            <tr>
+
+                                <td colspan="5">
+
+                                    <div class="isd-tickets-empty">
+
+                                        <div
+                                            class="isd-tickets-empty-icon"
+                                            aria-hidden="true"
+                                        >
                                             📭
                                         </div>
 
-                                        <p class="fw-semibold mb-1">
+                                        <h3 class="h5 fw-bold mb-2">
                                             Заявки не найдены
-                                        </p>
+                                        </h3>
 
-                                        <p class="small mb-3">
+                                        <p class="isd-tickets-description mb-3">
                                             Нет доступных заявок,
                                             соответствующих выбранному фильтру.
                                         </p>
 
                                         {% if selectedStatusId is not null %}
+
                                             <a
-                                                href="{{ path('app_tickets', {
-                                                status: 'all'
-                                            }) }}"
-                                                class="btn btn-outline-primary btn-sm"
+                                                href="{{ path('app_tickets', {status: 'all'}) }}"
+                                                class="btn isd-tickets-secondary"
                                             >
                                                 Сбросить фильтр
                                             </a>
+
                                         {% endif %}
-                                    </td>
-                                </tr>
 
-                            {% endfor %}
-                        </tbody>
+                                    </div>
 
-                    </table>
+                                </td>
 
-                </div>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
             </div>
 
-        </div>
+        </section>
 
         {# Пагинация #}
         {% if totalPages > 1 %}
@@ -237,12 +352,13 @@
                 aria-label="Страницы заявок"
             >
 
-                <ul class="pagination justify-content-center flex-wrap gap-1">
+                <ul class="pagination isd-tickets-pagination justify-content-center flex-wrap gap-1">
 
-                    {# Предыдущая страница #}
+                    {# Назад #}
                     <li class="page-item {{ page == 1 ? 'disabled' : '' }}">
 
                         {% if page > 1 %}
+
                             <a
                                 class="page-link"
                                 href="{{ path('app_tickets', {
@@ -250,17 +366,20 @@
                                 status: selectedStatusId ?? 'all'
                             }) }}"
                             >
-                                Назад
+                                ← Назад
                             </a>
+
                         {% else %}
+
                             <span class="page-link">
-                                Назад
+                                ← Назад
                             </span>
+
                         {% endif %}
 
                     </li>
 
-                    {# Номера страниц #}
+                    {# Страницы #}
                     {% for number in 1..totalPages %}
 
                         <li class="page-item {{ number == page ? 'active' : '' }}">
@@ -282,10 +401,11 @@
 
                     {% endfor %}
 
-                    {# Следующая страница #}
+                    {# Вперёд #}
                     <li class="page-item {{ page == totalPages ? 'disabled' : '' }}">
 
                         {% if page < totalPages %}
+
                             <a
                                 class="page-link"
                                 href="{{ path('app_tickets', {
@@ -293,12 +413,15 @@
                                 status: selectedStatusId ?? 'all'
                             }) }}"
                             >
-                                Вперёд
+                                Вперёд →
                             </a>
+
                         {% else %}
+
                             <span class="page-link">
-                                Вперёд
+                                Вперёд →
                             </span>
+
                         {% endif %}
 
                     </li>
@@ -309,5 +432,6 @@
 
         {% endif %}
 
-    </main>
+    </div>
+
 {% endblock %}
