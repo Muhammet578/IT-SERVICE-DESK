@@ -1,3 +1,263 @@
-body {
+/* body {
     background-color: skyblue;
-}
+} */
+ /* ===== GTA 6 inspired navbar ===== */
+
+ :root {
+     --gta-bg: #151729;
+     --gta-bg-soft: #1d2036;
+     --gta-pink: #ff4fd8;
+     --gta-purple: #8f4dff;
+     --gta-blue: #4da6ff;
+     --gta-orange: #ff9a3d;
+     --gta-text: #ffffff;
+     --gta-muted: #c9c9d4;
+     --gta-border: rgba(255, 255, 255, 0.08);
+     --gta-glow: 0 0 12px rgba(255, 79, 216, 0.35);
+     --gta-gradient: linear-gradient(135deg, #ff4fd8 0%, #8f4dff 45%, #4da6ff 75%, #ff9a3d 100%);
+ }
+
+ .navbar-gta6 {
+     background:
+         linear-gradient(rgba(21, 23, 41, 0.92), rgba(21, 23, 41, 0.92)),
+         linear-gradient(135deg, #2b2141 0%, #1a1d33 50%, #2a1938 100%);
+     border-bottom: 1px solid var(--gta-border);
+     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+     backdrop-filter: blur(8px);
+ }
+
+ .gta-brand-badge {
+     width: 44px;
+     height: 44px;
+     border-radius: 14px;
+     background: var(--gta-gradient);
+     color: #fff;
+     font-weight: 800;
+     font-size: 1.1rem;
+     box-shadow: 0 0 14px rgba(255, 79, 216, 0.35);
+     border: 1px solid rgba(255, 255, 255, 0.14);
+ }
+
+ .gta-brand-text {
+     font-weight: 800;
+     letter-spacing: 0.5px;
+     color: #fff;
+ }
+
+ .gta-brand-text .brand-accent {
+     background: var(--gta-gradient);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     background-clip: text;
+     color: transparent;
+ }
+
+ .gta-link {
+     color: rgba(255, 255, 255, 0.82) !important;
+     border-radius: 12px;
+     transition: all 0.2s ease;
+     position: relative;
+ }
+
+ .gta-link:hover {
+     color: #fff !important;
+     background: rgba(255, 255, 255, 0.05);
+ }
+
+ .gta-link.active {
+     color: #fff !important;
+     background: rgba(255, 255, 255, 0.06);
+     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+ }
+
+ .gta-link.active::after {
+     content: "";
+     position: absolute;
+     left: 12px;
+     right: 12px;
+     bottom: 4px;
+     height: 3px;
+     border-radius: 999px;
+     background: var(--gta-gradient);
+ }
+
+ .gta-user-box {
+     background: rgba(255, 255, 255, 0.04);
+     border: 1px solid var(--gta-border);
+     border-radius: 16px;
+     padding: 0.55rem 0.9rem;
+     box-shadow: var(--gta-glow);
+ }
+
+ .gta-user-name {
+     color: #fff;
+     font-weight: 700;
+ }
+
+ .gta-user-email {
+     color: var(--gta-muted);
+     font-size: 0.85rem;
+ }
+
+ .gta-user-role {
+     background: var(--gta-gradient);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent;
+     background-clip: text;
+     color: transparent;
+     font-size: 0.85rem;
+     font-weight: 700;
+ }
+
+ .gta-auth-badge {
+     background: linear-gradient(135deg, #1fd68b, #26b36b);
+     color: #fff;
+     border-radius: 999px;
+     padding: 0.22rem 0.65rem;
+     font-size: 0.75rem;
+     font-weight: 700;
+ }
+
+ .btn-gta-primary {
+     background: var(--gta-gradient);
+     border: none;
+     color: #fff;
+     box-shadow: 0 0 14px rgba(143, 77, 255, 0.25);
+ }
+
+ .btn-gta-primary:hover {
+     color: #fff;
+     filter: brightness(1.06);
+ }
+
+ .btn-gta-outline {
+     border: 1px solid rgba(255, 255, 255, 0.18);
+     color: #fff;
+     background: rgba(255, 255, 255, 0.04);
+ }
+
+ .btn-gta-outline:hover {
+     color: #fff;
+     background: rgba(255, 255, 255, 0.09);
+ }
+
+ .btn-gta-danger {
+     border: 1px solid rgba(255, 79, 216, 0.45);
+     color: #fff;
+     background: rgba(255, 79, 216, 0.08);
+ }
+
+ .btn-gta-danger:hover {
+     color: #fff;
+     background: rgba(255, 79, 216, 0.16);
+     box-shadow: 0 0 10px rgba(255, 79, 216, 0.25);
+ }
+
+ .navbar-gta6 .navbar-toggler {
+     border: 1px solid rgba(255, 255, 255, 0.1);
+     border-radius: 12px;
+     background: rgba(255, 255, 255, 0.04);
+ }
+
+ .navbar-gta6 .navbar-toggler:focus {
+     box-shadow: 0 0 0 0.2rem rgba(255, 79, 216, 0.2);
+ }
+
+ /* =====================================
+   GTA VI / VICE CITY BACKGROUND
+===================================== */
+
+ html {
+     min-height: 100%;
+ }
+
+ body {
+     min-height: 100vh;
+
+     background:
+         radial-gradient(ellipse at 85% 12%,
+             rgba(255, 100, 165, 0.27),
+             transparent 38%),
+
+         radial-gradient(ellipse at 12% 45%,
+             rgba(139, 76, 255, 0.28),
+             transparent 48%),
+
+         radial-gradient(ellipse at 65% 95%,
+             rgba(255, 145, 95, 0.17),
+             transparent 40%),
+
+         linear-gradient(145deg,
+             #111321 0%,
+             #19172d 40%,
+             #241a3b 75%,
+             #321c39 100%) !important;
+
+     background-attachment: fixed !important;
+     color: #f5f1ff;
+ }
+
+ /* Заголовки на тёмном фоне */
+
+ main h1,
+ main>.mb-4 h1 {
+     color: #ffffff;
+     font-weight: 700;
+ }
+
+ /* Подписи над карточками */
+
+ main>.mb-4 .text-muted {
+     color: #dccce7 !important;
+ }
+
+ /* Карточки остаются светлыми и читаемыми */
+
+ main .card {
+     background: rgba(255, 255, 255, 0.97);
+     color: #212529;
+
+     border: 1px solid rgba(255, 255, 255, 0.35);
+
+     border-radius: 16px;
+
+     box-shadow:
+         0 8px 32px rgba(0, 0, 0, 0.22),
+         0 0 22px rgba(180, 80, 255, 0.08);
+ }
+
+ /* Плавное свечение карточек при наведении */
+
+ main .card:hover {
+     box-shadow:
+         0 12px 35px rgba(0, 0, 0, 0.26),
+         0 0 25px rgba(255, 79, 216, 0.12);
+
+     transition: box-shadow 0.25s ease;
+ }
+
+ /* Номера страниц */
+
+ .pagination .page-link {
+     border-radius: 8px;
+     margin: 0 3px;
+ }
+
+ .pagination .page-item.active .page-link {
+     background: linear-gradient(135deg,
+             #ff4fd8,
+             #8f4dff);
+     border-color: transparent;
+ }
+
+ /* Улучшенная адаптация */
+
+ @media (max-width: 768px) {
+     main .card {
+         border-radius: 12px;
+     }
+
+     body {
+         background-attachment: scroll !important;
+     }
+ }

@@ -66,6 +66,64 @@
             </div>
 
         </div>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <form
+                    action="{{ path('app_dashboard') }}"
+                    method="get"
+                    class="row g-3 align-items-end"
+                >
+
+                    <div class="col-md-8">
+                        <label
+                            for="dashboard-period"
+                            class="form-label fw-semibold"
+                        >
+                            Период статистики
+                        </label>
+
+                        <select
+                            id="dashboard-period"
+                            name="period"
+                            class="form-select"
+                        >
+                            <option
+                                value="7"
+                                {{ selectedPeriod == '7' ? 'selected' : '' }}
+                            >
+                                Последние 7 дней
+                            </option>
+
+                            <option
+                                value="30"
+                                {{ selectedPeriod == '30' ? 'selected' : '' }}
+                            >
+                                Последние 30 дней
+                            </option>
+
+                            <option
+                                value="all"
+                                {{ selectedPeriod == 'all' ? 'selected' : '' }}
+                            >
+                                За всё время
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+                            Применить
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
 
         {# Средний показатель #}
         <div class="card shadow-sm border-0 mb-4">

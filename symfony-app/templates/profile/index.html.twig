@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Мой профиль | IT Service Desk{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+
+        <h1 class="h3 fw-semibold mb-4">Мой профиль</h1>
+
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <h2 class="h5 mb-4">Информация об аккаунте</h2>
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Имя</dt>
+                    <dd class="col-sm-8">{{ user.name }}</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ user.email }}</dd>
+
+                    <dt class="col-sm-4">Роль</dt>
+                    <dd class="col-sm-8">
+                        {% set roleLabels = {
+                        'admin': 'Администратор',
+                        'manager': 'Менеджер',
+                        'technician': 'Специалист поддержки',
+                        'user': 'Пользователь'
+                    } %}
+
+                        {{ roleLabels[user.role.name]|default(user.role.name) }}
+                    </dd>
+
+                    <dt class="col-sm-4">Дата регистрации</dt>
+                    <dd class="col-sm-8">
+                        {{ user.createdAt|date('d.m.Y H:i') }}
+                    </dd>
+
+                    <dt class="col-sm-4">Статус аккаунта</dt>
+                    <dd class="col-sm-8">
+                        {% if user.active %}
+                            <span class="badge bg-success">Активен</span>
+                        {% else %}
+                            <span class="badge bg-danger">Заблокирован</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+
+            </div>
+        </div>
+
+        <a
+            href="{{ path('app_home') }}"
+            class="btn btn-outline-primary mt-4"
+        >
+            Вернуться на главную
+        </a>
+
+    </div>
+{% endblock %}

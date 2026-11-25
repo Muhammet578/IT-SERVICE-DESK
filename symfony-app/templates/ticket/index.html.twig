@@ -5,6 +5,7 @@
 {% block body %}
     <main class="py-4">
 
+        {# Заголовок страницы #}
         <div class="mb-4">
             <h1 class="h3 fw-semibold mb-2">
                 Заявки
@@ -12,10 +13,66 @@
 
             <p class="text-muted mb-0">
                 Список доступных вам обращений в техническую поддержку.
-                Всего заявок: {{ total }}
+                Найдено заявок: {{ total }}
             </p>
         </div>
 
+        {# Фильтрация заявок по статусу #}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+
+                <form
+                    action="{{ path('app_tickets') }}"
+                    method="get"
+                    class="row g-3 align-items-end"
+                >
+
+                    <div class="col-md-8">
+                        <label
+                            for="ticket-status-filter"
+                            class="form-label fw-semibold"
+                        >
+                            Фильтр по статусу
+                        </label>
+
+                        <select
+                            id="ticket-status-filter"
+                            name="status"
+                            class="form-select"
+                        >
+                            <option
+                                value="all"
+                                {{ selectedStatusId is null ? 'selected' : '' }}
+                            >
+                                Все статусы
+                            </option>
+
+                            {% for status in statuses %}
+                                <option
+                                    value="{{ status.id }}"
+                                    {{ selectedStatusId == status.id ? 'selected' : '' }}
+                                >
+                                    {{ status.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100"
+                        >
+                            Применить фильтр
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        {# Таблица заявок #}
         <div class="card shadow-sm">
 
             <div class="card-header bg-white py-3">
@@ -35,13 +92,16 @@
                                 <th>Название заявки</th>
                                 <th>Описание</th>
                                 <th>Статус</th>
-                                <th class="text-end pe-4">Действия</th>
+                                <th class="text-end pe-4">
+                                    Действия
+                                </th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {% for ticket in tickets %}
 
+                                {# Цвет статуса #}
                                 {% set statusClass = 'text-bg-secondary' %}
 
                                 {% if ticket.status.name == 'Новая' %}
@@ -61,10 +121,12 @@
                                         #{{ ticket.id }}
                                     </td>
 
-                                    {# Название #}
+                                    {# Название заявки #}
                                     <td>
                                         <a
-                                            href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                            href="{{ path('find_tickets', {
+                                            id: ticket.id
+                                        }) }}"
                                             class="text-decoration-none fw-semibold"
                                         >
                                             {{ ticket.title }}
@@ -76,13 +138,11 @@
                                         class="text-muted"
                                         style="max-width: 300px;"
                                     >
-
                                         {{ ticket.description|slice(0, 100) }}
 
                                         {% if ticket.description|length > 100 %}
                                             ...
                                         {% endif %}
-
                                     </td>
 
                                     {# Статус #}
@@ -97,16 +157,22 @@
 
                                         <div class="d-flex justify-content-end gap-2">
 
+                                            {# Просмотр заявки #}
                                             <a
-                                                href="{{ path('find_tickets', {id: ticket.id}) }}"
+                                                href="{{ path('find_tickets', {
+                                                id: ticket.id
+                                            }) }}"
                                                 class="btn btn-sm btn-outline-primary"
                                             >
                                                 Открыть
                                             </a>
 
+                                            {# Редактирование через TicketVoter #}
                                             {% if is_granted('EDIT', ticket) %}
                                                 <a
-                                                    href="{{ path('app_tickets_edit', {id: ticket.id}) }}"
+                                                    href="{{ path('app_tickets_edit', {
+                                                    id: ticket.id
+                                                }) }}"
                                                     class="btn btn-sm btn-outline-secondary"
                                                 >
                                                     Изменить
@@ -121,14 +187,35 @@
 
                             {% else %}
 
+                                {# Нет заявок по выбранному фильтру #}
                                 <tr>
                                     <td
                                         colspan="5"
                                         class="text-center text-muted py-5"
                                     >
-                                        <p class="mb-0">
-                                            Доступные заявки пока отсутствуют.
+                                        <div class="mb-3 fs-1">
+                                            📭
+                                        </div>
+
+                                        <p class="fw-semibold mb-1">
+                                            Заявки не найдены
                                         </p>
+
+                                        <p class="small mb-3">
+                                            Нет доступных заявок,
+                                            соответствующих выбранному фильтру.
+                                        </p>
+
+                                        {% if selectedStatusId is not null %}
+                                            <a
+                                                href="{{ path('app_tickets', {
+                                                status: 'all'
+                                            }) }}"
+                                                class="btn btn-outline-primary btn-sm"
+                                            >
+                                                Сбросить фильтр
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
 
@@ -145,22 +232,30 @@
         {# Пагинация #}
         {% if totalPages > 1 %}
 
-            <nav class="mt-4" aria-label="Страницы заявок">
+            <nav
+                class="mt-4"
+                aria-label="Страницы заявок"
+            >
 
-                <ul class="pagination justify-content-center">
+                <ul class="pagination justify-content-center flex-wrap gap-1">
 
-                    {# Назад #}
+                    {# Предыдущая страница #}
                     <li class="page-item {{ page == 1 ? 'disabled' : '' }}">
 
                         {% if page > 1 %}
                             <a
                                 class="page-link"
-                                href="{{ path('app_tickets', {page: page - 1}) }}"
+                                href="{{ path('app_tickets', {
+                                page: page - 1,
+                                status: selectedStatusId ?? 'all'
+                            }) }}"
                             >
                                 Назад
                             </a>
                         {% else %}
-                            <span class="page-link">Назад</span>
+                            <span class="page-link">
+                                Назад
+                            </span>
                         {% endif %}
 
                     </li>
@@ -172,7 +267,13 @@
 
                             <a
                                 class="page-link"
-                                href="{{ path('app_tickets', {page: number}) }}"
+                                href="{{ path('app_tickets', {
+                                page: number,
+                                status: selectedStatusId ?? 'all'
+                            }) }}"
+                                {% if number == page %}
+                                aria-current="page"
+                                {% endif %}
                             >
                                 {{ number }}
                             </a>
@@ -181,18 +282,23 @@
 
                     {% endfor %}
 
-                    {# Вперёд #}
+                    {# Следующая страница #}
                     <li class="page-item {{ page == totalPages ? 'disabled' : '' }}">
 
                         {% if page < totalPages %}
                             <a
                                 class="page-link"
-                                href="{{ path('app_tickets', {page: page + 1}) }}"
+                                href="{{ path('app_tickets', {
+                                page: page + 1,
+                                status: selectedStatusId ?? 'all'
+                            }) }}"
                             >
                                 Вперёд
                             </a>
                         {% else %}
-                            <span class="page-link">Вперёд</span>
+                            <span class="page-link">
+                                Вперёд
+                            </span>
                         {% endif %}
 
                     </li>

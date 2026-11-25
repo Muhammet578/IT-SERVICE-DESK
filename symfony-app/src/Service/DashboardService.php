@@ -9,6 +9,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\ParameterType;
+use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class DashboardService
@@ -20,29 +22,60 @@ final class DashboardService
         private readonly CategoryRepository $categoryRepository
     ) {}
 
-    public function getStatistics(): array
+    public function getStatistics(?DateTimeImmutable $since = null): array
     {
         // Общее количество пользователей
         $usersCount = $this->userRepository->count([]);
 
         // Общее количество заявок
-        $ticketsCount = $this->ticketRepository->count([]);
+        $ticketsQuery = $this->entityManager
+            ->createQueryBuilder()
+            ->select('COUNT(t.id)')
+            ->from(Ticket::class, 't');
+
+        if ($since !== null) {
+            $ticketsQuery
+                ->andWhere('t.createdAt >= :since')
+                ->setParameter(
+                    'since',
+                    $since,
+                    Types::DATETIME_IMMUTABLE
+                );
+        }
+
+        $ticketsCount = (int) $ticketsQuery
+            ->getQuery()
+            ->getSingleScalarResult();
 
         // DQL: количество незавершённых заявок
         $dql = '
-            SELECT COUNT(t.id)
-            FROM App\Entity\Ticket t
-            JOIN t.status s
-            WHERE s.isFinal = :isFinal
-        ';
+    SELECT COUNT(t.id)
+    FROM App\Entity\Ticket t
+    JOIN t.status s
+    WHERE s.isFinal = :isFinal
+';
 
-        $openTicketsCount = (int) $this->entityManager
+        if ($since !== null) {
+            $dql .= ' AND t.createdAt >= :since';
+        }
+
+        $query = $this->entityManager
             ->createQuery($dql)
             ->setParameter(
                 'isFinal',
                 false,
                 ParameterType::BOOLEAN
-            )
+            );
+
+        if ($since !== null) {
+            $query->setParameter(
+                'since',
+                $since,
+                Types::DATETIME_IMMUTABLE
+            );
+        }
+
+        $openTicketsCount = (int) $query
             ->getSingleScalarResult();
 
         // Завершённые заявки

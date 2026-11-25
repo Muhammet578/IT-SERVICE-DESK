@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Status;
 use App\Entity\User;
 use App\Form\TicketStatusType;
 use App\Form\TicketEditType;
@@ -21,8 +22,12 @@ final class TicketController extends AbstractController
     #[Route('/tickets', name: 'app_tickets', methods: ['GET'])]
     public function index(
         Request $request,
-        TicketRepository $ticketRepository
+        TicketRepository $ticketRepository,
+        EntityManagerInterface $entityManager
     ): Response {
+        // Получаем стандартный репозиторий статусов Doctrine.
+        $statusRepository = $entityManager->getRepository(Status::class);
+
         $page = max(1, $request->query->getInt('page', 1));
         $limit = 15;
 
@@ -34,12 +39,53 @@ final class TicketController extends AbstractController
             );
         }
 
+        // Получаем Symfony Session
+        $session = $request->getSession();
+
+        // Восстанавливаем последний выбранный статус
+        $savedStatusId = $session->get('tickets_status_filter');
+
+        $selectedStatus = is_int($savedStatusId)
+            ? $statusRepository->find($savedStatusId)
+            : null;
+
+        // Пользователь выбрал новый фильтр
+        if ($request->query->has('status')) {
+            $requestedStatus = $request->query->get('status');
+
+            $selectedStatus = null;
+
+            // Разрешаем только положительный числовой ID
+            if (
+                is_string($requestedStatus)
+                && ctype_digit($requestedStatus)
+                && (int) $requestedStatus > 0
+            ) {
+                $selectedStatus = $statusRepository->find(
+                    (int) $requestedStatus
+                );
+            }
+
+            if ($selectedStatus === null) {
+                // "Все статусы" или некорректный ID
+                $session->remove('tickets_status_filter');
+            } else {
+                // Запоминаем выбранный статус
+                $session->set(
+                    'tickets_status_filter',
+                    $selectedStatus->getId()
+                );
+            }
+        }
+
+        // Получаем заявки с учётом прав и фильтра
         $result = $ticketRepository->paginateForViewer(
             $user,
             $this->isGranted('ROLE_MANAGER'),
             $this->isGranted('ROLE_TECHNICIAN'),
             $page,
-            $limit
+            $limit,
+            $selectedStatus
         );
 
         $totalPages = max(
@@ -50,6 +96,7 @@ final class TicketController extends AbstractController
         if ($page > $totalPages) {
             return $this->redirectToRoute('app_tickets', [
                 'page' => $totalPages,
+                'status' => $selectedStatus?->getId() ?? 'all',
             ]);
         }
 
@@ -58,6 +105,11 @@ final class TicketController extends AbstractController
             'total' => $result['total'],
             'page' => $page,
             'totalPages' => $totalPages,
+            'statuses' => $statusRepository->findBy(
+                [],
+                ['sortOrder' => 'ASC']
+            ),
+            'selectedStatusId' => $selectedStatus?->getId(),
         ]);
     }
 

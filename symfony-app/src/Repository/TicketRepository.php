@@ -88,7 +88,8 @@ final class TicketRepository extends ServiceEntityRepository
         bool $canViewAll,
         bool $canViewAssigned,
         int $page = 1,
-        int $limit = 15
+        int $limit = 15,
+        ?Status $status = null
     ): array {
         $page = max(1, $page);
         $limit = max(1, $limit);
@@ -105,7 +106,10 @@ final class TicketRepository extends ServiceEntityRepository
             if ($canViewAssigned) {
                 // Специалист видит свои и назначенные заявки
                 $qb->andWhere(
-                    't.createdBy = :viewer OR t.assignedTo = :viewer'
+                    $qb->expr()->orX(
+                        't.createdBy = :viewer',
+                        't.assignedTo = :viewer'
+                    )
                 );
             } else {
                 // Обычный пользователь видит только свои
@@ -113,6 +117,11 @@ final class TicketRepository extends ServiceEntityRepository
             }
 
             $qb->setParameter('viewer', $user);
+        }
+        if ($status !== null) {
+            $qb
+                ->andWhere('t.status = :selectedStatus')
+                ->setParameter('selectedStatus', $status);
         }
 
         $query = $qb

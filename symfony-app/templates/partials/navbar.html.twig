@@ -7,7 +7,7 @@
     'user': 'Пользователь'
 } %}
 
-<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top">
+<nav class="navbar navbar-expand-lg navbar-gta6 sticky-top">
     <div class="container py-2">
 
         {# Логотип #}
@@ -16,20 +16,19 @@
             href="{{ app.user ? path('app_home') : path('app_login') }}"
         >
             <span
-                class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-3"
-                style="width: 40px; height: 40px;"
+                class="d-inline-flex align-items-center justify-content-center gta-brand-badge"
             >
                 IT
             </span>
 
-            <span class="text-dark">
-                SERVICE<span class="text-primary">DESK</span>
+            <span class="gta-brand-text">
+                SERVICE<span class="brand-accent">DESK</span>
             </span>
         </a>
 
         {# Мобильное меню #}
         <button
-            class="navbar-toggler border-0"
+            class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#mainNavbar"
@@ -48,21 +47,21 @@
                 <div class="navbar-nav mx-auto gap-lg-2">
 
                     <a
-                        class="nav-link px-3 {{ currentRoute == 'app_home' ? 'active fw-semibold text-primary' : '' }}"
+                        class="nav-link px-3 gta-link {{ currentRoute == 'app_home' ? 'active fw-semibold' : '' }}"
                         href="{{ path('app_home') }}"
                     >
                         Главная
                     </a>
 
                     <a
-                        class="nav-link px-3 {{ currentRoute == 'app_dashboard' ? 'active fw-semibold text-primary' : '' }}"
+                        class="nav-link px-3 gta-link {{ currentRoute == 'app_dashboard' ? 'active fw-semibold' : '' }}"
                         href="{{ path('app_dashboard') }}"
                     >
                         Панель управления
                     </a>
 
                     <a
-                        class="nav-link px-3 {{ currentRoute starts with 'app_tickets' or currentRoute == 'find_tickets' ? 'active fw-semibold text-primary' : '' }}"
+                        class="nav-link px-3 gta-link {{ currentRoute starts with 'app_tickets' or currentRoute == 'find_tickets' ? 'active fw-semibold' : '' }}"
                         href="{{ path('app_tickets') }}"
                     >
                         Заявки
@@ -70,7 +69,7 @@
 
                     {% if is_granted('ROLE_ADMIN') %}
                         <a
-                            class="nav-link px-3 {{ currentRoute starts with 'app_users' ? 'active fw-semibold text-primary' : '' }}"
+                            class="nav-link px-3 gta-link {{ currentRoute starts with 'app_users' ? 'active fw-semibold' : '' }}"
                             href="{{ path('app_users') }}"
                         >
                             Пользователи
@@ -78,7 +77,14 @@
                     {% endif %}
 
                     <a
-                        class="nav-link px-3 {{ currentRoute == 'app_about' ? 'active fw-semibold text-primary' : '' }}"
+                        class="nav-link px-3 gta-link {{ currentRoute == 'app_profile' ? 'active fw-semibold' : '' }}"
+                        href="{{ path('app_profile') }}"
+                    >
+                        Мой профиль
+                    </a>
+
+                    <a
+                        class="nav-link px-3 gta-link {{ currentRoute == 'app_about' ? 'active fw-semibold' : '' }}"
                         href="{{ path('app_about') }}"
                     >
                         О проекте
@@ -86,38 +92,36 @@
 
                 </div>
 
-                {# Текущий пользователь #}
-                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                {# Правая часть #}
+                <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-3 mt-3 mt-lg-0">
 
-                    <div class="text-lg-end">
-                        <span class="badge bg-success mb-1">
+                    <div class="gta-user-box text-start text-lg-end">
+                        <span class="gta-auth-badge d-inline-block mb-1">
                             Авторизован
                         </span>
 
-                        <div class="fw-semibold text-dark">
+                        <div class="gta-user-name">
                             {{ app.user.name }}
                         </div>
 
-                        <small class="text-muted d-block">
+                        <small class="gta-user-email d-block">
                             {{ app.user.email }}
                         </small>
 
-                        <small class="text-primary d-block">
+                        <small class="gta-user-role d-block">
                             {{ roleLabels[app.user.role.name]|default(app.user.role.name) }}
                         </small>
                     </div>
 
-                    {# Создание пользователей для менеджера и администратора #}
                     {% if is_granted('ROLE_MANAGER') %}
                         <a
                             href="{{ path('app_users_new') }}"
-                            class="btn btn-primary btn-sm rounded-3"
+                            class="btn btn-gta-primary btn-sm rounded-3"
                         >
                             + Пользователь
                         </a>
                     {% endif %}
 
-                    {# Безопасный выход #}
                     <form
                         action="{{ path('app_logout') }}"
                         method="post"
@@ -131,7 +135,7 @@
 
                         <button
                             type="submit"
-                            class="btn btn-outline-danger btn-sm rounded-3"
+                            class="btn btn-gta-danger btn-sm rounded-3"
                         >
                             Выход
                         </button>
@@ -143,18 +147,16 @@
 
                 {# Гость #}
                 <div class="ms-lg-auto d-flex align-items-center gap-3 mt-3 mt-lg-0">
-
                     <span class="badge bg-secondary">
                         Гость
                     </span>
 
                     <a
                         href="{{ path('app_login') }}"
-                        class="btn btn-primary rounded-3 px-4"
+                        class="btn btn-gta-primary rounded-3 px-4"
                     >
                         Войти
                     </a>
-
                 </div>
 
             {% endif %}
