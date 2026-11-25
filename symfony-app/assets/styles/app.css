@@ -433,10 +433,6 @@ html[data-theme="vice-city"] .btn-gta-danger:focus-visible {
 }
 
 /* 5. HOME PAGE ===================================================== */
-.isd-home {
-    color: var(--ui-text);
-}
-
 .isd-home-hero {
     position: relative;
     overflow: hidden;
@@ -681,22 +677,6 @@ html[data-theme="vice-city"] .isd-home-hero {
 }
 
 /* 6. DASHBOARD ===================================================== */
-.isd-dashboard {
-    color: var(--ui-text);
-}
-
-.isd-dashboard-kicker {
-    color: var(--ui-accent);
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-}
-
-.isd-dashboard-description {
-    color: var(--ui-muted);
-    line-height: 1.65;
-}
-
 .isd-dashboard-hero {
     position: relative;
     overflow: hidden;
@@ -930,17 +910,6 @@ html[data-theme="vice-city"] .isd-dashboard-stat-icon {
 }
 
 /* 7. ABOUT PAGE ==================================================== */
-.isd-about {
-    color: var(--ui-text);
-}
-
-.isd-about-kicker {
-    color: var(--ui-accent);
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-}
-
 .isd-about-description {
     color: var(--ui-muted);
     line-height: 1.75;
@@ -1280,162 +1249,260 @@ main .page-link,
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-        animation-duration: .01ms;
-    }
-
-    body,
-    .navbar-gta6,
-    .gta-link,
-    .gta-brand-badge,
-    .gta-brand-text,
-    .theme-toggle,
-    .profile-dropdown-menu,
-    .btn-gta-primary,
-    .btn-gta-danger,
-    main .card,
-    main .card-header,
-    main .table,
-    main .form-control,
-    main .form-select,
-    main .page-link,
-    .isd-home-feature,
-    .isd-home-hero,
-    .isd-home-bottom,
-    .isd-dashboard-stat,
-    .isd-dashboard-hero,
-    .isd-about-feature,
-    .isd-about-hero {
-        transition: none !important;
-    }
-}
-
-/* ===========================================
-   IT SERVICE DESK — PROFILE
-   CLASSIC / VICE CITY
-=========================================== */
-
-.isd-profile {
-    color: var(--ui-text);
-}
-
-.isd-profile-kicker {
+/* 10. SHARED COMPONENTS — PROFILE / FORMS / USERS / TICKETS ========= */
+/* Same visual language on every page; page-specific details stay below. */
+:is(.isd-dashboard-kicker, .isd-about-kicker, .isd-profile-kicker,
+    .isd-register-kicker, .isd-register-form-label,
+    .isd-users-kicker, .isd-tickets-kicker) {
     color: var(--ui-accent);
-    font-size: 0.72rem;
+    font-size: .72rem;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
 }
 
-.isd-profile-description {
+:is(.isd-dashboard-description, .isd-profile-description,
+    .isd-users-description, .isd-tickets-description) {
     color: var(--ui-muted);
     line-height: 1.65;
 }
 
-/* Шапка профиля */
-
-.isd-profile-hero {
+:is(.isd-profile-hero, .isd-register-hero,
+    .isd-users-hero, .isd-tickets-hero) {
     position: relative;
     overflow: hidden;
     padding: 2.5rem;
     background: var(--ui-hero);
-    color: #ffffff;
+    color: #fff;
     box-shadow: var(--ui-shadow);
 }
 
-.isd-profile-hero::before {
+main :is(.isd-profile-hero, .isd-register-hero,
+    .isd-users-hero, .isd-tickets-hero) :is(h1, h2, h3) {
+    color: #fff !important;
+}
+
+:is(.isd-profile-hero, .isd-register-hero)::before {
     content: "";
     position: absolute;
-    width: 260px;
-    height: 260px;
-    top: -140px;
-    right: -90px;
+    width: 270px;
+    height: 270px;
+    right: -100px;
+    top: -120px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-    filter: blur(25px);
+    background: rgba(255, 255, 255, .12);
+    filter: blur(30px);
     pointer-events: none;
 }
 
-main .isd-profile-hero h2 {
-    color: #ffffff !important;
-    overflow-wrap: anywhere;
+/* These translucent labels are displayed on saturated hero gradients. */
+:is(.isd-profile-hero-label, .isd-register-hero-label,
+    .isd-users-hero-label, .isd-tickets-hero-label) {
+    color: rgba(255, 255, 255, .82);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
 }
 
-/* Аватар с первой буквой имени */
+:is(.isd-register-hero-description, .isd-users-hero p,
+    .isd-tickets-hero p) {
+    color: rgba(255, 255, 255, .9);
+    line-height: 1.7;
+}
+
+:is(.isd-profile-button, .isd-profile-button-outline,
+    .isd-register-submit, .isd-register-back,
+    .isd-users-primary, .isd-users-secondary, .isd-users-edit,
+    .isd-tickets-primary, .isd-tickets-secondary,
+    .isd-tickets-open, .isd-tickets-edit,
+    .isd-ticket-detail-status-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+:is(.isd-profile-button, .isd-register-submit,
+    .isd-users-primary, .isd-tickets-primary) {
+    background: var(--ui-accent);
+    border: 1px solid var(--ui-accent);
+    color: var(--ui-accent-text);
+}
+
+:is(.isd-profile-button:hover, .isd-users-primary:hover,
+    .isd-tickets-primary:hover) {
+    background: var(--ui-accent-hover);
+    border-color: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+}
+
+:is(.isd-profile-button-outline, .isd-register-back,
+    .isd-users-secondary, .isd-tickets-secondary,
+    .isd-tickets-edit) {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border);
+    color: var(--ui-text);
+}
+
+:is(.isd-profile-button-outline:hover, .isd-register-back:hover,
+    .isd-users-secondary:hover, .isd-tickets-secondary:hover,
+    .isd-tickets-edit:hover) {
+    background: var(--ui-hover);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+}
+
+:is(.isd-users-primary, .isd-users-secondary,
+    .isd-tickets-primary, .isd-tickets-secondary) {
+    padding: .65rem 1.1rem;
+    border-radius: 11px;
+}
+
+:is(.isd-users-edit, .isd-tickets-open) {
+    padding: .5rem .9rem;
+    border: 1px solid var(--ui-border);
+    border-radius: 11px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+}
+
+:is(.isd-users-edit:hover, .isd-tickets-open:hover) {
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
+    color: var(--ui-accent-text);
+}
+
+:is(.isd-users-table, .isd-tickets-table) th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-muted);
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+:is(.isd-users-table, .isd-tickets-table) td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: var(--ui-text);
+}
+
+:is(.isd-users-id, .isd-tickets-id) {
+    color: var(--ui-muted);
+    font-size: .85rem;
+    font-weight: 700;
+}
+
+:is(.isd-users-count-badge, .isd-tickets-count-badge) {
+    padding: .4rem .8rem;
+    border-radius: 9px;
+    background: var(--ui-hover);
+    color: var(--ui-accent);
+    font-size: .85rem;
+    font-weight: 800;
+}
+
+:is(.isd-users-counter, .isd-tickets-counter) {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .13);
+    backdrop-filter: blur(8px);
+}
+
+:is(.isd-users-counter, .isd-tickets-counter) strong {
+    color: #fff;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+:is(.isd-users-counter, .isd-tickets-counter) :is(span, small) {
+    color: rgba(255, 255, 255, .85);
+    font-size: .73rem;
+}
+
+:is(.isd-users .isd-users-panel, .isd-tickets .isd-tickets-panel,
+    .isd-profile-card, .isd-register-card, .isd-ticket-detail-card,
+    .isd-ticket-edit .isd-tickets-panel) {
+    overflow: hidden;
+}
+
+:is(.isd-users-empty, .isd-tickets-empty) {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+:is(.isd-users-empty-icon, .isd-tickets-empty-icon) {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+:is(.isd-users-pagination, .isd-tickets-pagination) .page-link {
+    min-width: 40px;
+    border-radius: 9px;
+    text-align: center;
+}
+
+/* 11. PROFILE ====================================================== */
+.isd-profile-field {
+    transition: background-color .45s ease, border-color .45s ease;
+}
 
 .isd-profile-avatar {
     display: flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-
     width: 96px;
     height: 96px;
-
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, .4);
     border-radius: 26px;
-
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, .18);
     backdrop-filter: blur(8px);
-
-    color: #ffffff;
+    color: #fff;
     font-size: 2.7rem;
     font-weight: 800;
 }
 
-.isd-profile-hero-label {
-    display: block;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-}
-
 .isd-profile-hero-email {
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(255, 255, 255, .88);
     overflow-wrap: anywhere;
 }
 
 .isd-profile-hero-role {
     display: inline-flex;
-    padding: 0.4rem 0.8rem;
-
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: .4rem .8rem;
+    border: 1px solid rgba(255, 255, 255, .3);
     border-radius: 999px;
-
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-
-    font-size: 0.8rem;
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+    font-size: .8rem;
     font-weight: 700;
 }
-
-/* Статус */
 
 .isd-profile-status {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-
-    padding: 0.55rem 0.9rem;
+    gap: .5rem;
+    padding: .55rem .9rem;
     border-radius: 999px;
-
-    color: #ffffff;
-    font-size: 0.8rem;
+    color: #fff;
+    font-size: .8rem;
     font-weight: 700;
     white-space: nowrap;
 }
 
 .isd-profile-status--active {
-    border: 1px solid rgba(157, 255, 208, 0.5);
-    background: rgba(16, 128, 88, 0.35);
+    border: 1px solid rgba(157, 255, 208, .5);
+    background: rgba(16, 128, 88, .35);
 }
 
 .isd-profile-status--blocked {
-    border: 1px solid rgba(255, 190, 190, 0.6);
-    background: rgba(150, 30, 50, 0.5);
+    border: 1px solid rgba(255, 190, 190, .6);
+    background: rgba(150, 30, 50, .5);
 }
 
 .isd-profile-status-dot {
@@ -1443,12 +1510,6 @@ main .isd-profile-hero h2 {
     height: 8px;
     border-radius: 50%;
     background: currentColor;
-}
-
-/* Карточка информации */
-
-.isd-profile-card {
-    overflow: hidden;
 }
 
 .isd-profile-grid {
@@ -1460,23 +1521,18 @@ main .isd-profile-hero h2 {
 .isd-profile-field {
     min-width: 0;
     padding: 1.25rem;
-
     background: var(--ui-hover);
     border: 1px solid var(--ui-border);
     border-radius: 14px;
-
-    transition:
-        background-color 0.45s ease,
-        border-color 0.45s ease;
 }
 
 .isd-profile-field dt {
-    margin-bottom: 0.7rem;
+    margin-bottom: .7rem;
     color: var(--ui-muted);
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em;
 }
 
 .isd-profile-field dd {
@@ -1507,167 +1563,37 @@ html[data-theme="vice-city"] .isd-profile-account-blocked {
     color: #ff9dab;
 }
 
-/* Кнопки */
-
 .isd-profile-button,
 .isd-profile-button-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-
-    padding: 0.7rem 1.2rem;
+    padding: .7rem 1.2rem;
     border-radius: 12px;
-    font-weight: 700;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
 }
 
-.isd-profile-button {
-    background: var(--ui-accent);
-    border: 1px solid var(--ui-accent);
-    color: var(--ui-accent-text);
-}
-
-.isd-profile-button:hover {
-    background: var(--ui-accent-hover);
-    border-color: var(--ui-accent-hover);
-    color: var(--ui-accent-text);
-}
-
-.isd-profile-button-outline {
-    background: var(--ui-surface);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-text);
-}
-
-.isd-profile-button-outline:hover {
-    background: var(--ui-hover);
-    border-color: var(--ui-accent);
-    color: var(--ui-text);
-}
-
-/* Vice City */
-
-html[data-theme="vice-city"] .isd-profile-hero {
-    box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.3),
-        0 0 28px rgba(255, 105, 187, 0.12);
-}
-
-/* Адаптация */
-
-@media (max-width: 767.98px) {
-    .isd-profile-hero {
-        padding: 1.75rem;
-    }
-
-    .isd-profile-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .isd-profile-avatar {
-        width: 76px;
-        height: 76px;
-        border-radius: 20px;
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 575.98px) {
-
-    .isd-profile-button,
-    .isd-profile-button-outline {
-        width: 100%;
-    }
-}
-
-/* ===========================================
-   IT SERVICE DESK — REGISTRATION
-   CLASSIC / VICE CITY
-=========================================== */
-
-.isd-register {
-    color: var(--ui-text);
-}
-
-.isd-register-kicker,
-.isd-register-form-label {
-    color: var(--ui-accent);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-}
-
+/* 12. FORMS: USER CREATE / EDIT / TICKET EDIT / STATUS / LOGIN ====== */
 .isd-register-description {
     color: var(--ui-muted);
     line-height: 1.7;
 }
 
-/* Информационный блок */
-
 .isd-register-hero {
-    position: relative;
-    overflow: hidden;
-
-    padding: 2.5rem;
-
-    background: var(--ui-hero);
-    color: #ffffff;
-
-    box-shadow: var(--ui-shadow);
     isolation: isolate;
 }
 
 .isd-register-hero::before {
-    content: "";
-    position: absolute;
-
-    width: 270px;
-    height: 270px;
-
-    right: -100px;
-    top: -120px;
-
-    border-radius: 50%;
-
-    background: rgba(255, 255, 255, 0.12);
-    filter: blur(30px);
-
-    pointer-events: none;
     z-index: -1;
-}
-
-main .isd-register-hero h2 {
-    color: #ffffff !important;
 }
 
 .isd-register-hero-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 76px;
     height: 76px;
-
     margin-bottom: 2rem;
-
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, .3);
     border-radius: 20px;
-
-    background: rgba(255, 255, 255, 0.15);
-
+    background: rgba(255, 255, 255, .15);
     font-size: 2.2rem;
-}
-
-.isd-register-hero-label {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
 }
 
 .isd-register-highlight {
@@ -1675,390 +1601,127 @@ main .isd-register-hero h2 {
     color: #dceaff;
 }
 
-.isd-register-hero-description {
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.8;
+html[data-theme="vice-city"] .isd-register-highlight {
+    color: #ffe0b1;
 }
 
 .isd-register-hero-divider {
     height: 1px;
     margin: 2rem 0;
-
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, .25);
 }
 
 .isd-register-info-item {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-
+    gap: .85rem;
     margin-bottom: 1rem;
-
-    color: #ffffff;
-    font-size: 0.9rem;
+    color: #fff;
+    font-size: .9rem;
 }
 
 .isd-register-info-item>span {
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 28px;
     height: 28px;
     flex-shrink: 0;
-
     border-radius: 9px;
-    background: rgba(255, 255, 255, 0.16);
-
+    background: rgba(255, 255, 255, .16);
     font-weight: 800;
-}
-
-/* Карточка формы */
-
-.isd-register-card {
-    overflow: hidden;
 }
 
 .isd-register-field .form-label {
     display: block;
-    margin-bottom: 0.6rem;
-
+    margin-bottom: .6rem;
     color: var(--ui-text);
-    font-size: 0.9rem;
+    font-size: .9rem;
 }
-
-/* Поля ввода */
 
 .isd-register .isd-register-input {
     width: 100%;
     min-height: 50px;
-
-    padding: 0.8rem 1rem;
-
+    padding: .8rem 1rem;
     border: 1px solid var(--ui-border);
     border-radius: 12px;
-
     background: var(--ui-surface);
     color: var(--ui-text);
-
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
 }
 
 .isd-register .isd-register-input::placeholder {
     color: var(--ui-muted);
-    opacity: 0.85;
+    opacity: .85;
 }
 
 .isd-register .isd-register-input:focus {
     background: var(--ui-surface);
     color: var(--ui-text);
     border-color: var(--ui-accent);
-
-    box-shadow:
-        0 0 0 3px rgba(135, 105, 225, 0.15);
-
+    box-shadow: 0 0 0 3px var(--ui-focus-ring);
     outline: none;
 }
-
-/* Подсказка безопасности */
 
 .isd-register-note {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
-
+    gap: .75rem;
     padding: 1rem;
-
     border: 1px solid var(--ui-border);
     border-radius: 12px;
-
     background: var(--ui-hover);
     color: var(--ui-muted);
-
-    font-size: 0.85rem;
+    font-size: .85rem;
     line-height: 1.6;
 }
 
-/* Ошибки валидации */
-
-.isd-register-form .invalid-feedback,
-.isd-register-form .form-error-message,
-.isd-register-form ul {
-    margin-top: 0.5rem;
+.isd-register-form :is(.invalid-feedback, .form-error-message, ul) {
+    margin-top: .5rem;
     color: #dc3545;
-    font-size: 0.85rem;
+    font-size: .85rem;
 }
 
 .isd-register-form ul {
     padding-left: 1.25rem;
 }
 
-/* Кнопки */
-
-.isd-register-submit,
-.isd-register-back {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.65rem;
-
-    min-height: 46px;
-    padding: 0.7rem 1.25rem;
-
-    border-radius: 12px;
-    font-weight: 700;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.isd-register-submit {
-    background: var(--ui-accent);
-    border: 1px solid var(--ui-accent);
-    color: #ffffff;
-}
-
-.isd-register-submit:hover {
-    background: var(--ui-accent);
-    border-color: var(--ui-accent);
-    color: #ffffff;
-
-    filter: brightness(0.94);
-    transform: translateY(-2px);
-}
-
-.isd-register-back {
-    background: var(--ui-surface);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-text);
-}
-
-.isd-register-back:hover {
-    background: var(--ui-hover);
-    border-color: var(--ui-accent);
-    color: var(--ui-text);
-}
-
-/* ===========================================
-   THEME DETAILS
-=========================================== */
-
-/* Classic */
-
-html[data-theme="classic"] .isd-register-highlight {
-    color: #dceaff;
-}
-
-/* Vice City */
-
-html[data-theme="vice-city"] .isd-register-hero {
-    box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(255, 105, 187, 0.12);
-}
-
-html[data-theme="vice-city"] .isd-register-highlight {
-    color: #ffe0b1;
-}
-
-html[data-theme="vice-city"] .isd-register-submit,
-html[data-theme="vice-city"] .isd-register-submit:hover {
-    color: #201426;
-}
-
-html[data-theme="vice-city"] .isd-register-form .invalid-feedback,
-html[data-theme="vice-city"] .isd-register-form .form-error-message,
-html[data-theme="vice-city"] .isd-register-form ul {
+html[data-theme="vice-city"] .isd-register-form :is(.invalid-feedback, .form-error-message, ul) {
     color: #ff9dad;
 }
 
-/* ===========================================
-   MOBILE
-=========================================== */
-
-@media (max-width: 991.98px) {
-    .isd-register-hero {
-        padding: 2rem;
-    }
+.isd-register-submit,
+.isd-register-back {
+    min-height: 46px;
+    padding: .7rem 1.25rem;
+    border-radius: 12px;
 }
 
-@media (max-width: 575.98px) {
-    .isd-register-hero {
-        padding: 1.5rem;
-    }
-
-    .isd-register-submit,
-    .isd-register-back {
-        width: 100%;
-    }
+.isd-register-submit {
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-    .isd-register-submit,
-    .isd-register-back,
-    .isd-register-input {
-        transition: none;
-    }
+.isd-register-submit:hover {
+    background: var(--ui-accent-hover);
+    border-color: var(--ui-accent-hover);
+    color: var(--ui-accent-text);
+    transform: translateY(-2px);
 }
 
-/* ===========================================
-   USERS LIST — CLASSIC / VICE CITY
-=========================================== */
-
-.isd-users {
-    color: var(--ui-text);
-}
-
-.isd-users-kicker {
-    color: var(--ui-accent);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-}
-
-.isd-users-description {
-    color: var(--ui-muted);
-    line-height: 1.65;
-}
-
-/* Кнопки */
-
-.isd-users-primary,
-.isd-users-secondary,
-.isd-users-edit {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 11px;
-    font-weight: 700;
-}
-
-.isd-users-primary {
-    padding: 0.65rem 1.1rem;
-    background: var(--ui-accent);
-    border: 1px solid var(--ui-accent);
-    color: #ffffff;
-}
-
-.isd-users-primary:hover {
-    background: var(--ui-accent);
-    border-color: var(--ui-accent);
-    color: #ffffff;
-    filter: brightness(0.92);
-}
-
-.isd-users-secondary {
-    padding: 0.65rem 1rem;
-    background: var(--ui-surface);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-text);
-}
-
-.isd-users-secondary:hover {
-    background: var(--ui-hover);
-    border-color: var(--ui-accent);
-    color: var(--ui-text);
-}
-
-/* Верхний блок */
-
-.isd-users-hero {
-    position: relative;
-    overflow: hidden;
-    padding: 2.5rem;
-    background: var(--ui-hero);
-    color: #ffffff;
-    box-shadow: var(--ui-shadow);
-}
-
-main .isd-users-hero h2 {
-    color: #ffffff !important;
-}
-
+/* 13. USERS LIST =================================================== */
 .isd-users-hero p {
     max-width: 620px;
-    color: rgba(255, 255, 255, 0.88);
-}
-
-.isd-users-hero-label {
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
 }
 
 .isd-users-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     min-width: 150px;
-    padding: 1rem 1.5rem;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.13);
-}
-
-.isd-users-counter span,
-.isd-users-counter small {
-    color: rgba(255, 255, 255, 0.88);
-    font-size: 0.73rem;
 }
 
 .isd-users-counter strong {
-    color: #ffffff;
     font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1.3;
 }
-
-/* Панели */
-
-.isd-users .isd-users-panel {
-    overflow: hidden;
-}
-
-.isd-users-count-badge {
-    padding: 0.4rem 0.75rem;
-    border-radius: 9px;
-    background: var(--ui-hover);
-    color: var(--ui-accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-}
-
-/* Таблица */
 
 .isd-users-table {
     min-width: 650px;
-}
-
-.isd-users-table th {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    color: var(--ui-muted);
-    font-size: 0.78rem;
-    font-weight: 700;
-}
-
-.isd-users-table td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    color: var(--ui-text);
-}
-
-.isd-users-id {
-    color: var(--ui-muted);
-    font-size: 0.85rem;
-    font-weight: 700;
 }
 
 .isd-users-avatar {
@@ -2085,108 +1748,9 @@ main .isd-users-hero h2 {
     overflow-wrap: anywhere;
 }
 
-.isd-users-edit {
-    padding: 0.5rem 0.9rem;
-    background: var(--ui-hover);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-accent);
-}
-
-.isd-users-edit:hover {
-    background: var(--ui-accent);
-    border-color: var(--ui-accent);
-    color: #ffffff;
-}
-
-/* Пустой список */
-
-.isd-users-empty {
-    padding: 3rem 1rem;
-    text-align: center;
-}
-
-.isd-users-empty-icon {
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-}
-
-/* Пагинация */
-
-.isd-users-pagination .page-link {
-    min-width: 40px;
-    text-align: center;
-    border-radius: 9px;
-}
-
-/* Vice City */
-
-html[data-theme="vice-city"] .isd-users-primary,
-html[data-theme="vice-city"] .isd-users-primary:hover {
-    color: #201426;
-}
-
-html[data-theme="vice-city"] .isd-users-edit:hover {
-    color: #201426;
-}
-
-/* Адаптация */
-
-@media (max-width: 767.98px) {
-    .isd-users-hero {
-        padding: 1.75rem;
-    }
-
-    .isd-users-counter {
-        width: 100%;
-    }
-}
-
-/* ===========================================
-   TICKETS LIST — CLASSIC / VICE CITY
-=========================================== */
-
-.isd-tickets {
-    color: var(--ui-text);
-}
-
-.isd-tickets-kicker {
-    color: var(--ui-accent);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-}
-
-.isd-tickets-description {
-    color: var(--ui-muted);
-    line-height: 1.65;
-}
-
-/* Верхний блок */
-
-.isd-tickets-hero {
-    position: relative;
-    overflow: hidden;
-    padding: 2.5rem;
-    background: var(--ui-hero);
-    color: #ffffff;
-    box-shadow: var(--ui-shadow);
-}
-
-main .isd-tickets-hero h2 {
-    color: #ffffff !important;
-}
-
+/* 14. TICKETS LIST / STATUS BADGES ================================= */
 .isd-tickets-hero p {
     max-width: 650px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.7;
-}
-
-.isd-tickets-hero-label {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.82);
 }
 
 .isd-tickets-hero-highlight {
@@ -2198,144 +1762,26 @@ html[data-theme="vice-city"] .isd-tickets-hero-highlight {
     color: #ffe0b1;
 }
 
-/* Счётчик */
-
 .isd-tickets-counter {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
     min-width: 170px;
-    padding: 1.2rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.13);
-    backdrop-filter: blur(8px);
-}
-
-.isd-tickets-counter span {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
 }
 
 .isd-tickets-counter strong {
-    color: #ffffff;
     font-size: 2.7rem;
+}
+
+.isd-tickets-counter span {
     font-weight: 800;
-    line-height: 1.3;
+    letter-spacing: .08em;
 }
-
-.isd-tickets-counter small {
-    color: rgba(255, 255, 255, 0.85);
-}
-
-/* Карточки */
-
-.isd-tickets .isd-tickets-panel {
-    overflow: hidden;
-}
-
-.isd-tickets-count-badge {
-    padding: 0.4rem 0.8rem;
-    border-radius: 9px;
-    background: var(--ui-hover);
-    color: var(--ui-accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-}
-
-/* Кнопки */
-
-.isd-tickets-primary,
-.isd-tickets-secondary,
-.isd-tickets-open,
-.isd-tickets-edit {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 11px;
-    font-weight: 700;
-}
-
-.isd-tickets-primary {
-    padding: 0.65rem 1.1rem;
-    background: var(--ui-accent);
-    border: 1px solid var(--ui-accent);
-    color: #ffffff;
-}
-
-.isd-tickets-primary:hover {
-    background: var(--ui-accent);
-    border-color: var(--ui-accent);
-    color: #ffffff;
-    filter: brightness(0.92);
-}
-
-.isd-tickets-secondary {
-    padding: 0.65rem 1rem;
-    background: var(--ui-surface);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-text);
-}
-
-.isd-tickets-secondary:hover {
-    background: var(--ui-hover);
-    border-color: var(--ui-accent);
-    color: var(--ui-text);
-}
-
-.isd-tickets-open {
-    padding: 0.5rem 0.85rem;
-    background: var(--ui-hover);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-accent);
-}
-
-.isd-tickets-open:hover {
-    background: var(--ui-accent);
-    border-color: var(--ui-accent);
-    color: #ffffff;
-}
-
-.isd-tickets-edit {
-    padding: 0.5rem 0.85rem;
-    background: var(--ui-surface);
-    border: 1px solid var(--ui-border);
-    color: var(--ui-text);
-}
-
-.isd-tickets-edit:hover {
-    background: var(--ui-hover);
-    border-color: var(--ui-accent);
-    color: var(--ui-text);
-}
-
-/* Таблица */
 
 .isd-tickets-table {
     min-width: 790px;
 }
 
-.isd-tickets-table th {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    color: var(--ui-muted);
-    font-size: 0.78rem;
-    font-weight: 700;
-}
-
-.isd-tickets-table td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    color: var(--ui-text);
-}
-
-.isd-tickets-id {
-    color: var(--ui-muted);
-    font-size: 0.85rem;
-    font-weight: 700;
+.isd-tickets-edit {
+    padding: .5rem .85rem;
+    border-radius: 11px;
 }
 
 .isd-tickets-title {
@@ -2355,21 +1801,19 @@ html[data-theme="vice-city"] .isd-tickets-hero-highlight {
 .isd-tickets-text {
     max-width: 300px;
     color: var(--ui-muted);
-    font-size: 0.87rem;
+    font-size: .87rem;
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
-/* Статусы */
-
 .isd-ticket-status {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    padding: 0.45rem 0.75rem;
+    gap: .45rem;
+    padding: .45rem .75rem;
     border: 1px solid transparent;
     border-radius: 999px;
-    font-size: 0.78rem;
+    font-size: .78rem;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -2407,8 +1851,6 @@ html[data-theme="vice-city"] .isd-tickets-hero-highlight {
     color: #4d596b;
 }
 
-/* Цвета статусов для Vice City */
-
 html[data-theme="vice-city"] .isd-ticket-status-new {
     background: #263c66;
     border-color: #4165a4;
@@ -2427,85 +1869,29 @@ html[data-theme="vice-city"] .isd-ticket-status-resolved {
     color: #a6f1cb;
 }
 
-html[data-theme="vice-city"] .isd-ticket-status-closed,
-html[data-theme="vice-city"] .isd-ticket-status-default {
+html[data-theme="vice-city"] :is(.isd-ticket-status-closed, .isd-ticket-status-default) {
     background: #39354b;
     border-color: #59526e;
     color: #d4ccdf;
 }
 
-/* Акцентные кнопки Vice City */
-
-html[data-theme="vice-city"] .isd-tickets-primary,
-html[data-theme="vice-city"] .isd-tickets-primary:hover,
-html[data-theme="vice-city"] .isd-tickets-open:hover {
-    color: #201426;
-}
-
-/* Пустой список */
-
-.isd-tickets-empty {
-    padding: 3rem 1rem;
-    text-align: center;
-}
-
-.isd-tickets-empty-icon {
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-}
-
-/* Пагинация */
-
-.isd-tickets-pagination .page-link {
-    min-width: 42px;
-    border-radius: 9px;
-    text-align: center;
-}
-
-/* Адаптивность */
-
-@media (max-width: 767.98px) {
-    .isd-tickets-hero {
-        padding: 1.75rem;
-    }
-
-    .isd-tickets-counter {
-        width: 100%;
-    }
-
-    .isd-tickets-hero-highlight {
-        display: inline;
-    }
-}
-
-/* ===========================================
-   TICKET DETAILS — CLASSIC / VICE CITY
-=========================================== */
-
-/* Информационный блок со статусом */
-
+/* 15. TICKET DETAILS =============================================== */
 .isd-ticket-detail-hero-info {
     display: inline-block;
     min-width: 180px;
     padding: 1.3rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, .25);
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, .14);
     backdrop-filter: blur(8px);
     text-align: center;
 }
 
 .isd-ticket-detail-hero-caption {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.7rem;
+    color: rgba(255, 255, 255, .85);
+    font-size: .7rem;
     font-weight: 800;
-    letter-spacing: 0.09em;
-}
-
-/* Карточка информации */
-
-.isd-ticket-detail-card {
-    overflow: hidden;
+    letter-spacing: .09em;
 }
 
 .isd-ticket-detail-grid {
@@ -2523,12 +1909,12 @@ html[data-theme="vice-city"] .isd-tickets-open:hover {
 }
 
 .isd-ticket-detail-label {
-    margin-bottom: 0.8rem;
+    margin-bottom: .8rem;
     color: var(--ui-muted);
-    font-size: 0.75rem;
+    font-size: .75rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: .05em;
 }
 
 .isd-ticket-detail-value {
@@ -2538,8 +1924,6 @@ html[data-theme="vice-city"] .isd-tickets-open:hover {
     font-weight: 700;
     overflow-wrap: anywhere;
 }
-
-/* Описание проблемы */
 
 .isd-ticket-detail-description {
     padding: 1.5rem;
@@ -2559,29 +1943,17 @@ html[data-theme="vice-city"] .isd-tickets-open:hover {
     overflow-wrap: anywhere;
 }
 
-/* Нижняя панель */
-
 .isd-ticket-detail-footer {
     background: var(--ui-surface) !important;
     border-top: 1px solid var(--ui-border);
 }
 
-/* Кнопка изменения статуса */
-
 .isd-ticket-detail-status-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-
-    padding: 0.65rem 1.1rem;
+    padding: .65rem 1.1rem;
     border: 1px solid #d89a3a;
     border-radius: 11px;
-
     background: #fff4de;
     color: #86550e;
-
-    font-weight: 700;
 }
 
 .isd-ticket-detail-status-button:hover {
@@ -2589,8 +1961,6 @@ html[data-theme="vice-city"] .isd-tickets-open:hover {
     border-color: #d89a3a;
     color: #251804;
 }
-
-/* Vice City */
 
 html[data-theme="vice-city"] .isd-ticket-detail-status-button {
     background: #503a27;
@@ -2604,39 +1974,13 @@ html[data-theme="vice-city"] .isd-ticket-detail-status-button:hover {
     color: #211428;
 }
 
-/* Мобильная версия */
-
-@media (max-width: 767.98px) {
-
-    .isd-ticket-detail-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .isd-ticket-detail-hero-info {
-        width: 100%;
-    }
-
-}
-
-@media (max-width: 575.98px) {
-
-    .isd-ticket-detail-footer .btn {
-        width: 100%;
-    }
-
-}
-
-/* ===========================================
-   TICKET EDIT — CLASSIC / VICE CITY
-=========================================== */
-
-.isd-ticket-edit .isd-register-card,
-.isd-ticket-edit .isd-tickets-panel {
-    overflow: hidden;
-}
-
+/* 16. TICKET EDIT / CHANGE STATUS ================================= */
 .isd-ticket-edit .isd-register-input {
     width: 100%;
+}
+
+.isd-ticket-edit .isd-ticket-status {
+    font-size: .88rem;
 }
 
 .isd-ticket-edit textarea.isd-register-input {
@@ -2644,15 +1988,14 @@ html[data-theme="vice-city"] .isd-ticket-detail-status-button:hover {
     resize: vertical;
 }
 
-.isd-ticket-edit .isd-ticket-status {
-    font-size: 0.88rem;
-    padding: 0.6rem 0.9rem;
+.isd-ticket-edit .isd-ticket-status,
+.isd-ticket-status-page .isd-ticket-status {
+    padding: .6rem .9rem;
+    font-size: .85rem;
 }
 
-/* Блок удаления */
-
 html[data-theme] main .isd-ticket-edit-danger {
-    border: 1px solid rgba(220, 53, 69, 0.35) !important;
+    border: 1px solid rgba(220, 53, 69, .35) !important;
 }
 
 .isd-ticket-edit-danger .card-header h2 {
@@ -2663,49 +2006,16 @@ html[data-theme="vice-city"] .isd-ticket-edit-danger .card-header h2 {
     color: #ff9dad;
 }
 
-/* Плавные изменения цветов */
-
-.isd-ticket-edit .card,
-.isd-ticket-edit .form-control {
-    transition:
-        background-color 0.4s ease,
-        color 0.4s ease,
-        border-color 0.4s ease;
-}
-
-/* Телефоны */
-
-@media (max-width: 575.98px) {
-
-    .isd-ticket-edit .isd-register-submit,
-    .isd-ticket-edit .isd-register-back {
-        width: 100%;
-    }
-}
-
-/* ===========================================
-   TICKET STATUS PAGE — CLASSIC / VICE CITY
-=========================================== */
-
-.isd-ticket-status-page .isd-register-card {
-    overflow: hidden;
-}
-
 .isd-ticket-status-current {
     padding: 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, .25);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.12);
-}
-
-.isd-ticket-status-page .isd-ticket-status {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.85rem;
+    background: rgba(255, 255, 255, .12);
 }
 
 .isd-ticket-status-page .isd-ticket-status-select {
     min-height: 50px;
-    padding: 0.75rem 1rem;
+    padding: .75rem 1rem;
     border: 1px solid var(--ui-border);
     border-radius: 12px;
     background-color: var(--ui-surface);
@@ -2714,24 +2024,12 @@ html[data-theme="vice-city"] .isd-ticket-edit-danger .card-header h2 {
 
 .isd-ticket-status-page .isd-ticket-status-select:focus {
     border-color: var(--ui-accent);
-    box-shadow: 0 0 0 3px rgba(135, 105, 225, 0.15);
+    box-shadow: 0 0 0 3px var(--ui-focus-ring);
 }
 
-@media (max-width: 575.98px) {
-
-    .isd-ticket-status-page .isd-register-submit,
-    .isd-ticket-status-page .isd-register-back {
-        width: 100%;
-    }
-}
-
-/* ===========================================
-   LOGIN PAGE — CLASSIC / VICE CITY
-=========================================== */
-
+/* 17. LOGIN ======================================================== */
 .isd-login {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+    padding: 2rem 0 3rem;
 }
 
 .isd-login-hero,
@@ -2740,74 +2038,80 @@ html[data-theme="vice-city"] .isd-ticket-edit-danger .card-header h2 {
 }
 
 main .isd-login-hero h1 {
-    color: #ffffff !important;
+    color: #fff !important;
     line-height: 1.2;
 }
 
 .isd-login-hero-footer {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.78rem;
+    color: rgba(255, 255, 255, .7);
+    font-size: .78rem;
     line-height: 1.5;
 }
-
-/* Значок входа */
 
 .isd-login-lock {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 64px;
     height: 64px;
-
-    border-radius: 18px;
     border: 1px solid var(--ui-border);
-
+    border-radius: 18px;
     background: var(--ui-hover);
     font-size: 1.8rem;
 }
-
-/* Кнопка входа */
 
 .isd-login-submit {
     min-height: 52px;
     font-size: 1rem;
 }
 
-/* Нижняя подпись */
-
 .isd-login-bottom {
     border-top: 1px solid var(--ui-border);
 }
 
-/* Ошибки авторизации */
-
 .isd-login-alert {
     border-radius: 12px;
-    font-size: 0.9rem;
+    font-size: .9rem;
 }
-
-/* Classic */
 
 html[data-theme="classic"] .isd-login-card {
-    box-shadow: 0 15px 45px rgba(35, 53, 91, 0.08);
+    box-shadow: 0 15px 45px rgba(35, 53, 91, .08);
 }
 
-/* Vice City */
-
 html[data-theme="vice-city"] .isd-login-card {
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.25),
-        0 0 25px rgba(255, 105, 187, 0.07);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .25), 0 0 25px rgba(255, 105, 187, .07);
 }
 
 html[data-theme="vice-city"] .isd-login-lock {
-    border-color: rgba(255, 105, 187, 0.25);
+    border-color: rgba(255, 105, 187, .25);
 }
 
-/* Адаптивность */
+/* 18. VICE CITY — SUNSET ON HOME PAGE ONLY ========================= */
+html[data-theme="vice-city"] .isd-home-hero {
+    background:
+        linear-gradient(90deg,
+            rgba(18, 13, 39, .96) 0%,
+            rgba(34, 18, 57, .86) 45%,
+            rgba(35, 16, 54, .24) 100%),
+        url('/images/vice-city-sunset.svg') right center / cover no-repeat !important;
+}
 
+/* Hides the content of the right-side visual but retains its layout space. */
+html[data-theme="vice-city"] .isd-home-hero-visual {
+    visibility: hidden;
+}
+
+html[data-theme="vice-city"] .isd-home-hero::before {
+    background: transparent;
+    filter: none;
+}
+
+/* 19. ALL MOBILE BREAKPOINTS FOR NEW PAGES ========================= */
 @media (max-width: 991.98px) {
+    .isd-register-hero {
+        padding: 2rem;
+    }
+
     .isd-login {
         padding-top: 0;
     }
@@ -2818,45 +2122,62 @@ html[data-theme="vice-city"] .isd-login-lock {
     }
 }
 
+@media (max-width: 767.98px) {
+    :is(.isd-profile-hero, .isd-users-hero, .isd-tickets-hero) {
+        padding: 1.75rem;
+    }
+
+    :is(.isd-profile-grid, .isd-ticket-detail-grid) {
+        grid-template-columns: 1fr;
+    }
+
+    .isd-profile-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 20px;
+        font-size: 2rem;
+    }
+
+    :is(.isd-users-counter, .isd-tickets-counter, .isd-ticket-detail-hero-info) {
+        width: 100%;
+    }
+
+    .isd-tickets-hero-highlight {
+        display: inline;
+    }
+
+    html[data-theme="vice-city"] .isd-home-hero {
+        background:
+            linear-gradient(90deg, rgba(18, 13, 39, .95), rgba(34, 18, 57, .79)),
+            url('/images/vice-city-sunset.svg') 72% center / cover no-repeat !important;
+    }
+}
+
 @media (max-width: 575.98px) {
+    .isd-register-hero {
+        padding: 1.5rem;
+    }
+
+    :is(.isd-profile-button, .isd-profile-button-outline,
+        .isd-register-submit, .isd-register-back,
+        .isd-ticket-detail-footer .btn) {
+        width: 100%;
+    }
+
     .isd-login {
         padding-bottom: 1rem;
     }
 }
 
-/* =========================================
-   VICE CITY — MIAMI SUNSET
-   Только для тёмной темы
-========================================= */
+/* 20. ACCESSIBILITY: FINAL OVERRIDE ================================ */
+@media (prefers-reduced-motion: reduce) {
 
-html[data-theme="vice-city"] .isd-home-hero {
-    background:
-        linear-gradient(90deg,
-            rgba(18, 13, 39, 0.96) 0%,
-            rgba(34, 18, 57, 0.86) 45%,
-            rgba(35, 16, 54, 0.24) 100%),
-        url('/images/vice-city-sunset.svg') right center / cover no-repeat !important;
-}
-
-/* Вместо обычной карточки справа показываем закат */
-html[data-theme="vice-city"] .isd-home-hero-visual {
-    visibility: hidden;
-}
-
-/* Убираем старое декоративное свечение,
-   чтобы оно не перекрывало иллюстрацию */
-html[data-theme="vice-city"] .isd-home-hero::before {
-    background: transparent;
-    filter: none;
-}
-
-/* На телефонах затемняем фон для читаемости текста */
-@media (max-width: 767.98px) {
-    html[data-theme="vice-city"] .isd-home-hero {
-        background:
-            linear-gradient(90deg,
-                rgba(18, 13, 39, 0.95),
-                rgba(34, 18, 57, 0.79)),
-            url('/images/vice-city-sunset.svg') 72% center / cover no-repeat !important;
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }
